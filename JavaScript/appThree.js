@@ -63,6 +63,7 @@ function Car() {
     backWheel.position.z = 6;
     backWheel.position.x = -18;
     car.add(backWheel);
+    
 
     const frontWheel = new THREE.Mesh(
         new THREE.CylinderGeometry(12, 12, 33, 32),
@@ -71,6 +72,8 @@ function Car() {
     frontWheel.position.z = 6;
     frontWheel.position.x = 18;
     car.add(frontWheel);
+
+
 
     const main = new THREE.Mesh(
         new THREE.BoxBufferGeometry(60, 30, 15),
@@ -87,8 +90,43 @@ function Car() {
     cabin.position.z = 25.5;
     car.add(cabin);
 
-    car.scale.set(0.05, 0.05, 0.05);
+    const racingline = new THREE.Mesh(
+        new THREE.BoxGeometry(60, 5, 15),
+        new THREE.MeshLambertMaterial({ color: 0x000000 })
+      );
+      racingline.position.z = 12;
+      car.add(racingline);
 
+    const roof = new THREE.Mesh(
+    new THREE.BoxGeometry(22, 23, 15),
+    new THREE.MeshLambertMaterial({ color: 0x000000 })
+    );
+    roof.position.set(-6, 0, 25);
+    roof.rotation.z = -Math.PI/2;
+    car.add(roof);
+
+      // Criar a textura com o número
+    const canvas = document.createElement("canvas");
+    canvas.width = 256;
+    canvas.height = 256;
+    const context = canvas.getContext("2d");
+    context.fillStyle = "white";
+    context.font = "bold 200px Arial";
+    context.fillText("44", 30, 180);
+    const texture = new THREE.CanvasTexture(canvas);
+
+    // Criar o sprite com a textura
+    const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+    const sprite = new THREE.Sprite(spriteMaterial);
+    sprite.scale.set(20, 20, 4);
+    sprite.position.set(0, 0, 50);
+    sprite.rotation.x = Math.PI / 2;
+
+   
+    car.add(sprite);
+
+    car.scale.set(0.05, 0.05, 0.05);
+    
     return car;
 } const car = Car();
 
