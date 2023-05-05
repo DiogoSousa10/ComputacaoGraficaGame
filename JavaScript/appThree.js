@@ -104,30 +104,80 @@ function Car() {
     roof.position.set(-6, 0, 25);
     roof.rotation.z = -Math.PI/2;
     car.add(roof);
-
-      // Criar a textura com o número
-    const canvas = document.createElement("canvas");
-    canvas.width = 256;
-    canvas.height = 256;
-    const context = canvas.getContext("2d");
-    context.fillStyle = "white";
-    context.font = "bold 200px Arial";
-    context.fillText("44", 30, 180);
-    const texture = new THREE.CanvasTexture(canvas);
-
-    // Criar o sprite com a textura
-    const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
-    const sprite = new THREE.Sprite(spriteMaterial);
-    sprite.scale.set(20, 20, 4);
-    sprite.position.set(0, 0, 50);
-    sprite.rotation.x = Math.PI / 2;
-
-   
-    car.add(sprite);
-
-    car.scale.set(0.05, 0.05, 0.05);
     
-    return car;
+    const texture = new THREE.TextureLoader().load("./Images/Number1.png");
+    const material = new THREE.MeshStandardMaterial({ map: texture });
+    
+    const imageGeometry = new THREE.PlaneGeometry(20, 20);
+    const imageMesh = new THREE.Mesh(imageGeometry, material);
+    
+    imageMesh.position.set(-6, 0, 33);
+
+    imageMesh.rotation.z = -Math.PI / 2;
+    
+    car.add(imageMesh);
+
+    //Ferrari
+    const hoodTexture = new THREE.TextureLoader().load("./Images/Ferrari.png");
+    const hoodMaterial = new THREE.MeshStandardMaterial({ map: hoodTexture });
+    const hoodGeometry = new THREE.BoxGeometry(30, 15, 1);
+    const hoodMesh = new THREE.Mesh(hoodGeometry, hoodMaterial);
+    hoodMesh.position.set(20, 0, 20);
+    hoodMesh.rotation.z = Math.PI / 2;
+    
+    car.add(hoodMesh);
+
+
+    //Adicionar Farois
+    // Criar geometria e material
+    const circleGeometry = new THREE.CircleGeometry(5, 32);
+    const circleMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+    // Criar os dois meshes com as geometrias e materiais
+    const circle1 = new THREE.Mesh(circleGeometry, circleMaterial);
+    const circle2 = new THREE.Mesh(circleGeometry, circleMaterial);
+
+    // Posicionar e rotacionar os dois meshes
+    circle1.position.set(30, 7, 10);
+    circle1.rotation.y = Math.PI / 2;
+    circle2.position.set(30, -7, 10);
+    circle2.rotation.y = Math.PI / 2;
+
+    // Adicionar os dois meshes à cena
+    car.add(circle1);
+    car.add(circle2);
+
+// Cria um objeto para representar as luzes do carro
+const lights = new THREE.PointLight(0xffffff, 1, 50);
+lights.position.set(0, 10, 35);  
+lights.add(lights.target);
+
+// Adiciona as luzes ao carro
+car.add(lights);
+
+// Cria uma variável para controlar o estado das luzes
+let lightsOn = true;
+
+// Adiciona um listener para a tecla "L"
+document.addEventListener("keydown", (event) => {
+  if (event.code === "KeyL") {
+    // Inverte o estado das luzes
+    lightsOn = !lightsOn;
+
+    // Atualiza a intensidade das luzes com base no estado
+    if (lightsOn) {
+      lights.intensity = 1;
+    } else {
+      lights.intensity = 0;
+    }
+  }
+});
+
+    
+
+car.scale.set(0.05, 0.05, 0.05);
+    
+return car;
 } const car = Car();
 
 function Wheel() {
