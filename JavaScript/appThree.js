@@ -175,7 +175,7 @@ document.addEventListener("keydown", (event) => {
 
     
 
-car.scale.set(0.05, 0.05, 0.05);
+car.scale.set(0.15, 0.15, 0.15);
     
 return car;
 } const car = Car();
@@ -259,19 +259,21 @@ function onDocumentKeyDown(event) {
     var keyCode = event.which;
     if (keyCode == 87) {
         if (car) {
-            car.position.z -= 0.25;
+            car.position.x += 0.25;
+           
         }
     } else if (keyCode == 83) {
         if (car) {
-            car.position.z += 0.25;
+            car.position.x -= 0.25;
         }
     } else if (keyCode == 65) {
         if (car) {
-            car.position.x -= 0.25;
+            car.rotation.z += 0.25;
+            
         }
     } else if (keyCode == 68) {
         if (car) {
-            car.position.x += 0.25;
+            car.rotation.z -= 0.25;
         }
     } else if (keyCode == 32) {
         if (meshCubo.parent === cena) {
@@ -281,6 +283,101 @@ function onDocumentKeyDown(event) {
         }
     }
 }
+
+function getCarDirection(car) {
+    const direction = new THREE.Vector3(0, 2, 2);
+    return direction;
+}
+// ... (mantenha o código original aqui)
+// Substitua a função onDocumentKeyDown por esta:
+function onDocumentKeyDown(event) {
+    var keyCode = event.which;
+    const speed = 0.25;
+    if (keyCode == 87) {
+        if (car) {
+            car.position.x += Math.cos(car.rotation.z) * speed;
+            car.position.y += Math.sin(car.rotation.z) * speed;
+        }
+    } else if (keyCode == 83) {
+        if (car) {
+            car.position.x -= Math.cos(car.rotation.z) * speed;
+            car.position.y -= Math.sin(car.rotation.z) * speed;
+        }
+    } else if (keyCode == 65) {
+        if (car) {
+            car.rotation.z += 0.1;
+        }
+    } else if (keyCode == 68) {
+        if (car) {
+            car.rotation.z -= 0.1;
+        }
+    } else if (keyCode == 32) {
+        if (meshCubo.parent === cena) {
+            cena.remove(meshCubo);
+        } else {
+            cena.add(meshCubo);
+        }
+    }
+}
+
+const keys = {
+    w: false,
+    s: false,
+    a: false,
+    d: false
+};
+
+function onDocumentKeyDown(event) {
+    var keyCode = event.which;
+    if (keyCode == 87) {
+        keys.w = true;
+    } else if (keyCode == 83) {
+        keys.s = true;
+    } else if (keyCode == 65) {
+        keys.a = true;
+    } else if (keyCode == 68) {
+        keys.d = true;
+    }
+}
+
+function onDocumentKeyUp(event) {
+    var keyCode = event.which;
+    if (keyCode == 87) {
+        keys.w = false;
+    } else if (keyCode == 83) {
+        keys.s = false;
+    } else if (keyCode == 65) {
+        keys.a = false;
+    } else if (keyCode == 68) {
+        keys.d = false;
+    }
+}
+
+document.addEventListener("keyup", onDocumentKeyUp, false);
+
+function update() {
+    const speed = 0.25;
+    if (car) {
+        if (keys.w) {
+            car.position.x += Math.cos(car.rotation.z) * speed;
+            car.position.y += Math.sin(car.rotation.z) * speed;
+        }
+        if (keys.s) {
+            car.position.x -= Math.cos(car.rotation.z) * speed;
+            car.position.y -= Math.sin(car.rotation.z) * speed;
+        }
+        if (keys.a) {
+            car.rotation.z += 0.03;
+        }
+        if (keys.d) {
+            car.rotation.z -= 0.03;
+        }
+    }
+
+    requestAnimationFrame(update);
+}
+
+update();
 
 
 //Clicar tecla C e mexer com a camara Ortografica ou perspetiva.
@@ -346,18 +443,81 @@ function createTree() {
 
 
 
+function createGrass(width, height, x, y, z, texture) {
+    const geometry = new THREE.PlaneGeometry(width, height, 1000, 10);
+    const material = new THREE.MeshLambertMaterial({ map: texture });
+    const mesh = new THREE.Mesh(geometry, material);
+
+    mesh.position.set(x, y, z);
+
+
+    return mesh;
+}
+
+function createGrasswithOpac(width, height, x, y, z, texture) {
+    const geometry = new THREE.PlaneGeometry(width, height, 1000, 10);
+    const material = new THREE.MeshLambertMaterial({ map: texture });
+    const mesh = new THREE.Mesh(geometry, material);
+
+    mesh.position.set(x, y, z);
+    mesh.material.transparent = true;
+    mesh.material.opacity = 0.8;
+
+    return mesh;
+}
+
 
 function Start() {
+
+
+    const grassTexture = new THREE.TextureLoader().load('./Images/grass2.0.png');
+
+    const gravelTexture = new THREE.TextureLoader().load('./Images/gravel2.png');
+
+
+    const grass = createGrass(200, 70, 40, -10, -20, grassTexture);
+    const grass2 = createGrass(60, 73, -103, 12, -20, grassTexture);
+    const grass3 = createGrass(60, 80, -55, 0, -20, grassTexture);
+    const gravel = createGrasswithOpac(160, 150, -55, 0, -20, gravelTexture);
+    const gravel2 = createGrasswithOpac(160, 150, -55, 0, -20, gravelTexture);
+
+    grass.position.x = 40; // posição do chão
+    grass.position.y = -10; // posição do chão
+    grass.position.z = -20; // posição da relva na pista
+
+    grass2.position.x = -103; // posição do chão
+    grass2.position.y = 12; // posição do chão
+    grass2.position.z = -20; // posição da relva na pista
+
+    grass3.position.x = -55; // posição do chão
+    grass3.position.y = 0; // posição do chão
+    grass3.position.z = -20; // posição da relva na pista
+
+    gravel.position.x = -77.96; // posição do chão
+    gravel.position.y = 0; // posição do chão
+    gravel.position.z = -20.01; // posição da relva na pista
+
+    gravel2.position.x = 82; // posição do chão
+    gravel2.position.y = 0; // posição do chão
+    gravel2.position.z = -20.05; // posição da relva na pista
+
     cena.add(meshCubo);
     cena.add(tree);
     cena.add(car);
     cena.add(wheel);
     cena.add(track);
+    cena.add(grass);
+    cena.add(grass2);
+    cena.add(grass3);
+    cena.add(gravel);
+    cena.add(gravel2);
 
-    car.position.set(-3, 0 - 10);
-    car.position.set(-3, 0, -10);
-    wheel.position.set(-3, 0, -10);
-    tree.position.set(2, 0, -10);
+
+    car.position.set(-3, 31, -20);
+    wheel.position.set(-3, -10, -20);
+
+  
+    tree.position.set(20, 50, -10);
 
     //Criação de um foco de luz com a cor branca e intensidade a 1 (intensidade normal)
     var focoLuz = new THREE.SpotLight('#ffffff', 1);
@@ -367,18 +527,17 @@ function Start() {
     focoLuz.position.y = 20;
     focoLuz.position.z = 20;
 
-   
+
     //Adicionamos a light à cena
     //  cena.add(focoLuz);
 
     requestAnimationFrame(loop);
 }
 
+
+
 function loop() {
     meshCubo.rotateY(Math.PI / 180 * 1);
-
-
-
     controls.update();
     renderer.render(cena, camara);
 
