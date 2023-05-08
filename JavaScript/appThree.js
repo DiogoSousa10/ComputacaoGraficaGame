@@ -149,7 +149,7 @@ function Car() {
 
 // Cria um objeto para representar as luzes do carro
 const lights = new THREE.PointLight(0xffffff, 1, 50);
-lights.position.set(0, 10, 35);  
+lights.position.set(40, -3, 20);  
 lights.add(lights.target);
 
 // Adiciona as luzes ao carro
@@ -239,9 +239,12 @@ function createTrack() {
 
         cena.add(object3D);
         cena.add(focoLuz);
+
+        
         
     })
 } const track = createTrack()
+
 
 var geometriaCubo = new THREE.BoxGeometry(1, 1, 1);
 
