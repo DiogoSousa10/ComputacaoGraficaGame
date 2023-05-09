@@ -13,6 +13,15 @@ const cameraHeight = cameraWidth / aspectRatio;
 //Camera Perspectiva 
 var camaraPerspetiva = new THREE.PerspectiveCamera(45, 4 / 3, 0.1, 100);
 
+var camaraPrimeiraPessoa;
+
+function criarCamaraPrimeiraPessoa() {
+    const cam = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 1000);
+    cam.position.set(10, 50, 10); // Ajuste a posição da câmera dentro do carro
+    cam.rotation.set(Math.PI/2, -Math.PI/2, 0); // Ajuste a rotação da câmera para olhar ligeiramente para baixo
+    return cam;
+  }
+
 //Camera Ortografica
 var camaraO = new THREE.OrthographicCamera(
     cameraWidth / -2, // left
@@ -27,12 +36,13 @@ if (cs == 0) {
     camara = camaraPerspetiva;
     camara.position.set(100, 100, 100);
     camara.lookAt(0, 0, 0);
-}
-if (cs == 1) {
+  } else if (cs == 1) {
     camara = camaraO;
     camara.position.set(200, 0, 300);
     camara.lookAt(0, 0, 0);
-}
+  } else if (cs == 2) { // Adicione esta condição para usar a câmera de primeira pessoa
+    camara = camaraPrimeiraPessoa;
+  }
 
 
 //Setings das Camaras--------------------------------------------------------------------------------------------
@@ -176,6 +186,9 @@ document.addEventListener("keydown", (event) => {
     
 
 car.scale.set(0.15, 0.15, 0.15);
+
+camaraPrimeiraPessoa = criarCamaraPrimeiraPessoa();
+car.add(camaraPrimeiraPessoa); // Adicione a câmera de primeira pessoa como um objeto filho do carro
     
 return car;
 } const car = Car();
@@ -240,10 +253,30 @@ function createTrack() {
         cena.add(object3D);
         cena.add(focoLuz);
 
+
+        // Cria a geometria do plano
+        const geometry = new THREE.PlaneGeometry(100, 100);
+
+        // Cria o material com a textura da bandeira axadrezada
+        const texture = new THREE.TextureLoader().load('./Images/Bandeira.png');
+        const material = new THREE.MeshBasicMaterial({ map: texture });
+
+        // Cria a malha com a geometria e o material
+        const mesh = new THREE.Mesh(geometry, material);
+
+        mesh.scale.set(0.1,0.16,0);
+
+        // Posiciona a malha no chão
+        mesh.position.set(0, -50, -19);
+
+        // Adiciona a malha à cena
+        cena.add(mesh);
+
         
         
     })
 } const track = createTrack()
+
 
 
 var geometriaCubo = new THREE.BoxGeometry(1, 1, 1);
@@ -383,28 +416,24 @@ function update() {
 update();
 
 
-//Clicar tecla C e mexer com a camara Ortografica ou perspetiva.
-document.addEventListener('keydown', ev => {
-
-    //Tecla C = 67 (Camara Ortografica ou Perspectiva)
-    if (ev.keyCode == 67) {
-        if (cs == 0) {
-            cs = 1;
-            camara = camaraO;
-            camara.position.set(200, 0, 300);
-            camara.lookAt(0, 0, 0);
-            car.position.z = 0;
-            console.log(cs)
-
-        } else {
-            cs = 0;
-            camara = camaraPerspetiva;
-            console.log(cs)
-        }
-
+//Clicar tecla C e mexer com a camara Ortografica ou perspetiva e Primeira Pessoa.
+document.addEventListener("keydown", (event) => {
+    if (event.code === "KeyC") {
+      cs = (cs + 1) % 3; // Alterna entre as câmeras
+  
+      if (cs == 0) {
+        camara = camaraPerspetiva;
+        camara.position.set(100, 100, 100);
+        camara.lookAt(0, 0, 0);
+      } else if (cs == 1) {
+        camara = camaraO;
+        camara.position.set(200, 0, 300);
+        camara.lookAt(0, 0, 0);
+      } else if (cs == 2) {
+        camara = camaraPrimeiraPessoa;
+      }
     }
-});
-
+  });
 
 //Criar uma arvore---------------------------------------------------------------------------------------------
 //Criar uma arvore---------------------------------------------------------------------------------------------
@@ -421,28 +450,88 @@ const treeCrownMaterial = new THREE.MeshLambertMaterial({
     color: treeCrownColor
 });
 
+
 function createTree() {
-    const tree = new THREE.Group();
-
-    // Cria um tronco para a árvore
-    const trunkGeometry = new THREE.CylinderGeometry(1, 1, 10, 16);
-    const trunkMaterial = new THREE.MeshBasicMaterial({ color: 0x8B4513 });
+    // Cria o tronco da árvore
+    const trunkGeometry = new THREE.CylinderGeometry(2, 2, 20, 8);
+    const trunkMaterial = new THREE.MeshLambertMaterial({ color: 0x8B4513 });
     const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
-    tree.add(trunk);
-
-    // Adiciona algumas folhas à árvore
-    const leavesGeometry = new THREE.SphereGeometry(4, 16, 16);
-    const leavesMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 1 });
+  
+    // Cria a copa da árvore
+    const leavesGeometry = new THREE.SphereGeometry(8, 8, 8);
+    const leavesMaterial = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
     const leaves = new THREE.Mesh(leavesGeometry, leavesMaterial);
-    leaves.position.y = 10;
+    leaves.position.set(0, 15, 0);
+  
+    // Cria um grupo para a árvore e adiciona o tronco e a copa como filhos
+    const tree = new THREE.Group();
+    tree.add(trunk);
     tree.add(leaves);
+  
+    // Define a posição da árvore
+    tree.position.set(0, 0, 0);
+    tree.rotation.x = Math.PI/2;
+  
+    // Adiciona a árvore à cena
+    cena.add(tree);
 
     return tree;
-} const tree = createTree();
+  }const tree = createTree();
 
 //Criar uma arvore (fim)---------------------------------------------------------------------------------------------
 //Criar uma arvore (fim)---------------------------------------------------------------------------------------------
 //Criar uma arvore (fim)---------------------------------------------------------------------------------------------
+
+function addBoard()
+{
+    // Cria a geometria do placar
+const geometry = new THREE.PlaneGeometry(10, 5);
+
+// Carrega a textura da imagem
+const texture = new THREE.TextureLoader().load('./Images/UTAD.jpg');
+
+// Cria o material com a textura da imagem
+const material = new THREE.MeshBasicMaterial({ map: texture });
+
+// Cria a malha com a geometria e o material
+const mesh = new THREE.Mesh(geometry, material);
+
+mesh.rotateX(Math.PI / 2);
+
+// Posiciona a malha na beira da pista
+mesh.position.set(80, 50, -18);
+
+// Adiciona a malha à cena
+cena.add(mesh);
+
+return mesh;
+}const board = addBoard();
+
+function addBoard2()
+{
+    // Cria a geometria do placar
+const geometry = new THREE.PlaneGeometry(10, 5);
+
+// Carrega a textura da imagem
+const texture = new THREE.TextureLoader().load('./Images/MASSIVE.png');
+
+// Cria o material com a textura da imagem
+const material = new THREE.MeshBasicMaterial({ map: texture });
+
+// Cria a malha com a geometria e o material
+const mesh = new THREE.Mesh(geometry, material);
+
+mesh.rotateX(Math.PI / 2);
+
+// Posiciona a malha na beira da pista
+mesh.position.set(70, 50, -18);
+
+// Adiciona a malha à cena
+cena.add(mesh);
+
+return mesh;
+}const board2 = addBoard2();
+
 
 
 
@@ -468,6 +557,7 @@ function createGrasswithOpac(width, height, x, y, z, texture) {
 
     return mesh;
 }
+
 
 
 function Start() {
