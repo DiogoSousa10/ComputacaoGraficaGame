@@ -62,12 +62,19 @@ document.body.appendChild(renderer.domElement);
 //CARROOOOOOOOOOOOOOOOOOOOO
 //CARROOOOOOOOOOOOOOOOOOOOO
 //CARROOOOOOOOOOOOOOOOOOOOO
+function pickRandom(list) {
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+const vehicleColors = [ 0xa52523, 0xbdb638, 0x78b14b];
+
 
 function Car() {
     const car = new THREE.Group();
 
+
     const backWheel = new THREE.Mesh(
-        new THREE.CylinderGeometry(12, 12, 33, 32),
+        new THREE.CylinderGeometry(9, 9, 33, 32),
         new THREE.MeshLambertMaterial({ color: 0x333333 })
     );
     backWheel.position.z = 6;
@@ -76,7 +83,7 @@ function Car() {
     
 
     const frontWheel = new THREE.Mesh(
-        new THREE.CylinderGeometry(12, 12, 33, 32),
+        new THREE.CylinderGeometry(9, 9, 33, 32),
         new THREE.MeshLambertMaterial({ color: 0x333333 })
     );
     frontWheel.position.z = 6;
@@ -87,7 +94,7 @@ function Car() {
 
     const main = new THREE.Mesh(
         new THREE.BoxBufferGeometry(60, 30, 15),
-        new THREE.MeshLambertMaterial({ color: 0xa52523 })
+        new THREE.MeshLambertMaterial({ color: pickRandom(vehicleColors) })
     );
     main.position.z = 12;
     car.add(main);
@@ -137,34 +144,59 @@ function Car() {
     
     car.add(hoodMesh);
 
+//Farois
+// Criar grupo para os faróis
+const headlights = new THREE.Group();
 
-    //Adicionar Farois
-    // Criar geometria e material
-    const circleGeometry = new THREE.CircleGeometry(5, 32);
-    const circleMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+// Criar geometria e material dos faróis
+const headlightGeometry = new THREE.CircleGeometry(5, 32);
+const headlightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
 
-    // Criar os dois meshes com as geometrias e materiais
-    const circle1 = new THREE.Mesh(circleGeometry, circleMaterial);
-    const circle2 = new THREE.Mesh(circleGeometry, circleMaterial);
+// Criar os dois meshes com as geometrias e materiais
+const headlight1 = new THREE.Mesh(headlightGeometry, headlightMaterial);
+const headlight2 = new THREE.Mesh(headlightGeometry, headlightMaterial);
 
-    // Posicionar e rotacionar os dois meshes
-    circle1.position.set(30, 7, 10);
-    circle1.rotation.y = Math.PI / 2;
-    circle2.position.set(30, -7, 10);
-    circle2.rotation.y = Math.PI / 2;
+// Posicionar e rotacionar os dois meshes
+headlight1.position.set(30, 7, 10);
+headlight1.rotation.y = Math.PI / 2;
+headlight2.position.set(30, -7, 10);
+headlight2.rotation.y = Math.PI / 2;
 
-    // Adicionar os dois meshes à cena
-    car.add(circle1);
-    car.add(circle2);
+// Adicionar os faróis ao grupo
+headlights.add(headlight1);
+headlights.add(headlight2);
 
-// Cria um objeto para representar as luzes do carro
-const lights = new THREE.PointLight(0xffffff, 1, 50);
-lights.position.set(40, -3, 20);  
-lights.add(lights.target);
+// Adicionar o grupo dos faróis ao carro
+car.add(headlights);
 
-// Adiciona as luzes ao carro
-car.add(lights);
+//Luzes do carro
+var spotLight1 = new THREE.SpotLight(0xffffff, 0, 100, Math.PI/6, 0.5);
+var spotLight2 = new THREE.SpotLight(0xffffff, 0, 100, Math.PI/6, 0.5);
+spotLight1.castShadow = true;
+spotLight2.castShadow = true;
 
+
+
+// Posicionar as spotlights em relação aos faróis
+spotLight1.position.set(2, 2, 1);
+spotLight2.position.set(2, 2, 1);
+
+headlight1.add(spotLight1);
+headlight2.add(spotLight2);
+
+//Target para direcionar a luz do carro transparente
+const geometry_farols = new THREE.BoxBufferGeometry(5, 3, 2);
+const material_farols = new THREE.MeshLambertMaterial({color: 0x0000ff, transparent: true, opacity: 0});
+const farols = new THREE.Mesh(geometry_farols, material_farols);
+
+//Posicionamento do target invisivel para luz carro
+farols.position.x = 110; 
+farols.position.y = 15;
+car.add(farols);
+spotLight1.target = farols;
+spotLight2.target = farols;
+
+  
 // Cria uma variável para controlar o estado das luzes
 let lightsOn = true;
 
@@ -174,16 +206,18 @@ document.addEventListener("keydown", (event) => {
     // Inverte o estado das luzes
     lightsOn = !lightsOn;
 
-    // Atualiza a intensidade das luzes com base no estado
+    // Atualiza a intensidade das spotlights com base no estado
     if (lightsOn) {
-      lights.intensity = 1;
+      spotLight1.intensity = 2;
+      spotLight2.intensity = 2;
     } else {
-      lights.intensity = 0;
+      spotLight1.intensity = 0;
+      spotLight2.intensity = 0;
+
     }
   }
-});
 
-    
+});
 
 car.scale.set(0.15, 0.15, 0.15);
 
@@ -257,6 +291,7 @@ function createTrack() {
         // Cria a geometria do plano
         const geometry = new THREE.PlaneGeometry(100, 100);
 
+
         // Cria o material com a textura da bandeira axadrezada
         const texture = new THREE.TextureLoader().load('./Images/Bandeira.png');
         const material = new THREE.MeshBasicMaterial({ map: texture });
@@ -267,7 +302,7 @@ function createTrack() {
         mesh.scale.set(0.1,0.16,0);
 
         // Posiciona a malha no chão
-        mesh.position.set(0, -50, -19);
+        mesh.position.set(0, -50, -19.75);
 
         // Adiciona a malha à cena
         cena.add(mesh);
@@ -296,16 +331,16 @@ function onDocumentKeyDown(event) {
     if (keyCode == 87) {
         if (car) {
             car.position.x += 0.25;
-           
         }
     } else if (keyCode == 83) {
         if (car) {
             car.position.x -= 0.25;
+
         }
     } else if (keyCode == 65) {
         if (car) {
             car.rotation.z += 0.25;
-            
+
         }
     } else if (keyCode == 68) {
         if (car) {
@@ -332,7 +367,7 @@ function onDocumentKeyDown(event) {
     if (keyCode == 87) {
         if (car) {
             car.position.x += Math.cos(car.rotation.z) * speed;
-            car.position.y += Math.sin(car.rotation.z) * speed;
+            car.position.y += Math.sin(car.rotation.z) * speed;   
         }
     } else if (keyCode == 83) {
         if (car) {
@@ -341,7 +376,7 @@ function onDocumentKeyDown(event) {
         }
     } else if (keyCode == 65) {
         if (car) {
-            car.rotation.z += 0.1;
+            car.rotation.z += 0.1;    
         }
     } else if (keyCode == 68) {
         if (car) {
@@ -397,6 +432,7 @@ function update() {
         if (keys.w) {
             car.position.x += Math.cos(car.rotation.z) * speed;
             car.position.y += Math.sin(car.rotation.z) * speed;
+            
         }
         if (keys.s) {
             car.position.x -= Math.cos(car.rotation.z) * speed;
@@ -631,8 +667,11 @@ function Start() {
 
 function loop() {
     meshCubo.rotateY(Math.PI / 180 * 1);
+    
     controls.update();
+
     renderer.render(cena, camara);
+
 
     requestAnimationFrame(loop);
 }
