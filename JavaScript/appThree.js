@@ -300,10 +300,10 @@ function createTrack() {
         // Cria a malha com a geometria e o material
         const mesh = new THREE.Mesh(geometry, material);
 
-        mesh.scale.set(0.1, 0.16, 0);
+        mesh.scale.set(0.1, 0.09, 0);
 
         // Posiciona a malha no chão
-        mesh.position.set(0, -50, -19.75);
+        mesh.position.set(0, -30, -19.75);
 
         // Adiciona a malha à cena
         cena.add(mesh);
@@ -682,7 +682,7 @@ function Start() {
     gravel.position.y = 0; // posição do chão
     gravel.position.z = -20.01; // posição da relva na pista
 
-    gravel2.position.x = 52; // posição do chão
+    gravel2.position.x = 51.9; // posição do chão
     gravel2.position.y = 0; // posição do chão
     gravel2.position.z = -20.05; // posição da relva na pista
 
