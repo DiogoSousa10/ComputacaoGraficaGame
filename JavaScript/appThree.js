@@ -288,7 +288,6 @@ function createTrack() {
         cena.add(object3D);
         cena.add(focoLuz);
 
-
         // Cria a geometria do plano
         const geometry = new THREE.PlaneGeometry(100, 100);
 
@@ -312,7 +311,6 @@ function createTrack() {
 
     })
 } const track = createTrack()
-
 
 
 var geometriaCubo = new THREE.BoxGeometry(1, 1, 1);
@@ -554,6 +552,90 @@ function addBoard2() {
 } const board2 = addBoard2();
 
 
+//Helicóptero
+//Helicóptero
+//Helicóptero
+function createHeli() {
+    // Cria a cena
+    var cena = new THREE.Scene();
+
+    // Cria a câmera
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 5, 10);
+
+    // Cria o renderizador
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Cria a geometria do corpo do helicóptero
+    var bodyGeometry = new THREE.BoxGeometry(3, 2, 8);
+    var bodyMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00});
+    var body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+
+    // Cria a geometria do rotor principal
+    var mainRotorGeometry = new THREE.BoxGeometry(10, 0.2, 0.2);
+    var mainRotorMaterial = new THREE.MeshBasicMaterial({color: 0xff0000});
+    var mainRotor = new THREE.Mesh(mainRotorGeometry, mainRotorMaterial);
+
+    // Cria a geometria da cauda do helicóptero
+    var tailGeometry = new THREE.BoxGeometry(0.4, 1, 7);
+    var tailMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff});
+    var tail = new THREE.Mesh(tailGeometry, tailMaterial);
+
+    // Cria a geometria da segunda hélice
+    var tailRotorGeometry = new THREE.BoxGeometry(0.2, 0.2, 2);
+    var tailRotorMaterial = new THREE.MeshBasicMaterial({color: 0x00ffff});
+    var tailRotor = new THREE.Mesh(tailRotorGeometry, tailRotorMaterial);
+    tail.add(tailRotor);
+
+    // Cria as geometrias das janelas
+    var windowGeometry1 = new THREE.BoxGeometry(0.2, 1, 1);
+    var windowMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, opacity: 0.5, transparent: true});
+    var window1 = new THREE.Mesh(windowGeometry1, windowMaterial);
+    window1.position.set(1.5, 0.5, 0);
+
+    var windowGeometry2 = new THREE.BoxGeometry(0.2, 1, 1);
+    var window2 = new THREE.Mesh(windowGeometry2, windowMaterial);
+    window2.position.set(-1.5, 0.5, 0);
+
+    // Posiciona os objetos
+    body.position.set(0, 0, 0);
+    mainRotor.position.set(0, 1, 0);
+    tail.position.set(0, 0, -4);
+    tailRotor.position.set(0, 1, -3);
+
+    // Adiciona os objetos na cena
+    cena.add(body);
+    cena.add(mainRotor);
+    cena.add(tail);
+    //&cena.add(tailRotor);
+    cena.add(window1);
+    cena.add(window2);
+
+    // Renderiza a cena
+    function animate() {
+        requestAnimationFrame(animate);
+
+        mainRotor.rotation.y += 0.1;
+        tailRotor.rotation.x += 0.1;
+
+        renderer.render(cena, camera);
+    }
+    animate();
+
+    return cena;
+}
+
+var heli = createHeli();
+heli.rotation.x = Math.PI/2;
+
+
+
+//Helicóptero
+//Helicóptero
+//Helicóptero
+
 
 
 function createGrass(width, height, x, y, z, texture) {
@@ -578,6 +660,78 @@ function createGrasswithOpac(width, height, x, y, z, texture) {
 
     return mesh;
 }
+
+function createLamp () {
+    // Cria a cena, a câmera e o renderizador
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Cria um grupo para o candeeiro
+    var lamp = new THREE.Group();
+
+    // Cria a base do candeeiro
+    var baseGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.5, 7);
+    var baseMaterial = new THREE.MeshPhongMaterial({ color: 0x333333 });
+    var base = new THREE.Mesh(baseGeometry, baseMaterial);
+    base.position.y = 0.25;
+    lamp.add(base);
+
+    // Cria o poste do candeeiro
+    var postGeometry = new THREE.CylinderGeometry(0.1, 0.1, 2, 16);
+    var postMaterial = new THREE.MeshPhongMaterial({ color: 0x999999 });
+    var post = new THREE.Mesh(postGeometry, postMaterial);
+    post.position.y = 1;
+    lamp.add(post);
+
+    // Cria a lâmpada do candeeiro
+    var bulbGeometry = new THREE.SphereGeometry(0.5, 16, 16);
+    var bulbMaterial = new THREE.MeshPhongMaterial({ color: 0xffff00 });
+    var bulb = new THREE.Mesh(bulbGeometry, bulbMaterial);
+    bulb.position.y = 2.5;
+    lamp.add(bulb);
+
+    // Cria a luz da lâmpada
+    var light = new THREE.PointLight(0xffffff, 1, 100);
+    light.position.set(0, 2.5, 0);
+    lamp.add(light);
+
+    // Adiciona o candeeiro à cena
+    scene.add(lamp);
+
+    // Configura a posição da câmera
+    camera.position.z = 5;
+
+    // Adiciona a cena à página
+    document.body.appendChild(renderer.domElement);
+
+    // Chama a função animate() passando os objetos necessários
+    animate(scene, camera, renderer);
+    
+    lamp.position.x = -20;
+    lamp.position.y = 5;
+    lamp.position.z = -20;
+    lamp.rotation.x = Math.PI/2;
+
+    lamp.scale.set(5, 5, 5);
+    // Retorna todos os objetos necessários
+    return { scene: scene, camera: camera, renderer: renderer, lamp: lamp };
+}
+
+// Define a função animate() para renderizar a cena
+function animate(scene, camera, renderer) {
+    requestAnimationFrame(function() { animate(scene, camera, renderer); });
+    renderer.render(scene, camera);
+}
+
+// Cria o candeeiro e obtém os objetos necessários
+var lampObjects = createLamp();
+var scene = lampObjects.scene;
+var camera = lampObjects.camera;
+var renderer1 = lampObjects.renderer;
+var lamp = lampObjects.lamp;
 
 
 
@@ -697,6 +851,9 @@ function Start() {
     cena.add(grass3);
     cena.add(gravel);
     cena.add(gravel2);
+    cena.add(lamp);
+    cena.add(heli);
+
 
 
     car.position.set(-3, 31, -20);
