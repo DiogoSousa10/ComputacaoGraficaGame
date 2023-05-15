@@ -17,7 +17,7 @@ var camaraPrimeiraPessoa;
 
 function criarCamaraPrimeiraPessoa() {
     const cam = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 6000);
-    cam.position.set(10, 50, 10); // Ajuste a posição da câmera dentro do carro
+    cam.position.set(-2, 0, 30); // Ajuste a posição da câmera dentro do carro
     cam.rotation.set(Math.PI / 2, -Math.PI / 2, 0); // Ajuste a rotação da câmera para olhar ligeiramente para baixo
     return cam;
 }
@@ -170,8 +170,8 @@ function Car() {
     car.add(headlights);
 
     //Luzes do carro
-    var spotLight1 = new THREE.SpotLight(0xffffff, 0, 100, Math.PI / 6, 0.5);
-    var spotLight2 = new THREE.SpotLight(0xffffff, 0, 100, Math.PI / 6, 0.5);
+    var spotLight1 = new THREE.SpotLight(0xffffff, 0, 1000, Math.PI / 6, 0.5);
+    var spotLight2 = new THREE.SpotLight(0xffffff, 0, 1000, Math.PI / 6, 0.5);
     spotLight1.castShadow = true;
     spotLight2.castShadow = true;
 
@@ -219,7 +219,7 @@ function Car() {
 
     });
 
-    car.scale.set(0.1, 0.1, 0.1);
+    car.scale.set(0.08, 0.08, 0.08);
 
     camaraPrimeiraPessoa = criarCamaraPrimeiraPessoa();
     car.add(camaraPrimeiraPessoa); // Adicione a câmera de primeira pessoa como um objeto filho do carro
@@ -277,16 +277,10 @@ function createTrack() {
         object3D.scale.set(0.6, 0.6, 0.6);
 
 
-        var focoLuz = new THREE.SpotLight('#ffffff', 1);
-
         object3D.position.set(2, 0, -20);
 
-        focoLuz.position.set(0, 0, 100);
-
-        focoLuz.lookAt(object3D.position);
 
         cena.add(object3D);
-        cena.add(focoLuz);
 
         // Cria a geometria do plano
         const geometry = new THREE.PlaneGeometry(100, 100);
@@ -346,12 +340,11 @@ function onDocumentKeyDown(event) {
 
 }
 
-function getCarDirection(car) {
-    const direction = new THREE.Vector3(0, 2, 2);
-    return direction;
-}
-// ... (mantenha o código original aqui)
-// Substitua a função onDocumentKeyDown por esta:
+// function getCarDirection(car) {
+//     const direction = new THREE.Vector3(0, 2, 2);
+//     return direction;
+// }
+
 function onDocumentKeyDown(event) {
     var keyCode = event.which;
     const speed = 0.25;
@@ -373,7 +366,7 @@ function onDocumentKeyDown(event) {
         if (car) {
             car.rotation.z -= 0.1;
         }
-    } 
+    }
 }
 
 const keys = {
@@ -552,89 +545,84 @@ function addBoard2() {
 } const board2 = addBoard2();
 
 
-//Helicóptero
-//Helicóptero
-//Helicóptero
-function createHeli() {
-    // Cria a cena
-    var cena = new THREE.Scene();
+// //Helicóptero
+// //Helicóptero
+// //Helicóptero
+// function createHeli() {
 
-    // Cria a câmera
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 5, 10);
 
-    // Cria o renderizador
-    var renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+//     // Cria o renderizador
+//     var renderer = new THREE.WebGLRenderer();
+//     renderer.setSize(window.innerWidth, window.innerHeight);
+//     document.body.appendChild(renderer.domElement);
 
-    // Cria a geometria do corpo do helicóptero
-    var bodyGeometry = new THREE.BoxGeometry(3, 2, 8);
-    var bodyMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00});
-    var body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+//     // Cria a geometria do corpo do helicóptero
+//     var bodyGeometry = new THREE.BoxGeometry(3, 2, 8);
+//     var bodyMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00});
+//     var body = new THREE.Mesh(bodyGeometry, bodyMaterial);
 
-    // Cria a geometria do rotor principal
-    var mainRotorGeometry = new THREE.BoxGeometry(10, 0.2, 0.2);
-    var mainRotorMaterial = new THREE.MeshBasicMaterial({color: 0xff0000});
-    var mainRotor = new THREE.Mesh(mainRotorGeometry, mainRotorMaterial);
+//     // Cria a geometria do rotor principal
+//     var mainRotorGeometry = new THREE.BoxGeometry(10, 0.2, 0.2);
+//     var mainRotorMaterial = new THREE.MeshBasicMaterial({color: 0xff0000});
+//     var mainRotor = new THREE.Mesh(mainRotorGeometry, mainRotorMaterial);
 
-    // Cria a geometria da cauda do helicóptero
-    var tailGeometry = new THREE.BoxGeometry(0.4, 1, 7);
-    var tailMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff});
-    var tail = new THREE.Mesh(tailGeometry, tailMaterial);
+//     // Cria a geometria da cauda do helicóptero
+//     var tailGeometry = new THREE.BoxGeometry(0.4, 1, 7);
+//     var tailMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff});
+//     var tail = new THREE.Mesh(tailGeometry, tailMaterial);
 
-    // Cria a geometria da segunda hélice
-    var tailRotorGeometry = new THREE.BoxGeometry(0.2, 0.2, 2);
-    var tailRotorMaterial = new THREE.MeshBasicMaterial({color: 0x00ffff});
-    var tailRotor = new THREE.Mesh(tailRotorGeometry, tailRotorMaterial);
-    tail.add(tailRotor);
+//     // Cria a geometria da segunda hélice
+//     var tailRotorGeometry = new THREE.BoxGeometry(0.2, 0.2, 2);
+//     var tailRotorMaterial = new THREE.MeshBasicMaterial({color: 0x00ffff});
+//     var tailRotor = new THREE.Mesh(tailRotorGeometry, tailRotorMaterial);
+//     tail.add(tailRotor);
 
-    // Cria as geometrias das janelas
-    var windowGeometry1 = new THREE.BoxGeometry(0.2, 1, 1);
-    var windowMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, opacity: 0.5, transparent: true});
-    var window1 = new THREE.Mesh(windowGeometry1, windowMaterial);
-    window1.position.set(1.5, 0.5, 0);
+//     // Cria as geometrias das janelas
+//     var windowGeometry1 = new THREE.BoxGeometry(0.2, 1, 1);
+//     var windowMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, opacity: 0.5, transparent: true});
+//     var window1 = new THREE.Mesh(windowGeometry1, windowMaterial);
+//     window1.position.set(1.5, 0.5, 0);
 
-    var windowGeometry2 = new THREE.BoxGeometry(0.2, 1, 1);
-    var window2 = new THREE.Mesh(windowGeometry2, windowMaterial);
-    window2.position.set(-1.5, 0.5, 0);
+//     var windowGeometry2 = new THREE.BoxGeometry(0.2, 1, 1);
+//     var window2 = new THREE.Mesh(windowGeometry2, windowMaterial);
+//     window2.position.set(-1.5, 0.5, 0);
 
-    // Posiciona os objetos
-    body.position.set(0, 0, 0);
-    mainRotor.position.set(0, 1, 0);
-    tail.position.set(0, 0, -4);
-    tailRotor.position.set(0, 1, -3);
+//     // Posiciona os objetos
+//     body.position.set(0, 0, 0);
+//     mainRotor.position.set(0, 1, 0);
+//     tail.position.set(0, 0, -4);
+//     tailRotor.position.set(0, 1, -3);
 
-    // Adiciona os objetos na cena
-    cena.add(body);
-    cena.add(mainRotor);
-    cena.add(tail);
-    //&cena.add(tailRotor);
-    cena.add(window1);
-    cena.add(window2);
+//     // Adiciona os objetos na cena
+//     cena.add(body);
+//     cena.add(mainRotor);
+//     cena.add(tail);
+//     //&cena.add(tailRotor);
+//     cena.add(window1);
+//     cena.add(window2);
 
-    // Renderiza a cena
-    function animate() {
-        requestAnimationFrame(animate);
+//     // Renderiza a cena
+//     function animate() {
+//         requestAnimationFrame(animate);
 
-        mainRotor.rotation.y += 0.1;
-        tailRotor.rotation.x += 0.1;
+//         mainRotor.rotation.y += 0.1;
+//         tailRotor.rotation.x += 0.1;
 
-        renderer.render(cena, camera);
-    }
-    animate();
+//         renderer.render(cena, camera);
+//     }
+//     animate();
 
-    return cena;
-}
+//     return cena;
+// }
 
-var heli = createHeli();
-heli.rotation.x = Math.PI/2;
+// var heli = createHeli();
+// heli.rotation.x = Math.PI/2;
 
 
 
-//Helicóptero
-//Helicóptero
-//Helicóptero
+// //Helicóptero
+// //Helicóptero
+// //Helicóptero
 
 
 
@@ -661,27 +649,20 @@ function createGrasswithOpac(width, height, x, y, z, texture) {
     return mesh;
 }
 
-function createLamp () {
-    // Cria a cena, a câmera e o renderizador
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    var renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-
+function createLamp() {
     // Cria um grupo para o candeeiro
     var lamp = new THREE.Group();
 
     // Cria a base do candeeiro
     var baseGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.5, 7);
-    var baseMaterial = new THREE.MeshPhongMaterial({ color: 0x333333 });
+    var baseMaterial = new THREE.MeshBasicMaterial({ color: 0x333333 });
     var base = new THREE.Mesh(baseGeometry, baseMaterial);
-    base.position.y = 0.25;
+    base.position.y = 0.15;
     lamp.add(base);
 
     // Cria o poste do candeeiro
     var postGeometry = new THREE.CylinderGeometry(0.1, 0.1, 2, 16);
-    var postMaterial = new THREE.MeshPhongMaterial({ color: 0x999999 });
+    var postMaterial = new THREE.MeshBasicMaterial({ color: 0x999999 });
     var post = new THREE.Mesh(postGeometry, postMaterial);
     post.position.y = 1;
     lamp.add(post);
@@ -694,46 +675,21 @@ function createLamp () {
     lamp.add(bulb);
 
     // Cria a luz da lâmpada
-    var light = new THREE.PointLight(0xffffff, 1, 100);
-    light.position.set(0, 2.5, 0);
+    var light = new THREE.PointLight(0xffffff, 2, 20);
+    light.position.set(0, 1.5, 0);
     lamp.add(light);
 
-    // Adiciona o candeeiro à cena
-    scene.add(lamp);
-
-    // Configura a posição da câmera
-    camera.position.z = 5;
-
-    // Adiciona a cena à página
-    document.body.appendChild(renderer.domElement);
-
-    // Chama a função animate() passando os objetos necessários
-    animate(scene, camera, renderer);
     
-    lamp.position.x = -20;
-    lamp.position.y = 5;
-    lamp.position.z = -20;
-    lamp.rotation.x = Math.PI/2;
-
-    lamp.scale.set(5, 5, 5);
-    // Retorna todos os objetos necessários
-    return { scene: scene, camera: camera, renderer: renderer, lamp: lamp };
-}
-
-// Define a função animate() para renderizar a cena
-function animate(scene, camera, renderer) {
-    requestAnimationFrame(function() { animate(scene, camera, renderer); });
-    renderer.render(scene, camera);
-}
-
-// Cria o candeeiro e obtém os objetos necessários
-var lampObjects = createLamp();
-var scene = lampObjects.scene;
-var camera = lampObjects.camera;
-var renderer1 = lampObjects.renderer;
-var lamp = lampObjects.lamp;
+    // var coneGeometry = new THREE.ConeGeometry(1, 2, 16);
+    // var coneMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00, transparent: true, opacity: 0.3 });
+    // var cone = new THREE.Mesh(coneGeometry, coneMaterial);
+    // cone.position.copy(light.position);
+    // cone.rotation.copy(light.rotation);
+    // lamp.add(cone);
 
 
+    return lamp;
+} const lamp = createLamp();
 
 
 //SKYBOX DE DIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -792,15 +748,58 @@ skybox2.rotation.x = Math.PI / 2; // Rotaciona 90 graus em torno do eixo y
 
 var skyboxState = 'day';
 
+var spotlightday; // Holofote para o dia
+var spotlightnight; // Holofote para a noite
+var skyboxState = 'day'; // Estado inicial do skybox (dia)
+
+function createLightforNight() {
+    spotlightnight = new THREE.SpotLight(0xffffff, 0.3);
+    spotlightnight.position.set(180, 120, 140); // Posição do holofote
+
+    var size = 20; // Tamanho do quadrado
+    var geometry = new THREE.BoxGeometry(size, size, size);
+    var material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    var nightLight = new THREE.Mesh(geometry, material);
+    nightLight.position.copy(spotlightnight.position); // Posiciona o quadrado na mesma posição do holofote
+
+    cena.add(nightLight); // Adicione o quadrado à cena
+
+
+    return nightLight;
+}
+
+const nightLight = createLightforNight();
+
+function createLightforDay() {
+    spotlightday = new THREE.SpotLight(0xffffff, 1.5);
+    spotlightday.position.set(180, 120, 140); // Posição do holofote
+
+    var size = 20; // Tamanho do quadrado
+    var geometry = new THREE.BoxGeometry(size, size, size);
+    var material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    var lightDay = new THREE.Mesh(geometry, material);
+    lightDay.position.copy(spotlightday.position); // Posiciona o quadrado na mesma posição do holofote
+
+    cena.add(lightDay); // Adicione o quadrado à cena
+
+    return lightDay;
+}
+
+const lightDay = createLightforDay();
+
 window.addEventListener('keydown', function (event) {
     if (event.key === 't') { // Tecla "t" para alternar os skyboxes
         if (skyboxState === 'day') {
+            cena.remove(spotlightday);
             cena.remove(skybox);
             cena.add(skybox2);
+            cena.add(spotlightnight);
             skyboxState = 'night';
         } else {
+            cena.remove(spotlightnight);
             cena.remove(skybox2);
             cena.add(skybox);
+            cena.add(spotlightday);
             skyboxState = 'day';
         }
     }
@@ -840,8 +839,15 @@ function Start() {
     gravel2.position.y = 0; // posição do chão
     gravel2.position.z = -20.05; // posição da relva na pista
 
-    cena.add(skybox);
 
+
+    lamp.rotation.x = Math.PI / 2;
+    lamp.position.z = -20;
+    lamp.position.y = 12;
+    lamp.scale.set(3, 3, 3);
+
+    cena.add(skybox);
+    cena.add(spotlightday);
     cena.add(tree);
     cena.add(car);
     cena.add(wheel);
@@ -852,7 +858,7 @@ function Start() {
     cena.add(gravel);
     cena.add(gravel2);
     cena.add(lamp);
-    cena.add(heli);
+    // cena.add(heli);
 
 
 
@@ -861,14 +867,6 @@ function Start() {
 
 
     tree.position.set(20, 50, -10);
-
-    //Criação de um foco de luz com a cor branca e intensidade a 1 (intensidade normal)
-    var focoLuz = new THREE.SpotLight('#ffffff', 1);
-
-    //Mudar a posiçao da luz para ficar 5 unidades a cima de onde a câmara se encontra
-    focoLuz.position.x = 5;
-    focoLuz.position.y = 20;
-    focoLuz.position.z = 20;
 
 
 
@@ -882,9 +880,6 @@ function Start() {
 function loop() {
 
     controls.update();
-
     renderer.render(cena, camara);
-
-
     requestAnimationFrame(loop);
 }
