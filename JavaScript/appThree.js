@@ -74,7 +74,7 @@ function Car() {
 
 
     const backWheel = new THREE.Mesh(
-        new THREE.CylinderGeometry(9, 9, 33, 32),
+        new THREE.CylinderGeometry(8.5, 8.5, 33, 32),
         new THREE.MeshLambertMaterial({ color: 0x333333 })
     );
     backWheel.position.z = 6;
@@ -83,12 +83,51 @@ function Car() {
 
 
     const frontWheel = new THREE.Mesh(
-        new THREE.CylinderGeometry(9, 9, 33, 32),
+        new THREE.CylinderGeometry(8.5, 8.5, 33, 32),
         new THREE.MeshLambertMaterial({ color: 0x333333 })
     );
     frontWheel.position.z = 6;
     frontWheel.position.x = 18;
     car.add(frontWheel);
+
+    // Carregar a textura da imagem das jantes
+    const jantesTexture = new THREE.TextureLoader().load('./Images/BBS.png');
+
+    // Configurar transparência na textura
+    jantesTexture.transparent = true;
+
+    // Criar o material com a textura das jantes
+    const jantesMaterial = new THREE.MeshBasicMaterial({ map: jantesTexture, transparent: true, alphaTest: 0.3});
+
+
+    // Criar a geometria das jantes
+    const jantesGeometry = new THREE.PlaneGeometry(14, 14);
+
+    // Criar os meshes das jantes para as rodas traseiras
+    const backWheelLeftJantes = new THREE.Mesh(jantesGeometry, jantesMaterial);
+    backWheelLeftJantes.position.set(-18, 17, 6);
+    backWheelLeftJantes.rotation.z = Math.PI/2;
+    backWheelLeftJantes.rotation.x = -Math.PI/2;
+    car.add(backWheelLeftJantes);
+
+    const backWheelRightJantes = new THREE.Mesh(jantesGeometry, jantesMaterial);
+    backWheelRightJantes.position.set(-18, -17, 6);
+    backWheelRightJantes.rotation.x = Math.PI / 2;
+    car.add(backWheelRightJantes);
+
+    // Criar os meshes das jantes para as rodas dianteiras
+    const frontWheelLeftJantes = new THREE.Mesh(jantesGeometry, jantesMaterial);
+    frontWheelLeftJantes.position.set(18, 17, 6);
+    frontWheelLeftJantes.rotation.x = Math.PI;
+    frontWheelLeftJantes.rotation.z = Math.PI/2;
+    frontWheelLeftJantes.rotation.x = -Math.PI/2;
+    car.add(frontWheelLeftJantes);
+
+    const frontWheelRightJantes = new THREE.Mesh(jantesGeometry, jantesMaterial);
+    frontWheelRightJantes.position.set(18, -17, 6);
+    frontWheelRightJantes.rotation.x = Math.PI / 2;
+    car.add(frontWheelRightJantes);
+
 
 
 
@@ -121,6 +160,7 @@ function Car() {
     roof.position.set(-6, 0, 25);
     roof.rotation.z = -Math.PI / 2;
     car.add(roof);
+
 
     const texture = new THREE.TextureLoader().load("./Images/Number1.png");
     const material = new THREE.MeshStandardMaterial({ map: texture });
@@ -545,47 +585,83 @@ function addBoard2() {
 } const board2 = addBoard2();
 
 
+function addCGBoard() {
+    // Cria a geometria do placar
+    const geometry = new THREE.PlaneGeometry(70, 35);
+
+    // Carrega a textura da imagem
+    const texture = new THREE.TextureLoader().load('./Images/CG.png');
+
+    // Cria o material com a textura da imagem
+    const material = new THREE.MeshBasicMaterial({ map: texture });
+
+    // Cria a malha com a geometria e o material
+    const mesh = new THREE.Mesh(geometry, material);
+
+    // Posiciona a malha na beira da pista
+    mesh.position.set(-74, -50, -20);
+
+    // Adiciona a malha à cena
+    cena.add(mesh);
+
+    return mesh;
+} const CG = addCGBoard();
+
+
+
 // //Helicóptero
 // //Helicóptero
 // //Helicóptero
-// function createHeli() {
+function createHeli() {
+
+        const heli = new THREE.Group();
 
 
-//     // Cria o renderizador
-//     var renderer = new THREE.WebGLRenderer();
-//     renderer.setSize(window.innerWidth, window.innerHeight);
-//     document.body.appendChild(renderer.domElement);
+       // Cria a geometria do corpo do helicóptero
+         var bodyGeometry = new THREE.BoxGeometry(3, 2, 8);
+         var bodyMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00});
+         var body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+         body.position.set(0, 0, 0);
+         heli.add(body);
 
-//     // Cria a geometria do corpo do helicóptero
-//     var bodyGeometry = new THREE.BoxGeometry(3, 2, 8);
-//     var bodyMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00});
-//     var body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+     // Cria a geometria do rotor principal
+        var mainRotorGeometry = new THREE.BoxGeometry(10, 0.2, 0.2);
+        var mainRotorMaterial = new THREE.MeshBasicMaterial({color: 0xff0000});
+        var mainRotor = new THREE.Mesh(mainRotorGeometry, mainRotorMaterial);
+        mainRotor.position.set(0,1,0);
+        heli.add(mainRotor);
 
-//     // Cria a geometria do rotor principal
-//     var mainRotorGeometry = new THREE.BoxGeometry(10, 0.2, 0.2);
-//     var mainRotorMaterial = new THREE.MeshBasicMaterial({color: 0xff0000});
-//     var mainRotor = new THREE.Mesh(mainRotorGeometry, mainRotorMaterial);
 
-//     // Cria a geometria da cauda do helicóptero
-//     var tailGeometry = new THREE.BoxGeometry(0.4, 1, 7);
-//     var tailMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff});
-//     var tail = new THREE.Mesh(tailGeometry, tailMaterial);
+   // Cria a geometria da cauda do helicóptero
+        var tailGeometry = new THREE.BoxGeometry(0.4, 1, 7);
+        var tailMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff});
+        var tail = new THREE.Mesh(tailGeometry, tailMaterial);
+        tail.position.set(0,0,-4);
+        heli.add(tail);
+        
 
-//     // Cria a geometria da segunda hélice
-//     var tailRotorGeometry = new THREE.BoxGeometry(0.2, 0.2, 2);
-//     var tailRotorMaterial = new THREE.MeshBasicMaterial({color: 0x00ffff});
-//     var tailRotor = new THREE.Mesh(tailRotorGeometry, tailRotorMaterial);
-//     tail.add(tailRotor);
+      // Define a geometria
+        var tailRotorGeometry = new THREE.BoxGeometry(5, 0.2, 0.2); 
+        // Cria a helice traseira
+        var tailRotorMaterial = new THREE.MeshBasicMaterial({color: 0x00ffff});
+        var tailRotor = new THREE.Mesh(tailRotorGeometry, tailRotorMaterial);
+        tailRotor.position.set(0.45,0,-6);
+        tailRotor.rotation.z = Math.PI /2;
+        heli.add(tailRotor);
 
-//     // Cria as geometrias das janelas
-//     var windowGeometry1 = new THREE.BoxGeometry(0.2, 1, 1);
-//     var windowMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, opacity: 0.5, transparent: true});
-//     var window1 = new THREE.Mesh(windowGeometry1, windowMaterial);
-//     window1.position.set(1.5, 0.5, 0);
 
-//     var windowGeometry2 = new THREE.BoxGeometry(0.2, 1, 1);
-//     var window2 = new THREE.Mesh(windowGeometry2, windowMaterial);
-//     window2.position.set(-1.5, 0.5, 0);
+
+       // Cria as geometrias das janelas
+        var windowGeometry1 = new THREE.BoxGeometry(0.2, 1, 1);
+        var windowMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, opacity: 0.5, transparent: true});
+        var window1 = new THREE.Mesh(windowGeometry1, windowMaterial);
+        window1.position.set(1.5, 0.5, 0);
+        heli.add(window1);
+
+        var windowGeometry2 = new THREE.BoxGeometry(0.2, 1, 1);
+        var window2 = new THREE.Mesh(windowGeometry2, windowMaterial);
+        window2.position.set(-1.5, 0.5, 0);
+        heli.add(window2);
 
 //     // Posiciona os objetos
 //     body.position.set(0, 0, 0);
@@ -593,13 +669,6 @@ function addBoard2() {
 //     tail.position.set(0, 0, -4);
 //     tailRotor.position.set(0, 1, -3);
 
-//     // Adiciona os objetos na cena
-//     cena.add(body);
-//     cena.add(mainRotor);
-//     cena.add(tail);
-//     //&cena.add(tailRotor);
-//     cena.add(window1);
-//     cena.add(window2);
 
 //     // Renderiza a cena
 //     function animate() {
@@ -611,12 +680,13 @@ function addBoard2() {
 //         renderer.render(cena, camera);
 //     }
 //     animate();
+  return {heli, mainRotor, tailRotor};
+} var heliObj = createHeli();
 
-//     return cena;
-// }
+var heli = heliObj.heli; 
+var mainRotor = heliObj.mainRotor;
+var tailRotor = heliObj.tailRotor;
 
-// var heli = createHeli();
-// heli.rotation.x = Math.PI/2;
 
 
 
@@ -840,11 +910,15 @@ function Start() {
     gravel2.position.z = -20.05; // posição da relva na pista
 
 
-
+    //Posição da lâmpada
     lamp.rotation.x = Math.PI / 2;
     lamp.position.z = -20;
     lamp.position.y = 12;
     lamp.scale.set(3, 3, 3);
+
+    //Heli
+    heli.rotation.x = Math.PI/2;
+    
 
     cena.add(skybox);
     cena.add(spotlightday);
@@ -858,12 +932,12 @@ function Start() {
     cena.add(gravel);
     cena.add(gravel2);
     cena.add(lamp);
-    // cena.add(heli);
+    cena.add(heli);
 
 
 
-    car.position.set(-3, 31, -20);
-    wheel.position.set(-3, -10, -20);
+    car.position.set(-3, 31, -19);
+    wheel.position.set(-3, -10, -19);
 
 
     tree.position.set(20, 50, -10);
@@ -879,7 +953,10 @@ function Start() {
 
 function loop() {
 
+    mainRotor.rotation.y += 0.1;
+    tailRotor.rotation.x += 0.1;
     controls.update();
     renderer.render(cena, camara);
     requestAnimationFrame(loop);
 }
+
