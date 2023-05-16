@@ -581,7 +581,7 @@ function addCGBoard() {
     const texture = new THREE.TextureLoader().load('./Images/CG.png');
 
     // Cria o material com a textura da imagem
-    const material = new THREE.MeshBasicMaterial({ map: texture });
+    const material = new THREE.MeshPhongMaterial({ map: texture });
 
     // Cria a malha com a geometria e o material
     const mesh = new THREE.Mesh(geometry, material);
