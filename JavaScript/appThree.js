@@ -59,6 +59,41 @@ renderer.render(cena, camara);
 document.body.appendChild(renderer.domElement);
 
 
+
+//Clicar tecla C e mexer com a camara Ortografica ou perspetiva e Primeira Pessoa.
+document.addEventListener("keydown", (event) => {
+    if (event.code === "KeyC") {
+        cs = (cs + 1) % 3; // Alterna entre as câmeras
+
+        if (cs == 0) {
+            camara = camaraPerspetiva;
+            camara.position.set(100, 100, 100);
+            camara.lookAt(0, 0, 0);
+            lampAny.remove(lightNighs);
+            lampAny2.remove(lightNighs2);
+            lampAny3.remove(lightNighs3);
+            lampAny4.remove(lightNighs4);
+
+        } else if (cs == 1) {
+            camara = camaraO;
+            camara.position.set(200, 0, 300);
+            camara.lookAt(0, 0, 0);
+        } else if (cs == 2) {
+            camara = camaraPrimeiraPessoa;
+            //Faço este if para elas inicializarem com elas ligadas quando esta de noite e depos haver a troca
+            if (skyboxState === 'night') {
+                lampAny.add(lightNighs);
+                lampAny2.add(lightNighs2);
+                lampAny3.add(lightNighs3);
+                lampAny4.add(lightNighs4);
+            }
+        }
+    }
+});
+
+
+
+
 //CARROOOOOOOOOOOOOOOOOOOOO
 //CARROOOOOOOOOOOOOOOOOOOOO
 //CARROOOOOOOOOOOOOOOOOOOOO
@@ -97,7 +132,7 @@ function Car() {
     jantesTexture.transparent = true;
 
     // Criar o material com a textura das jantes
-    const jantesMaterial = new THREE.MeshBasicMaterial({ map: jantesTexture, transparent: true, alphaTest: 0.3});
+    const jantesMaterial = new THREE.MeshBasicMaterial({ map: jantesTexture, transparent: true, alphaTest: 0.3 });
 
 
     // Criar a geometria das jantes
@@ -106,8 +141,8 @@ function Car() {
     // Criar os meshes das jantes para as rodas traseiras
     const backWheelLeftJantes = new THREE.Mesh(jantesGeometry, jantesMaterial);
     backWheelLeftJantes.position.set(-18, 17, 6);
-    backWheelLeftJantes.rotation.z = Math.PI/2;
-    backWheelLeftJantes.rotation.x = -Math.PI/2;
+    backWheelLeftJantes.rotation.z = Math.PI / 2;
+    backWheelLeftJantes.rotation.x = -Math.PI / 2;
     car.add(backWheelLeftJantes);
 
     const backWheelRightJantes = new THREE.Mesh(jantesGeometry, jantesMaterial);
@@ -119,8 +154,8 @@ function Car() {
     const frontWheelLeftJantes = new THREE.Mesh(jantesGeometry, jantesMaterial);
     frontWheelLeftJantes.position.set(18, 17, 6);
     frontWheelLeftJantes.rotation.x = Math.PI;
-    frontWheelLeftJantes.rotation.z = Math.PI/2;
-    frontWheelLeftJantes.rotation.x = -Math.PI/2;
+    frontWheelLeftJantes.rotation.z = Math.PI / 2;
+    frontWheelLeftJantes.rotation.x = -Math.PI / 2;
     car.add(frontWheelLeftJantes);
 
     const frontWheelRightJantes = new THREE.Mesh(jantesGeometry, jantesMaterial);
@@ -354,7 +389,7 @@ var materialTextura = new THREE.MeshStandardMaterial({ map: textura });
 
 
 
-//Mecanismo atraves do teclado (mexer o objeto (nao funcional)) ----------------------------------------------------------------------------
+//Mecanismo atraves do teclado (mexer o objeto) ----------------------------------------------------------------------------
 document.addEventListener("keydown", onDocumentKeyDown, false);
 function onDocumentKeyDown(event) {
     var keyCode = event.which;
@@ -380,34 +415,6 @@ function onDocumentKeyDown(event) {
 
 }
 
-// function getCarDirection(car) {
-//     const direction = new THREE.Vector3(0, 2, 2);
-//     return direction;
-// }
-
-function onDocumentKeyDown(event) {
-    var keyCode = event.which;
-    const speed = 0.25;
-    if (keyCode == 87) {
-        if (car) {
-            car.position.x += Math.cos(car.rotation.z) * speed;
-            car.position.y += Math.sin(car.rotation.z) * speed;
-        }
-    } else if (keyCode == 83) {
-        if (car) {
-            car.position.x -= Math.cos(car.rotation.z) * speed;
-            car.position.y -= Math.sin(car.rotation.z) * speed;
-        }
-    } else if (keyCode == 65) {
-        if (car) {
-            car.rotation.z += 0.1;
-        }
-    } else if (keyCode == 68) {
-        if (car) {
-            car.rotation.z -= 0.1;
-        }
-    }
-}
 
 const keys = {
     w: false,
@@ -469,25 +476,6 @@ function update() {
 
 update();
 
-
-//Clicar tecla C e mexer com a camara Ortografica ou perspetiva e Primeira Pessoa.
-document.addEventListener("keydown", (event) => {
-    if (event.code === "KeyC") {
-        cs = (cs + 1) % 3; // Alterna entre as câmeras
-
-        if (cs == 0) {
-            camara = camaraPerspetiva;
-            camara.position.set(100, 100, 100);
-            camara.lookAt(0, 0, 0);
-        } else if (cs == 1) {
-            camara = camaraO;
-            camara.position.set(200, 0, 300);
-            camara.lookAt(0, 0, 0);
-        } else if (cs == 2) {
-            camara = camaraPrimeiraPessoa;
-        }
-    }
-});
 
 //Criar uma arvore---------------------------------------------------------------------------------------------
 //Criar uma arvore---------------------------------------------------------------------------------------------
@@ -614,76 +602,76 @@ function addCGBoard() {
 // //Helicóptero
 function createHeli() {
 
-        const heli = new THREE.Group();
+    const heli = new THREE.Group();
 
 
-       // Cria a geometria do corpo do helicóptero
-         var bodyGeometry = new THREE.BoxGeometry(3, 2, 8);
-         var bodyMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00});
-         var body = new THREE.Mesh(bodyGeometry, bodyMaterial);
-         body.position.set(0, 0, 0);
-         heli.add(body);
+    // Cria a geometria do corpo do helicóptero
+    var bodyGeometry = new THREE.BoxGeometry(3, 2, 8);
+    var bodyMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    var body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+    body.position.set(0, 0, 0);
+    heli.add(body);
 
-     // Cria a geometria do rotor principal
-        var mainRotorGeometry = new THREE.BoxGeometry(10, 0.2, 0.2);
-        var mainRotorMaterial = new THREE.MeshBasicMaterial({color: 0xff0000});
-        var mainRotor = new THREE.Mesh(mainRotorGeometry, mainRotorMaterial);
-        mainRotor.position.set(0,1,0);
-        heli.add(mainRotor);
-
-
-   // Cria a geometria da cauda do helicóptero
-        var tailGeometry = new THREE.BoxGeometry(0.4, 1, 7);
-        var tailMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff});
-        var tail = new THREE.Mesh(tailGeometry, tailMaterial);
-        tail.position.set(0,0,-4);
-        heli.add(tail);
-        
-
-      // Define a geometria
-        var tailRotorGeometry = new THREE.BoxGeometry(5, 0.2, 0.2); 
-        // Cria a helice traseira
-        var tailRotorMaterial = new THREE.MeshBasicMaterial({color: 0x00ffff});
-        var tailRotor = new THREE.Mesh(tailRotorGeometry, tailRotorMaterial);
-        tailRotor.position.set(0.45,0,-6);
-        tailRotor.rotation.z = Math.PI /2;
-        heli.add(tailRotor);
+    // Cria a geometria do rotor principal
+    var mainRotorGeometry = new THREE.BoxGeometry(10, 0.2, 0.2);
+    var mainRotorMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    var mainRotor = new THREE.Mesh(mainRotorGeometry, mainRotorMaterial);
+    mainRotor.position.set(0, 1, 0);
+    heli.add(mainRotor);
 
 
-
-       // Cria as geometrias das janelas
-        var windowGeometry1 = new THREE.BoxGeometry(0.2, 1, 1);
-        var windowMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, opacity: 0.5, transparent: true});
-        var window1 = new THREE.Mesh(windowGeometry1, windowMaterial);
-        window1.position.set(1.5, 0.5, 0);
-        heli.add(window1);
-
-        var windowGeometry2 = new THREE.BoxGeometry(0.2, 1, 1);
-        var window2 = new THREE.Mesh(windowGeometry2, windowMaterial);
-        window2.position.set(-1.5, 0.5, 0);
-        heli.add(window2);
-
-//     // Posiciona os objetos
-//     body.position.set(0, 0, 0);
-//     mainRotor.position.set(0, 1, 0);
-//     tail.position.set(0, 0, -4);
-//     tailRotor.position.set(0, 1, -3);
+    // Cria a geometria da cauda do helicóptero
+    var tailGeometry = new THREE.BoxGeometry(0.4, 1, 7);
+    var tailMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+    var tail = new THREE.Mesh(tailGeometry, tailMaterial);
+    tail.position.set(0, 0, -4);
+    heli.add(tail);
 
 
-//     // Renderiza a cena
-//     function animate() {
-//         requestAnimationFrame(animate);
+    // Define a geometria
+    var tailRotorGeometry = new THREE.BoxGeometry(5, 0.2, 0.2);
+    // Cria a helice traseira
+    var tailRotorMaterial = new THREE.MeshBasicMaterial({ color: 0x00ffff });
+    var tailRotor = new THREE.Mesh(tailRotorGeometry, tailRotorMaterial);
+    tailRotor.position.set(0.45, 0, -6);
+    tailRotor.rotation.z = Math.PI / 2;
+    heli.add(tailRotor);
 
-//         mainRotor.rotation.y += 0.1;
-//         tailRotor.rotation.x += 0.1;
 
-//         renderer.render(cena, camera);
-//     }
-//     animate();
-  return {heli, mainRotor, tailRotor};
+
+    // Cria as geometrias das janelas
+    var windowGeometry1 = new THREE.BoxGeometry(0.2, 1, 1);
+    var windowMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.5, transparent: true });
+    var window1 = new THREE.Mesh(windowGeometry1, windowMaterial);
+    window1.position.set(1.5, 0.5, 0);
+    heli.add(window1);
+
+    var windowGeometry2 = new THREE.BoxGeometry(0.2, 1, 1);
+    var window2 = new THREE.Mesh(windowGeometry2, windowMaterial);
+    window2.position.set(-1.5, 0.5, 0);
+    heli.add(window2);
+
+    //     // Posiciona os objetos
+    //     body.position.set(0, 0, 0);
+    //     mainRotor.position.set(0, 1, 0);
+    //     tail.position.set(0, 0, -4);
+    //     tailRotor.position.set(0, 1, -3);
+
+
+    //     // Renderiza a cena
+    //     function animate() {
+    //         requestAnimationFrame(animate);
+
+    //         mainRotor.rotation.y += 0.1;
+    //         tailRotor.rotation.x += 0.1;
+
+    //         renderer.render(cena, camera);
+    //     }
+    //     animate();
+    return { heli, mainRotor, tailRotor };
 } var heliObj = createHeli();
 
-var heli = heliObj.heli; 
+var heli = heliObj.heli;
 var mainRotor = heliObj.mainRotor;
 var tailRotor = heliObj.tailRotor;
 
@@ -719,37 +707,80 @@ function createGrasswithOpac(width, height, x, y, z, texture) {
     return mesh;
 }
 
-function createLamp() {
+function FirstcreateLamp() {
     // Cria um grupo para o candeeiro
     var lamp = new THREE.Group();
 
     // Cria a base do candeeiro
     var baseGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.5, 7);
-    var baseMaterial = new THREE.MeshBasicMaterial({ color: 0x333333 });
+    var baseMaterial = new THREE.MeshPhongMaterial({ color: 0x333333 });
     var base = new THREE.Mesh(baseGeometry, baseMaterial);
+    var base2 = new THREE.Mesh(baseGeometry, baseMaterial);
     base.position.y = 0.15;
     lamp.add(base);
+    base2.position.y = 0.15;
+    base2.position.z = -6;
+    lamp.add(base2);
 
     // Cria o poste do candeeiro
     var postGeometry = new THREE.CylinderGeometry(0.1, 0.1, 2, 16);
-    var postMaterial = new THREE.MeshBasicMaterial({ color: 0x999999 });
+    var postMaterial = new THREE.MeshPhongMaterial({ color: 0x999999 });
     var post = new THREE.Mesh(postGeometry, postMaterial);
+    var post2 = new THREE.Mesh(postGeometry, postMaterial);
+
     post.position.y = 1;
     lamp.add(post);
+    post2.position.y = 1;
+    post2.position.z = -6;
+    lamp.add(post2);
+
+    var sideGeometry = new THREE.CylinderGeometry(0.1, 0.1, 6, 16);
+    var sideup = new THREE.Mesh(sideGeometry, postMaterial);
+    sideup.position.y = 2;
+    sideup.position.z = -3;
+    sideup.rotation.x = Math.PI / 2;
+    lamp.add(sideup);
+
+
+    lamp.rotation.x = Math.PI / 2;
+    lamp.position.z = -20;
+    lamp.scale.set(3, 3, 3);
+
+
+    return lamp;
+} const firstlamp = FirstcreateLamp();
+
+
+function createLamp() {
+    // Cria um grupo para o candeeiro
+    var lampAny = new THREE.Group();
+
+    // Cria a base do candeeiro
+    var baseGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.5, 7);
+    var baseMaterial = new THREE.MeshPhongMaterial({ color: 0x333333 });
+    var base = new THREE.Mesh(baseGeometry, baseMaterial);
+    base.position.y = 0.15;
+    lampAny.add(base);
+
+    // Cria o poste do candeeiro
+    var postGeometry = new THREE.CylinderGeometry(0.1, 0.1, 2, 16);
+    var postMaterial = new THREE.MeshPhongMaterial({ color: 0x999999 });
+    var post = new THREE.Mesh(postGeometry, postMaterial);
+    post.position.y = 1;
+    lampAny.add(post);
 
     // Cria a lâmpada do candeeiro
     var bulbGeometry = new THREE.SphereGeometry(0.5, 16, 16);
     var bulbMaterial = new THREE.MeshPhongMaterial({ color: 0xffff00 });
     var bulb = new THREE.Mesh(bulbGeometry, bulbMaterial);
     bulb.position.y = 2.5;
-    lamp.add(bulb);
+    lampAny.add(bulb);
 
-    // Cria a luz da lâmpada
-    var light = new THREE.PointLight(0xffffff, 2, 20);
-    light.position.set(0, 1.5, 0);
-    lamp.add(light);
 
-    
+    lampAny.rotation.x = Math.PI / 2;
+    lampAny.position.z = -20;
+    lampAny.scale.set(3, 3, 3);
+
     // var coneGeometry = new THREE.ConeGeometry(1, 2, 16);
     // var coneMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00, transparent: true, opacity: 0.3 });
     // var cone = new THREE.Mesh(coneGeometry, coneMaterial);
@@ -758,8 +789,12 @@ function createLamp() {
     // lamp.add(cone);
 
 
-    return lamp;
-} const lamp = createLamp();
+    return lampAny;
+} const lampAny = createLamp();
+const lampAny2 = createLamp();
+const lampAny3 = createLamp();
+const lampAny4 = createLamp();
+
 
 
 //SKYBOX DE DIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -857,15 +892,63 @@ function createLightforDay() {
 
 const lightDay = createLightforDay();
 
+
+// Cria a luz da lâmpada de noite da camara de cima
+var lightday = new THREE.PointLight(0xffffff, 2, 10);
+var lightday2 = new THREE.PointLight(0xffffff, 2, 10);
+var lightday3 = new THREE.PointLight(0xffffff, 2, 10);
+var lightday4 = new THREE.PointLight(0xffffff, 2, 10);
+
+lightday.position.set(0, 1.5, 0);
+lightday2.position.set(0, 1.5, 0);
+lightday3.position.set(0, 1.5, 0);
+lightday4.position.set(0, 1.5, 0);
+
+
+// Cria a luz da lâmpada da primeira pessoa de noite
+var lightNighs = new THREE.PointLight(0xffffff, 6, 200);
+var lightNighs2 = new THREE.PointLight(0xffffff, 6, 200);
+var lightNighs3 = new THREE.PointLight(0xffffff, 6, 200);
+var lightNighs4 = new THREE.PointLight(0xffffff, 6, 200);
+
+
+
 window.addEventListener('keydown', function (event) {
     if (event.key === 't') { // Tecla "t" para alternar os skyboxes
         if (skyboxState === 'day') {
+
+            if (camara === camaraPrimeiraPessoa) {
+                //Luzes de noite na terceira pessoa tem de ser mais fortes
+                lightNighs.position.set(0, 1.5, 0);
+                lightNighs2.position.set(0, 1.5, 0);
+                lightNighs3.position.set(0, 1.5, 0);
+                lightNighs4.position.set(0, 1.5, 0);
+                lampAny.add(lightNighs);
+                lampAny2.add(lightNighs2);
+                lampAny3.add(lightNighs3);
+                lampAny4.add(lightNighs4);
+            }
+
+            lampAny.add(lightday);
+            lampAny2.add(lightday2);
+            lampAny3.add(lightday3);
+            lampAny4.add(lightday4);
             cena.remove(spotlightday);
             cena.remove(skybox);
             cena.add(skybox2);
             cena.add(spotlightnight);
             skyboxState = 'night';
         } else {
+            if (camara === camaraPrimeiraPessoa) {
+                lampAny.remove(lightNighs);
+                lampAny2.remove(lightNighs2);
+                lampAny3.remove(lightNighs3);
+                lampAny4.remove(lightNighs4);
+            }
+            lampAny.remove(lightday)
+            lampAny2.remove(lightday2)
+            lampAny3.remove(lightday3)
+            lampAny4.remove(lightday4)
             cena.remove(spotlightnight);
             cena.remove(skybox2);
             cena.add(skybox);
@@ -874,6 +957,7 @@ window.addEventListener('keydown', function (event) {
         }
     }
 });
+
 
 function Start() {
 
@@ -910,15 +994,25 @@ function Start() {
     gravel2.position.z = -20.05; // posição da relva na pista
 
 
-    //Posição da lâmpada
-    lamp.rotation.x = Math.PI / 2;
-    lamp.position.z = -20;
-    lamp.position.y = 12;
-    lamp.scale.set(3, 3, 3);
 
+ 
+    lampAny.position.y = 12;
+
+
+    lampAny2.position.x = -40;
+    lampAny2.position.y = 16;
+
+
+    lampAny3.position.x = 35;
+    lampAny3.position.y = 12;
+
+    lampAny4.position.x = 62;
+    lampAny4.position.y = 12.5;
+
+    firstlamp.position.y = -39
     //Heli
-    heli.rotation.x = Math.PI/2;
-    
+    heli.rotation.x = Math.PI / 2;
+
 
     cena.add(skybox);
     cena.add(spotlightday);
@@ -931,9 +1025,12 @@ function Start() {
     cena.add(grass3);
     cena.add(gravel);
     cena.add(gravel2);
-    cena.add(lamp);
     cena.add(heli);
-
+    cena.add(lampAny);
+    cena.add(lampAny2);
+    cena.add(lampAny3);
+    cena.add(lampAny4);
+    cena.add(firstlamp);
 
 
     car.position.set(-3, 31, -19);
