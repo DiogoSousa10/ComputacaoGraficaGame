@@ -34,6 +34,7 @@ var camaraO = new THREE.OrthographicCamera(
 
 if (cs == 0) {
     camara = camaraPerspetiva;
+    
     camara.position.set(100, 100, 100);
     camara.lookAt(0, 0, 0);
 } else if (cs == 1) {
@@ -42,6 +43,7 @@ if (cs == 0) {
     camara.lookAt(0, 0, 0);
 } else if (cs == 2) { // Adicione esta condição para usar a câmera de primeira pessoa
     camara = camaraPrimeiraPessoa;
+
 }
 
 
@@ -80,6 +82,7 @@ document.addEventListener("keydown", (event) => {
             camara.lookAt(0, 0, 0);
         } else if (cs == 2) {
             camara = camaraPrimeiraPessoa;
+
             //Faço este if para elas inicializarem com elas ligadas quando esta de noite e depos haver a troca
             if (skyboxState === 'night') {
                 lampAny.add(lightNighs);
@@ -299,6 +302,30 @@ function Car() {
     camaraPrimeiraPessoa = criarCamaraPrimeiraPessoa();
     car.add(camaraPrimeiraPessoa); // Adicione a câmera de primeira pessoa como um objeto filho do carro
 
+
+
+
+    // // Crie a geometria da caixa
+    // // As dimensões devem ser grandes o suficiente para conter todo o carro
+    // const collisionGeometry = new THREE.BoxBufferGeometry(60, 50, 15);
+
+    // // Crie o material
+    // // A opacidade é definida para 0 para torná-lo invisível
+    // const collisionMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, opacity: 0.5, transparent: true });
+
+    // // Crie o mesh
+    // const collisionBox = new THREE.Mesh(collisionGeometry, collisionMaterial);
+
+    // // Posicione a caixa corretamente
+    // // A posição depende do tamanho e formato do seu carro
+    // collisionBox.position.z = 0;
+
+    // // Adicione a caixa ao carro
+    // car.add(collisionBox);
+
+
+
+
     return car;
 } const car = Car();
 
@@ -451,13 +478,129 @@ function onDocumentKeyUp(event) {
 
 document.addEventListener("keyup", onDocumentKeyUp, false);
 
+//Colisao
+var wallGeometry = new THREE.BoxBufferGeometry(100, 1, 10);
+var wallGeometry2 = new THREE.BoxBufferGeometry(25, 1, 10);
+var wallGeometry3 = new THREE.BoxBufferGeometry(25, 1, 10);
+var wallGeometry4 = new THREE.BoxBufferGeometry(15, 1, 10);
+var wallGeometry5 = new THREE.BoxBufferGeometry(100, 1, 10);
+var wallGeometry7 = new THREE.BoxBufferGeometry(20, 1, 10);
+
+var wallMaterial = new THREE.MeshBasicMaterial({ visible: true });
+var wall = new THREE.Mesh(wallGeometry, wallMaterial);
+var wall2 = new THREE.Mesh(wallGeometry2, wallMaterial);
+var wall3 = new THREE.Mesh(wallGeometry3, wallMaterial);
+var wall4 = new THREE.Mesh(wallGeometry4, wallMaterial);
+var wall5 = new THREE.Mesh(wallGeometry5, wallMaterial);
+var wall6 = new THREE.Mesh(wallGeometry7, wallMaterial);
+var wall7 = new THREE.Mesh(wallGeometry7, wallMaterial);
+var wall8 = new THREE.Mesh(wallGeometry7, wallMaterial);
+var wall9 = new THREE.Mesh(wallGeometry7, wallMaterial);
+var wall10 = new THREE.Mesh(wallGeometry7, wallMaterial);
+var wall11 = new THREE.Mesh(wallGeometry7, wallMaterial);
+var wall12 = new THREE.Mesh(wallGeometry7, wallMaterial);
+var wall13 = new THREE.Mesh(wallGeometry7, wallMaterial);
+
+cena.add(wall);
+cena.add(wall2);
+cena.add(wall3);
+cena.add(wall4);
+cena.add(wall5);
+cena.add(wall6);
+cena.add(wall7);
+cena.add(wall8);
+cena.add(wall9);
+cena.add(wall10);
+cena.add(wall11);
+cena.add(wall12);
+cena.add(wall13);
+
+// wall.scale.set(2, 20, 2)
+
+
+wall.position.set(25, 20, -20)
+wall2.position.set(80, 10, -20)
+wall2.rotation.z = Math.PI / 1.5;
+wall3.position.set(86, -10, -20)
+wall3.rotation.z = Math.PI / 2;
+wall4.position.set(80, -25, -20)
+wall4.rotation.z = Math.PI / 4.5;
+wall5.position.set(20, -30, -20)
+wall6.position.set(-40, -25, -20)
+wall6.rotation.z = Math.PI / 1.2;
+wall7.position.set(-60, -15, -20)
+wall7.rotation.z = Math.PI / 1.1;
+wall8.position.set(-79, -5, -20)
+wall8.rotation.z = Math.PI / 1.4;
+wall9.position.set(-85, 10, -20)
+wall9.rotation.z = Math.PI / 2;
+wall10.position.set(-80, 23, -20)
+wall10.rotation.z = Math.PI / 3.5;
+wall11.position.set(-60, 33, -20)
+wall12.position.set(-35, 24, -20)
+wall12.rotation.z = -Math.PI / 5;
+
+var marginThickness = 0.2; // 2 centímetros
+
+
 function update() {
     const speed = 0.25;
+    function checkCollision() {
+        if (!car || !wall) {
+            console.log("Erro: Carro ou parede não estão definidos");
+            return false;
+        }
+
+        // Obter a posição global do carro
+        const carPosition = new THREE.Vector3();
+        car.getWorldPosition(carPosition);
+
+        // Obter a caixa delimitadora do carro
+        const carBoundingBox = new THREE.Box3().setFromObject(car);
+
+        // Obter a caixa delimitadora da parede a partir de sua geometria e posição global
+        const wallBoundingBox = new THREE.Box3().setFromObject(wall);
+        const wallBoundingBox2 = new THREE.Box3().setFromObject(wall2);
+        const wallBoundingBox3 = new THREE.Box3().setFromObject(wall3);
+        const wallBoundingBox4 = new THREE.Box3().setFromObject(wall4);
+        const wallBoundingBox5 = new THREE.Box3().setFromObject(wall5);
+        const wallBoundingBox6 = new THREE.Box3().setFromObject(wall6);
+        const wallBoundingBox7 = new THREE.Box3().setFromObject(wall7);
+        const wallBoundingBox8 = new THREE.Box3().setFromObject(wall8);
+        const wallBoundingBox9 = new THREE.Box3().setFromObject(wall9);
+        const wallBoundingBox10 = new THREE.Box3().setFromObject(wall10);
+        const wallBoundingBox11 = new THREE.Box3().setFromObject(wall11);
+        const wallBoundingBox12 = new THREE.Box3().setFromObject(wall12);
+
+        // Verificar se a caixa delimitadora do carro intersecta com a caixa delimitadora da parede
+        if (carBoundingBox.intersectsBox(wallBoundingBox) || carBoundingBox.intersectsBox(wallBoundingBox2) || carBoundingBox.intersectsBox(wallBoundingBox3) || carBoundingBox.intersectsBox(wallBoundingBox4)
+            || carBoundingBox.intersectsBox(wallBoundingBox5) || carBoundingBox.intersectsBox(wallBoundingBox6) || carBoundingBox.intersectsBox(wallBoundingBox7) || carBoundingBox.intersectsBox(wallBoundingBox8)
+            || carBoundingBox.intersectsBox(wallBoundingBox8) || carBoundingBox.intersectsBox(wallBoundingBox9) || carBoundingBox.intersectsBox(wallBoundingBox10) || carBoundingBox.intersectsBox(wallBoundingBox11)
+            || carBoundingBox.intersectsBox(wallBoundingBox12)) {
+            return false;
+        }
+
+
+
+        return true;
+    }
+
+
+    if (checkCollision()) {
+        if (keys.w) {
+            car.position.x -= Math.cos(car.rotation.z) * speed;
+            car.position.y -= Math.sin(car.rotation.z) * speed;
+        }
+        if (keys.s) {
+            car.position.x += Math.cos(car.rotation.z) * speed;
+            car.position.y += Math.sin(car.rotation.z) * speed;
+        }
+    }
+
     if (car) {
         if (keys.w) {
             car.position.x += Math.cos(car.rotation.z) * speed;
             car.position.y += Math.sin(car.rotation.z) * speed;
-
         }
         if (keys.s) {
             car.position.x -= Math.cos(car.rotation.z) * speed;
@@ -475,6 +618,7 @@ function update() {
 }
 
 update();
+
 
 
 //Criar uma arvore---------------------------------------------------------------------------------------------
@@ -995,7 +1139,7 @@ function Start() {
 
 
 
- 
+
     lampAny.position.y = 12;
 
 
@@ -1033,7 +1177,7 @@ function Start() {
     cena.add(firstlamp);
 
 
-    car.position.set(-3, 31, -19);
+    car.position.set(-3, 20, -19);
     wheel.position.set(-3, -10, -19);
 
 
