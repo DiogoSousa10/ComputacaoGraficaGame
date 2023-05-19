@@ -865,8 +865,31 @@ var heli = heliObj.heli;
 var mainRotor = heliObj.mainRotor;
 var tailRotor = heliObj.tailRotor;
 
+// Configurações do movimento circular
+var radius = 35; // Raio do círculo
+var speedHeli = 0.0005; // Velocidade de rotação
+var maxRotation = Math.PI / 6; // Ângulo máximo de rotação (30 graus)
 
+function updateHeli() {
+    // Atualiza a posição do objeto no movimento circular
+    var time = Date.now() * speedHeli;
 
+    var x = Math.cos(time) * radius;
+    var y = Math.sin(time) * radius;
+
+    heli.position.set(x, y, 0);
+    // Orienta o objeto na direção do próximo ponto no movimento circular
+    var nextX = Math.cos(time + 0.01) * radius;
+    var nextY = Math.sin(time + 0.01) * radius;
+    var direction = new THREE.Vector3(nextX - x, nextY - y, 0).normalize();
+    heli.lookAt(heli.position.clone().add(direction));
+    requestAnimationFrame(updateHeli);
+    // Calcula o ângulo de rotação em torno do eixo Z
+    var rotationAngle = Math.atan2(direction.y, direction.x);
+
+    // Define a rotação do objeto em torno do eixo Z
+    heli.rotation.z = rotationAngle;
+}
 
 // //Helicóptero
 // //Helicóptero
@@ -1158,7 +1181,7 @@ window.addEventListener('keydown', function (event) {
 // Adicione um elemento HTML para exibir a contagem
 var counterElement = document.createElement('div');
 counterElement.style.position = 'absolute';
-counterElement.style.color='white'
+counterElement.style.color = 'white'
 counterElement.style.fontSize = '50px';
 counterElement.style.top = '10px';
 counterElement.style.left = '10px';
@@ -1169,7 +1192,7 @@ function updateCounter() {
 }
 
 var count = 0;
-var flagMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, visible: true });
+var flagMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, visible: false });
 var flagGeometry = new THREE.BoxBufferGeometry(10, 1, 2);
 var lapcount = new THREE.Mesh(flagGeometry, flagMaterial);
 
@@ -1278,7 +1301,6 @@ function Start() {
     cena.add(lampAny3);
     cena.add(lampAny4);
     cena.add(firstlamp);
-    lapUpdate();
 
     car.position.set(-3, 20, -19);
     wheel.position.set(-3, -10, -19);
@@ -1287,10 +1309,8 @@ function Start() {
     tree.position.set(20, 50, -10);
 
     startGame();
-    // Inicialize a contagem na tela
     updateCounter();
-    //Adicionamos a light à cena
-    //  cena.add(focoLuz);
+    updateHeli();
 
     requestAnimationFrame(loop);
 }
