@@ -395,10 +395,10 @@ function createTrack() {
         // Cria a malha com a geometria e o material
         const mesh = new THREE.Mesh(geometry, material);
 
-        mesh.scale.set(0.1, 0.09, 0);
+        mesh.scale.set(0.1, 0.099, 0);
 
         // Posiciona a malha no chão
-        mesh.position.set(0, -30, -19.75);
+        mesh.position.set(-4, 19.2, -19.75);
 
         // Adiciona a malha à cena
         cena.add(mesh);
@@ -584,7 +584,7 @@ function update() {
         const wallInside4 = new THREE.Box3().setFromObject(wall8);
         //const wallInside5 = new THREE.Box3().setFromObject(wall9);
         //const wallInside6 = new THREE.Box3().setFromObject(wall10);
-         //const wallInside7 = new THREE.Box3().setFromObject(wall11);
+        //const wallInside7 = new THREE.Box3().setFromObject(wall11);
         const wallInside8 = new THREE.Box3().setFromObject(circleMesh2);
 
         // Obter as caixas delimitadoras das paredes
@@ -986,7 +986,6 @@ const lampAny3 = createLamp();
 const lampAny4 = createLamp();
 
 
-
 //SKYBOX DE DIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 var texture_dir = new THREE.TextureLoader().load('./Images/SkyBox/clouds1_west.png');
 var texture_esq = new THREE.TextureLoader().load('./Images/SkyBox/clouds1_east.png');
@@ -1149,6 +1148,67 @@ window.addEventListener('keydown', function (event) {
 });
 
 
+//COLOCAR AS VOLTAS NA PISTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+//COLOCAR AS VOLTAS NA PISTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+//COLOCAR AS VOLTAS NA PISTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+//COLOCAR AS VOLTAS NA PISTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+//COLOCAR AS VOLTAS NA PISTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+// Adicione um elemento HTML para exibir a contagem
+// Adicione um elemento HTML para exibir a contagem
+var counterElement = document.createElement('div');
+counterElement.style.position = 'absolute';
+counterElement.style.color='white'
+counterElement.style.fontSize = '50px';
+counterElement.style.top = '10px';
+counterElement.style.left = '10px';
+document.body.appendChild(counterElement);
+
+function updateCounter() {
+    counterElement.innerHTML = 'Voltas: ' + count;
+}
+
+var count = 0;
+var flagMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, visible: true });
+var flagGeometry = new THREE.BoxBufferGeometry(10, 1, 2);
+var lapcount = new THREE.Mesh(flagGeometry, flagMaterial);
+
+cena.add(lapcount)
+lapcount.position.set(-5, 19.5, -19)
+lapcount.rotation.z = Math.PI / 2
+
+var crossedFinishLine = false; // Variável de controle
+var carPreviousPosition = new THREE.Vector3(); // Posição anterior do carro
+
+function lapUpdate() {
+    const carPosition = new THREE.Vector3();
+    car.getWorldPosition(carPosition);
+
+    const carBoundingBox = new THREE.Box3().setFromObject(car);
+    const lapcountfinal = new THREE.Box3().setFromObject(lapcount);
+
+    const carCrossedFinishLine = carBoundingBox.intersectsBox(lapcountfinal);
+    const carDirection = carPosition.clone().sub(carPreviousPosition).normalize();
+    const lapcountNormal = new THREE.Vector3(0, 1, 0); // Assumindo que a linha de chegada está orientada verticalmente
+
+    const angle = carDirection.angleTo(lapcountNormal);
+
+    // Verifica se o carro cruzou a linha de chegada e está se movendo na direção correta (ângulo próximo de zero)
+    if (carCrossedFinishLine && !crossedFinishLine) {
+        count++;
+        updateCounter();
+        crossedFinishLine = true; // Atualiza a variável de controle
+    }
+
+    if (!carCrossedFinishLine) {
+        crossedFinishLine = false; // Reseta a variável de controle
+    }
+
+    carPreviousPosition.copy(carPosition); // Atualiza a posição anterior do carro
+}
+
+
+
 
 
 
@@ -1196,7 +1256,7 @@ function Start() {
     lampAny4.position.x = 62;
     lampAny4.position.y = 12.5;
 
-    firstlamp.position.y = -39
+    firstlamp.position.set(0, 11, -19.8)
     //Heli
     heli.rotation.x = Math.PI / 2;
 
@@ -1218,7 +1278,7 @@ function Start() {
     cena.add(lampAny3);
     cena.add(lampAny4);
     cena.add(firstlamp);
-
+    lapUpdate();
 
     car.position.set(-3, 20, -19);
     wheel.position.set(-3, -10, -19);
@@ -1227,7 +1287,8 @@ function Start() {
     tree.position.set(20, 50, -10);
 
     startGame();
-
+    // Inicialize a contagem na tela
+    updateCounter();
     //Adicionamos a light à cena
     //  cena.add(focoLuz);
 
@@ -1236,10 +1297,10 @@ function Start() {
 
 
 function loop() {
-
     mainRotor.rotation.y += 0.1;
     tailRotor.rotation.x += 0.1;
     controls.update();
+    lapUpdate(); // Adicione esta linha para verificar as voltas
     renderer.render(cena, camara);
     requestAnimationFrame(loop);
 }
