@@ -483,7 +483,7 @@ var wallGeometry = new THREE.BoxBufferGeometry(25, 1, 2);
 
 
 
-var wallMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, visible: true });
+var wallMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, visible: false });
 var wall5 = new THREE.Mesh(wallGeometry, wallMaterial);
 var wall6 = new THREE.Mesh(wallGeometry, wallMaterial);
 var wall7 = new THREE.Mesh(wallGeometry, wallMaterial);
@@ -797,14 +797,14 @@ function createHeli() {
 
     // Cria a geometria do corpo do helicóptero
     var bodyGeometry = new THREE.BoxGeometry(3, 2, 8);
-    var bodyMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    var bodyMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
     var body = new THREE.Mesh(bodyGeometry, bodyMaterial);
     body.position.set(0, 0, 0);
     heli.add(body);
 
     // Cria a geometria do rotor principal
     var mainRotorGeometry = new THREE.BoxGeometry(10, 0.2, 0.2);
-    var mainRotorMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    var mainRotorMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 });
     var mainRotor = new THREE.Mesh(mainRotorGeometry, mainRotorMaterial);
     mainRotor.position.set(0, 1, 0);
     heli.add(mainRotor);
@@ -812,7 +812,7 @@ function createHeli() {
 
     // Cria a geometria da cauda do helicóptero
     var tailGeometry = new THREE.BoxGeometry(0.4, 1, 7);
-    var tailMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+    var tailMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff });
     var tail = new THREE.Mesh(tailGeometry, tailMaterial);
     tail.position.set(0, 0, -4);
     heli.add(tail);
@@ -821,7 +821,7 @@ function createHeli() {
     // Define a geometria
     var tailRotorGeometry = new THREE.BoxGeometry(5, 0.2, 0.2);
     // Cria a helice traseira
-    var tailRotorMaterial = new THREE.MeshBasicMaterial({ color: 0x00ffff });
+    var tailRotorMaterial = new THREE.MeshPhongMaterial({ color: 0x00ffff });
     var tailRotor = new THREE.Mesh(tailRotorGeometry, tailRotorMaterial);
     tailRotor.position.set(0.45, 0, -6);
     tailRotor.rotation.z = Math.PI / 2;
@@ -831,7 +831,7 @@ function createHeli() {
 
     // Cria as geometrias das janelas
     var windowGeometry1 = new THREE.BoxGeometry(0.2, 1, 1);
-    var windowMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.5, transparent: true });
+    var windowMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, opacity: 0.5, transparent: true });
     var window1 = new THREE.Mesh(windowGeometry1, windowMaterial);
     window1.position.set(1.5, 0.5, 0);
     heli.add(window1);
