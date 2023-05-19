@@ -16,7 +16,7 @@ var camaraPerspetiva = new THREE.PerspectiveCamera(45, 4 / 3, 0.1, 100);
 var camaraPrimeiraPessoa;
 
 function criarCamaraPrimeiraPessoa() {
-    const cam = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 6000);
+    const cam = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 15000);
     cam.position.set(-2, 0, 30); // Ajuste a posição da câmera dentro do carro
     cam.rotation.set(Math.PI / 2, -Math.PI / 2, 0); // Ajuste a rotação da câmera para olhar ligeiramente para baixo
     return cam;
@@ -34,7 +34,7 @@ var camaraO = new THREE.OrthographicCamera(
 
 if (cs == 0) {
     camara = camaraPerspetiva;
-    
+
     camara.position.set(100, 100, 100);
     camara.lookAt(0, 0, 0);
 } else if (cs == 1) {
@@ -297,7 +297,7 @@ function Car() {
 
     });
 
-    car.scale.set(0.08, 0.08, 0.08);
+    car.scale.set(0.04, 0.04, 0.04);
 
     camaraPrimeiraPessoa = criarCamaraPrimeiraPessoa();
     car.add(camaraPrimeiraPessoa); // Adicione a câmera de primeira pessoa como um objeto filho do carro
@@ -479,75 +479,94 @@ function onDocumentKeyUp(event) {
 document.addEventListener("keyup", onDocumentKeyUp, false);
 
 //Colisao
-var wallGeometry = new THREE.BoxBufferGeometry(100, 1, 10);
-var wallGeometry2 = new THREE.BoxBufferGeometry(25, 1, 10);
-var wallGeometry3 = new THREE.BoxBufferGeometry(25, 1, 10);
-var wallGeometry4 = new THREE.BoxBufferGeometry(15, 1, 10);
-var wallGeometry5 = new THREE.BoxBufferGeometry(100, 1, 10);
-var wallGeometry7 = new THREE.BoxBufferGeometry(20, 1, 10);
+var wallGeometry = new THREE.BoxBufferGeometry(25, 1, 2);
 
-var wallMaterial = new THREE.MeshBasicMaterial({ visible: true });
-var wall = new THREE.Mesh(wallGeometry, wallMaterial);
-var wall2 = new THREE.Mesh(wallGeometry2, wallMaterial);
-var wall3 = new THREE.Mesh(wallGeometry3, wallMaterial);
-var wall4 = new THREE.Mesh(wallGeometry4, wallMaterial);
-var wall5 = new THREE.Mesh(wallGeometry5, wallMaterial);
-var wall6 = new THREE.Mesh(wallGeometry7, wallMaterial);
-var wall7 = new THREE.Mesh(wallGeometry7, wallMaterial);
-var wall8 = new THREE.Mesh(wallGeometry7, wallMaterial);
-var wall9 = new THREE.Mesh(wallGeometry7, wallMaterial);
-var wall10 = new THREE.Mesh(wallGeometry7, wallMaterial);
-var wall11 = new THREE.Mesh(wallGeometry7, wallMaterial);
-var wall12 = new THREE.Mesh(wallGeometry7, wallMaterial);
-var wall13 = new THREE.Mesh(wallGeometry7, wallMaterial);
 
-cena.add(wall);
-cena.add(wall2);
-cena.add(wall3);
-cena.add(wall4);
+
+var wallMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, visible: true });
+var wall5 = new THREE.Mesh(wallGeometry, wallMaterial);
+var wall6 = new THREE.Mesh(wallGeometry, wallMaterial);
+var wall7 = new THREE.Mesh(wallGeometry, wallMaterial);
+var wall8 = new THREE.Mesh(wallGeometry, wallMaterial);
+var wall9 = new THREE.Mesh(wallGeometry, wallMaterial);
+var wall10 = new THREE.Mesh(wallGeometry, wallMaterial);
+var wall11 = new THREE.Mesh(wallGeometry, wallMaterial);
+
 cena.add(wall5);
 cena.add(wall6);
 cena.add(wall7);
 cena.add(wall8);
-cena.add(wall9);
-cena.add(wall10);
-cena.add(wall11);
-cena.add(wall12);
-cena.add(wall13);
-
-// wall.scale.set(2, 20, 2)
+// cena.add(wall9);
+// cena.add(wall10);
+// cena.add(wall11)
 
 
-wall.position.set(25, 20, -20)
-wall2.position.set(80, 10, -20)
-wall2.rotation.z = Math.PI / 1.5;
-wall3.position.set(86, -10, -20)
-wall3.rotation.z = Math.PI / 2;
-wall4.position.set(80, -25, -20)
-wall4.rotation.z = Math.PI / 4.5;
-wall5.position.set(20, -30, -20)
-wall6.position.set(-40, -25, -20)
-wall6.rotation.z = Math.PI / 1.2;
-wall7.position.set(-60, -15, -20)
-wall7.rotation.z = Math.PI / 1.1;
-wall8.position.set(-79, -5, -20)
-wall8.rotation.z = Math.PI / 1.4;
-wall9.position.set(-85, 10, -20)
-wall9.rotation.z = Math.PI / 2;
-wall10.position.set(-80, 23, -20)
-wall10.rotation.z = Math.PI / 3.5;
-wall11.position.set(-60, 33, -20)
-wall12.position.set(-35, 24, -20)
-wall12.rotation.z = -Math.PI / 5;
+wall5.scale.set(3.5, 39, 0)
+wall5.position.set(23, -5.5, -19)
+wall6.scale.set(1, 38, 0)
+wall6.position.set(-20, -4.4, -19)
+wall7.position.set(-19, -5.5, -19)
+wall7.scale.set(1, 38, 0)
+wall8.scale.set(1, 27, 0)
+wall8.position.set(-35, 1, -19)
+// wall9.scale.set(1, 27, 1)
+// wall9.position.set(-34, -6, -19)
+// wall9.rotation.z = Math.PI / 3.5;
+//  wall10.scale.set(1, 27, 0)
+// wall10.position.set(-50, 11 , -19)
+// wall10.rotation.z = Math.PI / 3.1
+// wall11.scale.set(0.5, 5, 0)
+// wall11.position.set(-50, -9 , -19)
+// wall11.rotation.z = -Math.PI / 10
 
-var marginThickness = 0.2; // 2 centímetros
 
+const raio = 19; // Raio do círculo
+const segmentos = 32; // Número de segmentos do círculo
+const geometry = new THREE.CircleGeometry(raio, segmentos);
+
+// Criar o material do círculo
+const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+
+// Criar a malha (mesh) do círculo combinando a geometria e o material
+const circleMesh = new THREE.Mesh(geometry, material);
+const circleMesh2 = new THREE.Mesh(geometry, material);
+
+// Adicionar a malha do círculo à cena
+cena.add(circleMesh);
+circleMesh.position.set(64.5, -5.5, -19)
+cena.add(circleMesh2);
+circleMesh2.position.set(-60, 9.7, -19)
+
+var isGamePaused = false;
+var previousCarPosition = new THREE.Vector3();
+var carDirection = new THREE.Vector3();
+
+var isGameRestarted = false;
+let speed = 0.15;
+
+function startGame() {
+    speed = 0.15;
+    car.position.set(-3, 20, -19);
+    car.rotation.z = -Math.PI / 60; //TENHO MESMO QUE MELHORAR ISTO
+    // outras lógicas para começar o jogo...
+}
+
+function resetGame() {
+    isGameRestarted = true;
+    speed = 0;  // parar o carro
+    document.getElementById('new-game').style.display = 'block';
+}
+
+
+var gameContainer = document.getElementById('game-container');
+var restartMessage = document.getElementById('restart-message');
 
 function update() {
-    const speed = 0.25;
+
+
     function checkCollision() {
-        if (!car || !wall) {
-            console.log("Erro: Carro ou parede não estão definidos");
+        if (!car) {
+            console.log("Erro: Carro não está definido");
             return false;
         }
 
@@ -557,45 +576,70 @@ function update() {
 
         // Obter a caixa delimitadora do carro
         const carBoundingBox = new THREE.Box3().setFromObject(car);
+        const wallBoundingCircle = new THREE.Box3().setFromObject(circleMesh);
+        // const wallBoundingBox = new THREE.Box3().setFromObject(wall);
+        const wallInside = new THREE.Box3().setFromObject(wall5);
+        const wallInside2 = new THREE.Box3().setFromObject(wall6);
+        const wallInside3 = new THREE.Box3().setFromObject(wall7);
+        const wallInside4 = new THREE.Box3().setFromObject(wall8);
+        //const wallInside5 = new THREE.Box3().setFromObject(wall9);
+        //const wallInside6 = new THREE.Box3().setFromObject(wall10);
+         //const wallInside7 = new THREE.Box3().setFromObject(wall11);
+        const wallInside8 = new THREE.Box3().setFromObject(circleMesh2);
 
-        // Obter a caixa delimitadora da parede a partir de sua geometria e posição global
-        const wallBoundingBox = new THREE.Box3().setFromObject(wall);
-        const wallBoundingBox2 = new THREE.Box3().setFromObject(wall2);
-        const wallBoundingBox3 = new THREE.Box3().setFromObject(wall3);
-        const wallBoundingBox4 = new THREE.Box3().setFromObject(wall4);
-        const wallBoundingBox5 = new THREE.Box3().setFromObject(wall5);
-        const wallBoundingBox6 = new THREE.Box3().setFromObject(wall6);
-        const wallBoundingBox7 = new THREE.Box3().setFromObject(wall7);
-        const wallBoundingBox8 = new THREE.Box3().setFromObject(wall8);
-        const wallBoundingBox9 = new THREE.Box3().setFromObject(wall9);
-        const wallBoundingBox10 = new THREE.Box3().setFromObject(wall10);
-        const wallBoundingBox11 = new THREE.Box3().setFromObject(wall11);
-        const wallBoundingBox12 = new THREE.Box3().setFromObject(wall12);
+        // Obter as caixas delimitadoras das paredes
+        const wallBoundingBoxes = [
+            // wallBoundingBox,
 
-        // Verificar se a caixa delimitadora do carro intersecta com a caixa delimitadora da parede
-        if (carBoundingBox.intersectsBox(wallBoundingBox) || carBoundingBox.intersectsBox(wallBoundingBox2) || carBoundingBox.intersectsBox(wallBoundingBox3) || carBoundingBox.intersectsBox(wallBoundingBox4)
-            || carBoundingBox.intersectsBox(wallBoundingBox5) || carBoundingBox.intersectsBox(wallBoundingBox6) || carBoundingBox.intersectsBox(wallBoundingBox7) || carBoundingBox.intersectsBox(wallBoundingBox8)
-            || carBoundingBox.intersectsBox(wallBoundingBox8) || carBoundingBox.intersectsBox(wallBoundingBox9) || carBoundingBox.intersectsBox(wallBoundingBox10) || carBoundingBox.intersectsBox(wallBoundingBox11)
-            || carBoundingBox.intersectsBox(wallBoundingBox12)) {
-            return false;
+            wallInside, wallInside2, wallInside3, wallInside4
+            //wallInside6,wallInside7,wallInside5
+        ];
+
+        const circleCenter = circleMesh.position.clone();
+        const carDistanceToCircle = carPosition.distanceTo(circleCenter);
+        const circleRadius = raio * Math.max(circleMesh.scale.x, circleMesh.scale.y, circleMesh.scale.z);
+        if (carDistanceToCircle < circleRadius) {
+            return true;
         }
 
 
+        // Verificar colisão com todas as paredes
+        for (let i = 0; i < wallBoundingBoxes.length; i++) {
+            if (carBoundingBox.intersectsBox(wallBoundingBoxes[i])) {
+                return true;
+            }
+        }
 
-        return true;
+
+        return false;
     }
 
 
     if (checkCollision()) {
-        if (keys.w) {
-            car.position.x -= Math.cos(car.rotation.z) * speed;
-            car.position.y -= Math.sin(car.rotation.z) * speed;
+        if (!isGameRestarted) {
+            isGameRestarted = true;
+            resetGame();
+            restartMessage.style.display = 'block';
         }
-        if (keys.s) {
+    } else {
+        if (isGameRestarted) {
+            isGameRestarted = false;
+            restartMessage.style.display = 'none';
+        }
+        if (keys.w) {
             car.position.x += Math.cos(car.rotation.z) * speed;
             car.position.y += Math.sin(car.rotation.z) * speed;
         }
+        if (keys.s) {
+            car.position.x -= Math.cos(car.rotation.z) * speed;
+            car.position.y -= Math.sin(car.rotation.z) * speed;
+        }
+        isGameRestarted = false;
+
     }
+
+    document.getElementById('new-game').addEventListener('click', startGame);
+
 
     if (car) {
         if (keys.w) {
@@ -606,11 +650,13 @@ function update() {
             car.position.x -= Math.cos(car.rotation.z) * speed;
             car.position.y -= Math.sin(car.rotation.z) * speed;
         }
-        if (keys.a) {
-            car.rotation.z += 0.03;
-        }
-        if (keys.d) {
-            car.rotation.z -= 0.03;
+        if (speed > 0) { // Adicione essa condição
+            if (keys.a) {
+                car.rotation.z += 0.03;
+            }
+            if (keys.d) {
+                car.rotation.z -= 0.03;
+            }
         }
     }
 
@@ -1103,9 +1149,10 @@ window.addEventListener('keydown', function (event) {
 });
 
 
+
+
+
 function Start() {
-
-
     const grassTexture = new THREE.TextureLoader().load('./Images/grass2.0.png');
 
     const gravelTexture = new THREE.TextureLoader().load('./Images/gravel2.png');
@@ -1137,11 +1184,7 @@ function Start() {
     gravel2.position.y = 0; // posição do chão
     gravel2.position.z = -20.05; // posição da relva na pista
 
-
-
-
     lampAny.position.y = 12;
-
 
     lampAny2.position.x = -40;
     lampAny2.position.y = 16;
@@ -1183,7 +1226,7 @@ function Start() {
 
     tree.position.set(20, 50, -10);
 
-
+    startGame();
 
     //Adicionamos a light à cena
     //  cena.add(focoLuz);

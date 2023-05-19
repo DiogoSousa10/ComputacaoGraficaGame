@@ -1,20 +1,43 @@
-
 <!DOCTYPE html>
 <html>
 
 <head>
+    <title>Jogo</title>
+    <style>
+        /* Estilos CSS para a mensagem de reinício */
+        .restart-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            font-size: 24px;
+            display: none;
+        }
+    </style>
     <title>
         WebGL - Three.js
     </title>
 </head>
 
 <body>
+
+    <div id="game-container"></div>
+    <div id="restart-message" class="restart-message">
+        <p>Perdeu o jogo! Clique aqui para recomeçar.</p>
+        <button id="new-game" style="display:none;">Novo Jogo</button>
+    </div>
+
+
+
     <script src="./JavaScript/fflate.min.js"></script>
     <script src="./JavaScript/three.js"></script>
     <script src="./JavaScript/FBXLoader.js"></script>
     <script src="./JavaScript/OrbitControls.js"></script>
-    <script  src="./JavaScript/appThree.js"></script>
-                                                    
+    <script src="./JavaScript/appThree.js"></script>
+
 </body>
 
 </html>
