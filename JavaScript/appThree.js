@@ -57,7 +57,6 @@ if (cs == 0) {
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth - 15, window.innerHeight - 20);
 renderer.render(cena, camara);
-
 document.body.appendChild(renderer.domElement);
 
 
@@ -497,7 +496,7 @@ cena.add(wall6);
 cena.add(wall7);
 cena.add(wall8);
 // cena.add(wall9);
-// cena.add(wall10);
+cena.add(wall10);
 // cena.add(wall11)
 
 
@@ -513,10 +512,10 @@ wall8.position.set(-35, 1, -19)
 // wall9.position.set(-34, -6, -19)
 // wall9.rotation.z = Math.PI / 3.5;
 //  wall10.scale.set(1, 27, 0)
-// wall10.position.set(-50, 11 , -19)
+// wall10.position.set(-50, 13 , -19)
 // wall10.rotation.z = Math.PI / 3.1
-// wall11.scale.set(0.5, 5, 0)
-// wall11.position.set(-50, -9 , -19)
+// wall11.scale.set(1, 38, 0)
+// wall11.position.set(-50, 10 , -19)
 // wall11.rotation.z = -Math.PI / 10
 
 
@@ -525,17 +524,34 @@ const segmentos = 32; // Número de segmentos do círculo
 const geometry = new THREE.CircleGeometry(raio, segmentos);
 
 // Criar o material do círculo
-const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+const material = new THREE.MeshBasicMaterial({ color: 0xff0000, visible: false });
 
 // Criar a malha (mesh) do círculo combinando a geometria e o material
 const circleMesh = new THREE.Mesh(geometry, material);
 const circleMesh2 = new THREE.Mesh(geometry, material);
+const circleMesh3 = new THREE.Mesh(geometry, material);
+const circleMesh4 = new THREE.Mesh(geometry, material);
+const circleMesh5 = new THREE.Mesh(geometry, material);
+const circleMesh6 = new THREE.Mesh(geometry, material);
 
 // Adicionar a malha do círculo à cena
 cena.add(circleMesh);
-circleMesh.position.set(64.5, -5.5, -19)
+circleMesh.position.set(64.5, -5.5, -19.5)
 cena.add(circleMesh2);
-circleMesh2.position.set(-60, 9.7, -19)
+circleMesh2.position.set(-59, 9.3, -19.5)
+circleMesh2.scale.set(1.1, 1, 1);
+cena.add(circleMesh3);
+circleMesh3.position.set(-40, 14, -19.5)
+circleMesh3.scale.set(0.4, 0.2, 0.2);
+cena.add(circleMesh4);
+circleMesh4.position.set(-35, -17, -19.5)
+circleMesh4.scale.set(0.2, 0.2, 0.2);
+cena.add(circleMesh5);
+circleMesh5.position.set(-40, -13, -19.5)
+circleMesh5.scale.set(0.2, 0.2, 0.2);
+cena.add(circleMesh6);
+circleMesh6.position.set(-50, -7.5, -19.5)
+circleMesh6.scale.set(0.2, 0.2, 0.2);
 
 var isGamePaused = false;
 var previousCarPosition = new THREE.Vector3();
@@ -546,6 +562,8 @@ let speed = 0.15;
 
 function startGame() {
     speed = 0.15;
+    count = 0;
+    updateCounter();
     car.position.set(-3, 20, -19);
     car.rotation.z = -Math.PI / 60; //TENHO MESMO QUE MELHORAR ISTO
     // outras lógicas para começar o jogo...
@@ -576,23 +594,20 @@ function update() {
 
         // Obter a caixa delimitadora do carro
         const carBoundingBox = new THREE.Box3().setFromObject(car);
-        const wallBoundingCircle = new THREE.Box3().setFromObject(circleMesh);
         // const wallBoundingBox = new THREE.Box3().setFromObject(wall);
         const wallInside = new THREE.Box3().setFromObject(wall5);
         const wallInside2 = new THREE.Box3().setFromObject(wall6);
         const wallInside3 = new THREE.Box3().setFromObject(wall7);
         const wallInside4 = new THREE.Box3().setFromObject(wall8);
-        //const wallInside5 = new THREE.Box3().setFromObject(wall9);
-        //const wallInside6 = new THREE.Box3().setFromObject(wall10);
-        //const wallInside7 = new THREE.Box3().setFromObject(wall11);
-        const wallInside8 = new THREE.Box3().setFromObject(circleMesh2);
+        const wallInside6 = new THREE.Box3().setFromObject(wall10);
 
         // Obter as caixas delimitadoras das paredes
         const wallBoundingBoxes = [
             // wallBoundingBox,
 
-            wallInside, wallInside2, wallInside3, wallInside4
-            //wallInside6,wallInside7,wallInside5
+            wallInside, wallInside2, wallInside3, wallInside4,
+            wallInside6,
+
         ];
 
         const circleCenter = circleMesh.position.clone();
@@ -602,6 +617,39 @@ function update() {
             return true;
         }
 
+        const circleCenter2 = circleMesh2.position.clone();
+        const carDistanceToCircle2 = carPosition.distanceTo(circleCenter2);
+        const circleRadius2 = raio * Math.max(circleMesh2.scale.x, circleMesh2.scale.y, circleMesh2.scale.z);
+        if (carDistanceToCircle2 < circleRadius2) {
+            return true;
+        }
+
+        const circleCenter3 = circleMesh3.position.clone();
+        const carDistanceToCircle3 = carPosition.distanceTo(circleCenter3);
+        const circleRadius3 = raio * Math.max(circleMesh3.scale.x, circleMesh3.scale.y, circleMesh3.scale.z);
+        if (carDistanceToCircle3 < circleRadius3) {
+            return true;
+        }
+
+        const circleCenter4 = circleMesh4.position.clone();
+        const carDistanceToCircle4 = carPosition.distanceTo(circleCenter4);
+        const circleRadius4 = raio * Math.max(circleMesh4.scale.x, circleMesh4.scale.y, circleMesh4.scale.z);
+        if (carDistanceToCircle4 < circleRadius4) {
+            return true;
+        }
+
+        const circleCenter5 = circleMesh5.position.clone();
+        const carDistanceToCircle5 = carPosition.distanceTo(circleCenter5);
+        const circleRadius5 = raio * Math.max(circleMesh5.scale.x, circleMesh5.scale.y, circleMesh5.scale.z);
+        if (carDistanceToCircle5 < circleRadius5) {
+            return true;
+        }
+        const circleCenter6 = circleMesh6.position.clone();
+        const carDistanceToCircle6 = carPosition.distanceTo(circleCenter6);
+        const circleRadius6 = raio * Math.max(circleMesh6.scale.x, circleMesh6.scale.y, circleMesh6.scale.z);
+        if (carDistanceToCircle6 < circleRadius6) {
+            return true;
+        }
 
         // Verificar colisão com todas as paredes
         for (let i = 0; i < wallBoundingBoxes.length; i++) {
@@ -722,7 +770,7 @@ function addBoard() {
     const texture = new THREE.TextureLoader().load('./Images/UTAD.jpg');
 
     // Cria o material com a textura da imagem
-    const material = new THREE.MeshBasicMaterial({ map: texture });
+    const material = new THREE.MeshPhongMaterial({ map: texture });
 
     // Cria a malha com a geometria e o material
     const mesh = new THREE.Mesh(geometry, material);
@@ -746,7 +794,7 @@ function addBoard2() {
     const texture = new THREE.TextureLoader().load('./Images/MASSIVE.png');
 
     // Cria o material com a textura da imagem
-    const material = new THREE.MeshBasicMaterial({ map: texture });
+    const material = new THREE.MeshPhongMaterial({ map: texture });
 
     // Cria a malha com a geometria e o material
     const mesh = new THREE.Mesh(geometry, material);
@@ -1070,7 +1118,7 @@ var spotlightnight; // Holofote para a noite
 var skyboxState = 'day'; // Estado inicial do skybox (dia)
 
 function createLightforNight() {
-    spotlightnight = new THREE.SpotLight(0xffffff, 0.3);
+    spotlightnight = new THREE.DirectionalLight(0xffffff, 0.3);
     spotlightnight.position.set(180, 120, 140); // Posição do holofote
 
     var size = 20; // Tamanho do quadrado
@@ -1088,7 +1136,7 @@ function createLightforNight() {
 const nightLight = createLightforNight();
 
 function createLightforDay() {
-    spotlightday = new THREE.SpotLight(0xffffff, 1.5);
+    spotlightday = new THREE.DirectionalLight(0xffffff, 1.5);
     spotlightday.position.set(180, 120, 140); // Posição do holofote
 
     var size = 20; // Tamanho do quadrado
@@ -1098,7 +1146,6 @@ function createLightforDay() {
     lightDay.position.copy(spotlightday.position); // Posiciona o quadrado na mesma posição do holofote
 
     cena.add(lightDay); // Adicione o quadrado à cena
-
     return lightDay;
 }
 
@@ -1124,6 +1171,8 @@ var lightNighs3 = new THREE.PointLight(0xffffff, 6, 200);
 var lightNighs4 = new THREE.PointLight(0xffffff, 6, 200);
 
 
+var ambientLightday = new THREE.AmbientLight(0x404040, 1); // luz suave branca
+var ambientLightnight = new THREE.AmbientLight(0x404040, 0.5); // luz suave branca
 
 window.addEventListener('keydown', function (event) {
     if (event.key === 't') { // Tecla "t" para alternar os skyboxes
@@ -1140,6 +1189,8 @@ window.addEventListener('keydown', function (event) {
                 lampAny3.add(lightNighs3);
                 lampAny4.add(lightNighs4);
             }
+            cena.remove(ambientLightday)
+            cena.add(ambientLightnight)
 
             lampAny.add(lightday);
             lampAny2.add(lightday2);
@@ -1157,6 +1208,8 @@ window.addEventListener('keydown', function (event) {
                 lampAny3.remove(lightNighs3);
                 lampAny4.remove(lightNighs4);
             }
+            cena.remove(ambientLightnight)
+            cena.add(ambientLightday)
             lampAny.remove(lightday)
             lampAny2.remove(lightday2)
             lampAny3.remove(lightday3)
@@ -1236,6 +1289,7 @@ function lapUpdate() {
 
 
 function Start() {
+
     const grassTexture = new THREE.TextureLoader().load('./Images/grass2.0.png');
 
     const gravelTexture = new THREE.TextureLoader().load('./Images/gravel2.png');
@@ -1268,7 +1322,7 @@ function Start() {
     gravel2.position.z = -20.05; // posição da relva na pista
 
     lampAny.position.y = 12;
-
+    lampAny.position.x = -7;
     lampAny2.position.x = -40;
     lampAny2.position.y = 16;
 
@@ -1283,7 +1337,7 @@ function Start() {
     //Heli
     heli.rotation.x = Math.PI / 2;
 
-
+    cena.add(ambientLightday)
     cena.add(skybox);
     cena.add(spotlightday);
     cena.add(tree);
