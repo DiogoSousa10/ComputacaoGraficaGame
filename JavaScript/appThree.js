@@ -389,12 +389,12 @@ function createTrack() {
 
         // Cria o material com a textura da bandeira axadrezada
         const texture = new THREE.TextureLoader().load('./Images/Bandeira.png');
-        const material = new THREE.MeshBasicMaterial({ map: texture });
+        const material = new THREE.MeshPhongMaterial({ map: texture });
 
         // Cria a malha com a geometria e o material
         const mesh = new THREE.Mesh(geometry, material);
 
-        mesh.scale.set(0.1, 0.099, 0);
+        mesh.scale.set(0.1, 0.099, 0.5);
 
         // Posiciona a malha no chão
         mesh.position.set(-4, 19.2, -19.75);
@@ -490,6 +490,9 @@ var wall8 = new THREE.Mesh(wallGeometry, wallMaterial);
 var wall9 = new THREE.Mesh(wallGeometry, wallMaterial);
 var wall10 = new THREE.Mesh(wallGeometry, wallMaterial);
 var wall11 = new THREE.Mesh(wallGeometry, wallMaterial);
+var wall12 = new THREE.Mesh(wallGeometry, wallMaterial);
+var wall13 = new THREE.Mesh(wallGeometry, wallMaterial);
+var wall14 = new THREE.Mesh(wallGeometry, wallMaterial);
 
 cena.add(wall5);
 cena.add(wall6);
@@ -498,6 +501,10 @@ cena.add(wall8);
 // cena.add(wall9);
 cena.add(wall10);
 // cena.add(wall11)
+cena.add(wall12);
+cena.add(wall13);
+
+
 
 
 wall5.scale.set(3.5, 39, 0)
@@ -508,20 +515,19 @@ wall7.position.set(-19, -5.5, -19)
 wall7.scale.set(1, 38, 0)
 wall8.scale.set(1, 27, 0)
 wall8.position.set(-35, 1, -19)
-// wall9.scale.set(1, 27, 1)
-// wall9.position.set(-34, -6, -19)
-// wall9.rotation.z = Math.PI / 3.5;
-//  wall10.scale.set(1, 27, 0)
-// wall10.position.set(-50, 13 , -19)
-// wall10.rotation.z = Math.PI / 3.1
-// wall11.scale.set(1, 38, 0)
-// wall11.position.set(-50, 10 , -19)
-// wall11.rotation.z = -Math.PI / 10
+wall12.scale.set(4.3, 39, 0)
+wall12.position.set(27, 44, -19)
+wall13.scale.set(5, 39, 0)
+wall13.position.set(17, -55, -19)
 
 
 const raio = 19; // Raio do círculo
 const segmentos = 32; // Número de segmentos do círculo
 const geometry = new THREE.CircleGeometry(raio, segmentos);
+
+const raio2 = 19; // Raio do círculo
+const segmentos2 = 32; // Número de segmentos do círculo
+const geometry2 = new THREE.CircleGeometry(raio2, segmentos2);
 
 // Criar o material do círculo
 const material = new THREE.MeshBasicMaterial({ color: 0xff0000, visible: false });
@@ -533,6 +539,26 @@ const circleMesh3 = new THREE.Mesh(geometry, material);
 const circleMesh4 = new THREE.Mesh(geometry, material);
 const circleMesh5 = new THREE.Mesh(geometry, material);
 const circleMesh6 = new THREE.Mesh(geometry, material);
+const circleMesh7 = new THREE.Mesh(geometry2, material);
+const circleMesh8 = new THREE.Mesh(geometry, material);
+const circleMesh9 = new THREE.Mesh(geometry2, material);
+const circleMesh10 = new THREE.Mesh(geometry2, material);
+const circleMesh11 = new THREE.Mesh(geometry2, material);
+const circleMesh12 = new THREE.Mesh(geometry2, material);
+const circleMesh13 = new THREE.Mesh(geometry2, material);
+const circleMesh14 = new THREE.Mesh(geometry2, material);
+const circleMesh15 = new THREE.Mesh(geometry2, material);
+const circleMesh16 = new THREE.Mesh(geometry2, material);
+const circleMesh17 = new THREE.Mesh(geometry2, material);
+const circleMesh18 = new THREE.Mesh(geometry2, material);
+const circleMesh19 = new THREE.Mesh(geometry2, material);
+const circleMesh20 = new THREE.Mesh(geometry2, material);
+const circleMesh21 = new THREE.Mesh(geometry2, material);
+const circleMesh22 = new THREE.Mesh(geometry2, material);
+const circleMesh23 = new THREE.Mesh(geometry2, material);
+const circleMesh24 = new THREE.Mesh(geometry2, material);
+const circleMesh25 = new THREE.Mesh(geometry2, material);
+const circleMesh26 = new THREE.Mesh(geometry2, material);
 
 // Adicionar a malha do círculo à cena
 cena.add(circleMesh);
@@ -552,6 +578,66 @@ circleMesh5.scale.set(0.2, 0.2, 0.2);
 cena.add(circleMesh6);
 circleMesh6.position.set(-50, -7.5, -19.5)
 circleMesh6.scale.set(0.2, 0.2, 0.2);
+cena.add(circleMesh7);
+circleMesh7.position.set(90, 35, -19.5)
+circleMesh7.scale.set(1, 1, 1);
+cena.add(circleMesh8);
+circleMesh8.position.set(103, 25, -19.5)
+circleMesh8.scale.set(1, 1, 1);
+cena.add(circleMesh9);
+circleMesh9.position.set(112, 0, -19.5)
+circleMesh9.scale.set(1, 1, 1);
+cena.add(circleMesh10);
+circleMesh10.position.set(112, -15, -19.5)
+circleMesh10.scale.set(1, 1, 1);
+cena.add(circleMesh11);
+circleMesh11.position.set(103, -35, -19.5)
+circleMesh11.scale.set(1, 1, 1);
+cena.add(circleMesh12);
+circleMesh12.position.set(90, -47, -19.5)
+circleMesh12.scale.set(1, 1, 1);
+cena.add(circleMesh13);
+circleMesh13.position.set(-60, -39, -19.5)
+circleMesh13.scale.set(1, 1, 1);
+cena.add(circleMesh14);
+circleMesh14.position.set(-44, -51, -19.5)
+circleMesh14.scale.set(1, 1, 1);
+cena.add(circleMesh15);
+circleMesh15.position.set(-75, -37, -19.5)
+circleMesh15.scale.set(1, 1, 1);
+cena.add(circleMesh16);
+circleMesh16.position.set(-85, -32, -19.5)
+circleMesh16.scale.set(1, 1, 1);
+cena.add(circleMesh17);
+circleMesh17.position.set(-97, -22, -19.5)
+circleMesh17.scale.set(1, 1, 1);
+cena.add(circleMesh18);
+circleMesh18.position.set(-105, -5, -19.5)
+circleMesh18.scale.set(1, 1, 1);
+cena.add(circleMesh19);
+circleMesh19.position.set(-108, 10, -19.5)
+circleMesh19.scale.set(1, 1, 1);
+cena.add(circleMesh20);
+circleMesh20.position.set(-105, 25, -19.5)
+circleMesh20.scale.set(1, 1, 1);
+cena.add(circleMesh21);
+circleMesh21.position.set(-100, 35, -19.5)
+circleMesh21.scale.set(1, 1, 1);
+cena.add(circleMesh22);
+circleMesh22.position.set(-87, 50, -19.5)
+circleMesh22.scale.set(1, 1, 1);
+cena.add(circleMesh23);
+circleMesh23.position.set(-64, 57, -19.5)
+circleMesh23.scale.set(1, 1, 1);
+cena.add(circleMesh24);
+circleMesh24.position.set(-64, 57, -19.5)
+circleMesh24.scale.set(1, 1, 1);
+cena.add(circleMesh25);
+circleMesh25.position.set(-50, 57, -19.5)
+circleMesh25.scale.set(1, 1, 1);
+cena.add(circleMesh26);
+circleMesh26.position.set(-27, 45, -19.5)
+circleMesh26.scale.set(1, 1, 1);
 
 var isGamePaused = false;
 var previousCarPosition = new THREE.Vector3();
@@ -600,56 +686,36 @@ function update() {
         const wallInside3 = new THREE.Box3().setFromObject(wall7);
         const wallInside4 = new THREE.Box3().setFromObject(wall8);
         const wallInside6 = new THREE.Box3().setFromObject(wall10);
+        const wallInside7 = new THREE.Box3().setFromObject(wall12);
+        const wallInside8 = new THREE.Box3().setFromObject(wall13);
 
         // Obter as caixas delimitadoras das paredes
         const wallBoundingBoxes = [
             // wallBoundingBox,
 
             wallInside, wallInside2, wallInside3, wallInside4,
-            wallInside6,
+            wallInside6, wallInside7, wallInside8
 
         ];
 
-        const circleCenter = circleMesh.position.clone();
-        const carDistanceToCircle = carPosition.distanceTo(circleCenter);
-        const circleRadius = raio * Math.max(circleMesh.scale.x, circleMesh.scale.y, circleMesh.scale.z);
-        if (carDistanceToCircle < circleRadius) {
-            return true;
+        const circleMeshes = [circleMesh, circleMesh2, circleMesh3, circleMesh4, circleMesh5,
+            circleMesh6, circleMesh7, circleMesh8,
+            circleMesh9, circleMesh10, circleMesh11, circleMesh12,
+            circleMesh13,circleMesh14,circleMesh15,circleMesh16,circleMesh17,
+            circleMesh18, circleMesh19,circleMesh20, circleMesh21, circleMesh22,
+            circleMesh23, circleMesh24,circleMesh25, circleMesh26 
+    ];
+
+        for (let i = 0; i < circleMeshes.length; i++) {
+            const circleCenter = circleMeshes[i].position.clone();
+            const carDistanceToCircle = carPosition.distanceTo(circleCenter);
+            const circleRadius = raio * Math.max(circleMeshes[i].scale.x, circleMeshes[i].scale.y, circleMeshes[i].scale.z);
+
+            if (carDistanceToCircle < circleRadius) {
+                return true;
+            }
         }
 
-        const circleCenter2 = circleMesh2.position.clone();
-        const carDistanceToCircle2 = carPosition.distanceTo(circleCenter2);
-        const circleRadius2 = raio * Math.max(circleMesh2.scale.x, circleMesh2.scale.y, circleMesh2.scale.z);
-        if (carDistanceToCircle2 < circleRadius2) {
-            return true;
-        }
-
-        const circleCenter3 = circleMesh3.position.clone();
-        const carDistanceToCircle3 = carPosition.distanceTo(circleCenter3);
-        const circleRadius3 = raio * Math.max(circleMesh3.scale.x, circleMesh3.scale.y, circleMesh3.scale.z);
-        if (carDistanceToCircle3 < circleRadius3) {
-            return true;
-        }
-
-        const circleCenter4 = circleMesh4.position.clone();
-        const carDistanceToCircle4 = carPosition.distanceTo(circleCenter4);
-        const circleRadius4 = raio * Math.max(circleMesh4.scale.x, circleMesh4.scale.y, circleMesh4.scale.z);
-        if (carDistanceToCircle4 < circleRadius4) {
-            return true;
-        }
-
-        const circleCenter5 = circleMesh5.position.clone();
-        const carDistanceToCircle5 = carPosition.distanceTo(circleCenter5);
-        const circleRadius5 = raio * Math.max(circleMesh5.scale.x, circleMesh5.scale.y, circleMesh5.scale.z);
-        if (carDistanceToCircle5 < circleRadius5) {
-            return true;
-        }
-        const circleCenter6 = circleMesh6.position.clone();
-        const carDistanceToCircle6 = carPosition.distanceTo(circleCenter6);
-        const circleRadius6 = raio * Math.max(circleMesh6.scale.x, circleMesh6.scale.y, circleMesh6.scale.z);
-        if (carDistanceToCircle6 < circleRadius6) {
-            return true;
-        }
 
         // Verificar colisão com todas as paredes
         for (let i = 0; i < wallBoundingBoxes.length; i++) {
@@ -1286,8 +1352,6 @@ function lapUpdate() {
 
 
 
-
-
 function Start() {
 
     const grassTexture = new THREE.TextureLoader().load('./Images/grass2.0.png');
@@ -1368,7 +1432,6 @@ function Start() {
 
     requestAnimationFrame(loop);
 }
-
 
 function loop() {
     mainRotor.rotation.y += 0.1;
