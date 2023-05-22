@@ -10,10 +10,7 @@ const aspectRatio = window.innerWidth / window.innerHeight;
 const cameraWidth = 500;
 const cameraHeight = cameraWidth / aspectRatio;
 
-//Camera Perspectiva 
-var camaraPerspetiva = new THREE.PerspectiveCamera(45, 4 / 3, 0.1, 100);
 
-var camaraPrimeiraPessoa;
 
 function criarCamaraPrimeiraPessoa() {
     const cam = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 15000);
@@ -22,29 +19,53 @@ function criarCamaraPrimeiraPessoa() {
     return cam;
 }
 
+
+function criarCamaraPrimeiraPessoaTraseira() {
+    const cam = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 15000);
+    cam.position.set(-2, 0, 30); // Ajuste a posição da câmera dentro do carro
+    cam.rotation.set(Math.PI / 2, -Math.PI / 2, 0); // Ajuste a rotação da câmera para olhar ligeiramente para baixo
+    cam.rotation.y = Math.PI / 2; // Gire a câmera traseira para que ela aponte para trás
+    return cam;
+}
+
+// Cria um novo WebGLRenderer para o retrovisor
+var rearViewRenderer = new THREE.WebGLRenderer({ alpha: true });
+rearViewRenderer.setSize(window.innerWidth / 2, window.innerHeight / 6); // Defina um tamanho menor para o retrovisor
+
+// Obtém a câmera traseira existente
+var rearViewCamera = criarCamaraPrimeiraPessoaTraseira();
+
+// Anexa o elemento <canvas> do renderer à <div> correspondente ao retrovisor
+var rearViewContainer = document.getElementById('rear-view');
+rearViewContainer.appendChild(rearViewRenderer.domElement);
+rearViewRenderer.domElement.style.border = '10px solid black'; // Adicione uma borda ao retrovisor
+rearViewRenderer.domElement.style.borderRadius = '10px'
+
+
+
 //Camera Ortografica
 var camaraO = new THREE.OrthographicCamera(
-    cameraWidth / -2, // left
-    cameraWidth / 2, // right
-    cameraHeight / 2, // top
-    cameraHeight / -2, // bottom
+    cameraWidth / -3.5, // left
+    cameraWidth / 3.5, // right
+    cameraHeight / 3.5, // top
+    cameraHeight / -3.5, // bottom
     0, // near plane
     1000, // far plane
 );
 
-if (cs == 0) {
-    camara = camaraPerspetiva;
-
-    camara.position.set(100, 100, 100);
-    camara.lookAt(0, 0, 0);
-} else if (cs == 1) {
+if (cs == 1) {
     camara = camaraO;
-    camara.position.set(200, 0, 300);
+    camara.position.set(0, -100, 200);
     camara.lookAt(0, 0, 0);
-} else if (cs == 2) { // Adicione esta condição para usar a câmera de primeira pessoa
+} else if (cs == 2) {
     camara = camaraPrimeiraPessoa;
 
 }
+
+
+
+//SETTINGS DA CAMARA TRASEIRA
+
 
 
 //Setings das Camaras--------------------------------------------------------------------------------------------
@@ -59,37 +80,43 @@ renderer.setSize(window.innerWidth - 15, window.innerHeight - 20);
 renderer.render(cena, camara);
 document.body.appendChild(renderer.domElement);
 
+function showRearView() {
+    rearViewRenderer.setSize(window.innerWidth / 2, window.innerHeight / 6); // Define o tamanho do retrovisor visível
+    rearViewContainer.style.display = 'block'; // Exibe o retrovisor
+}
+
+// Função para ocultar o retrovisor
+function hideRearView() {
+    rearViewRenderer.setSize(0, 0); // Define o tamanho do retrovisor como zero
+    rearViewContainer.style.display = 'none'; // Oculta o retrovisor
+}
+
 
 
 //Clicar tecla C e mexer com a camara Ortografica ou perspetiva e Primeira Pessoa.
 document.addEventListener("keydown", (event) => {
     if (event.code === "KeyC") {
-        cs = (cs + 1) % 3; // Alterna entre as câmeras
+        cs = (cs + 1) % 2; // Alterna entre as câmeras
 
         if (cs == 0) {
-            camara = camaraPerspetiva;
-            camara.position.set(100, 100, 100);
-            camara.lookAt(0, 0, 0);
-            lampAny.remove(lightNighs);
-            lampAny2.remove(lightNighs2);
-            lampAny3.remove(lightNighs3);
-            lampAny4.remove(lightNighs4);
 
-        } else if (cs == 1) {
-            camara = camaraO;
-            camara.position.set(200, 0, 300);
-            camara.lookAt(0, 0, 0);
-        } else if (cs == 2) {
             camara = camaraPrimeiraPessoa;
+            showRearView();
 
-            //Faço este if para elas inicializarem com elas ligadas quando esta de noite e depos haver a troca
             if (skyboxState === 'night') {
                 lampAny.add(lightNighs);
                 lampAny2.add(lightNighs2);
                 lampAny3.add(lightNighs3);
                 lampAny4.add(lightNighs4);
             }
+
+        } else if (cs == 1) {
+            hideRearView();
+            camara = camaraO;
+            camara.position.set(0, -200, 300);
+            camara.lookAt(0, 0, 0);
         }
+        console.log(cs)
     }
 });
 
@@ -300,7 +327,7 @@ function Car() {
 
     camaraPrimeiraPessoa = criarCamaraPrimeiraPessoa();
     car.add(camaraPrimeiraPessoa); // Adicione a câmera de primeira pessoa como um objeto filho do carro
-
+    car.add(rearViewCamera);
 
 
 
@@ -345,10 +372,6 @@ function Wheel() {
 
 
 //----------------------------------------------------------
-//Camera Orbit (Camara que faz 360ª, tem de ser criada em baixo da camara, da cena e dos renderer.)
-
-var controls = new THREE.OrbitControls(camara, renderer.domElement);
-controls.update();
 
 
 
@@ -369,20 +392,32 @@ function createTrack() {
         // Cria uma instância do objeto THREE.Object3D()
         var object3D = new THREE.Object3D();
 
+        const geometrytrack = new THREE.PlaneGeometry(100, 100);
+
+        const texturetrack = new THREE.TextureLoader().load('./Images/alcatrao.jpg');
+
+        const materialtrack = new THREE.MeshPhongMaterial({ map: texturetrack });
+
+        object.traverse(function(child) {
+            if (child instanceof THREE.Mesh) {
+                child.material = materialtrack; // Corrigido: use materialtrack em vez de material
+            }
+        });
+
+        
+
         // Adiciona o objeto carregado como filho do objeto THREE.Object3D()
         object3D.add(object);
+
+        
 
         // Define a posição, rotação e escala do objeto THREE.Object3D()
         object3D.position.set(0, 0, 0);
         object3D.rotation.set(0, 0, 0);
         object3D.scale.set(0.6, 0.6, 0.6);
-
-
         object3D.position.set(2, 0, -20);
 
-
         cena.add(object3D);
-
         // Cria a geometria do plano
         const geometry = new THREE.PlaneGeometry(100, 100);
 
@@ -701,10 +736,10 @@ function update() {
         const circleMeshes = [circleMesh, circleMesh2, circleMesh3, circleMesh4, circleMesh5,
             circleMesh6, circleMesh7, circleMesh8,
             circleMesh9, circleMesh10, circleMesh11, circleMesh12,
-            circleMesh13,circleMesh14,circleMesh15,circleMesh16,circleMesh17,
-            circleMesh18, circleMesh19,circleMesh20, circleMesh21, circleMesh22,
-            circleMesh23, circleMesh24,circleMesh25, circleMesh26 
-    ];
+            circleMesh13, circleMesh14, circleMesh15, circleMesh16, circleMesh17,
+            circleMesh18, circleMesh19, circleMesh20, circleMesh21, circleMesh22,
+            circleMesh23, circleMesh24, circleMesh25, circleMesh26
+        ];
 
         for (let i = 0; i < circleMeshes.length; i++) {
             const circleCenter = circleMeshes[i].position.clone();
@@ -1184,36 +1219,52 @@ var spotlightnight; // Holofote para a noite
 var skyboxState = 'day'; // Estado inicial do skybox (dia)
 
 function createLightforNight() {
-    spotlightnight = new THREE.DirectionalLight(0xffffff, 0.3);
-    spotlightnight.position.set(180, 120, 140); // Posição do holofote
+    spotlightday = new THREE.DirectionalLight(0xffffff, 1.5);
+    spotlightday.position.set(180, 120, 140); // Posição do holofote
 
-    var size = 20; // Tamanho do quadrado
-    var geometry = new THREE.BoxGeometry(size, size, size);
-    var material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    var nightLight = new THREE.Mesh(geometry, material);
-    nightLight.position.copy(spotlightnight.position); // Posiciona o quadrado na mesma posição do holofote
+    var radius = 10; // Raio da esfera
+    var widthSegments = 32; // Número de segmentos horizontais. Opcional, mas quanto maior, mais "suave" a esfera
+    var heightSegments = 32; // Número de segmentos verticais. Opcional, mas quanto maior, mais "suave" a esfera
+    var geometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
 
-    cena.add(nightLight); // Adicione o quadrado à cena
+    // Carrega a textura
+    var texture = new THREE.TextureLoader().load('./Images/lua.jpg')
 
+    // Aplica a textura ao material
+    var material = new THREE.MeshBasicMaterial({ map: texture });
 
-    return nightLight;
+    var lightDay = new THREE.Mesh(geometry, material);
+    lightDay.position.copy(spotlightday.position); // Posiciona a esfera na mesma posição do holofote
+
+    cena.add(lightDay); // Adicione a esfera à cena
+
+    return lightDay;
 }
 
 const nightLight = createLightforNight();
-
 function createLightforDay() {
     spotlightday = new THREE.DirectionalLight(0xffffff, 1.5);
     spotlightday.position.set(180, 120, 140); // Posição do holofote
 
-    var size = 20; // Tamanho do quadrado
-    var geometry = new THREE.BoxGeometry(size, size, size);
-    var material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    var lightDay = new THREE.Mesh(geometry, material);
-    lightDay.position.copy(spotlightday.position); // Posiciona o quadrado na mesma posição do holofote
+    var radius = 10; // Raio da esfera
+    var widthSegments = 32; // Número de segmentos horizontais. Opcional, mas quanto maior, mais "suave" a esfera
+    var heightSegments = 32; // Número de segmentos verticais. Opcional, mas quanto maior, mais "suave" a esfera
+    var geometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
 
-    cena.add(lightDay); // Adicione o quadrado à cena
+    // Carrega a textura
+    var texture = new THREE.TextureLoader().load('./Images/sol.avif')
+
+    // Aplica a textura ao material
+    var material = new THREE.MeshBasicMaterial({ map: texture });
+
+    var lightDay = new THREE.Mesh(geometry, material);
+    lightDay.position.copy(spotlightday.position); // Posiciona a esfera na mesma posição do holofote
+
+    cena.add(lightDay); // Adicione a esfera à cena
+
     return lightDay;
 }
+
 
 const lightDay = createLightforDay();
 
@@ -1255,6 +1306,8 @@ window.addEventListener('keydown', function (event) {
                 lampAny3.add(lightNighs3);
                 lampAny4.add(lightNighs4);
             }
+            cena.remove(lightDay);  // remove a esfera do dia
+            cena.add(nightLight);   // adiciona a esfera da noite
             cena.remove(ambientLightday)
             cena.add(ambientLightnight)
 
@@ -1284,7 +1337,10 @@ window.addEventListener('keydown', function (event) {
             cena.remove(skybox2);
             cena.add(skybox);
             cena.add(spotlightday);
+            cena.remove(nightLight);  // remove a esfera da noite
+            cena.add(lightDay);   // adiciona a esfera do dia
             skyboxState = 'day';
+
         }
     }
 });
@@ -1339,6 +1395,7 @@ function lapUpdate() {
     if (carCrossedFinishLine && !crossedFinishLine) {
         count++;
         updateCounter();
+        speed += speed - 0.14;
         crossedFinishLine = true; // Atualiza a variável de controle
     }
 
@@ -1401,6 +1458,7 @@ function Start() {
     //Heli
     heli.rotation.x = Math.PI / 2;
 
+    hideRearView();
     cena.add(ambientLightday)
     cena.add(skybox);
     cena.add(spotlightday);
@@ -1436,9 +1494,11 @@ function Start() {
 function loop() {
     mainRotor.rotation.y += 0.1;
     tailRotor.rotation.x += 0.1;
-    controls.update();
+    // controls.update(); Serve para a orbit para mexer com o rato na camara.
     lapUpdate(); // Adicione esta linha para verificar as voltas
     renderer.render(cena, camara);
+    rearViewRenderer.render(cena, rearViewCamera)
+   
     requestAnimationFrame(loop);
 }
 
