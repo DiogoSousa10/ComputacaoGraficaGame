@@ -115,6 +115,12 @@ document.addEventListener("keydown", (event) => {
             camara = camaraO;
             camara.position.set(0, -200, 300);
             camara.lookAt(0, 0, 0);
+            if (skyboxState === 'night') {
+                lampAny.remove(lightNighs);
+                lampAny2.remove(lightNighs2);
+                lampAny3.remove(lightNighs3);
+                lampAny4.remove(lightNighs4);
+            }
         }
         console.log(cs)
     }
@@ -739,7 +745,7 @@ function update() {
             circleMesh13, circleMesh14, circleMesh15, circleMesh16, circleMesh17,
             circleMesh18, circleMesh19, circleMesh20, circleMesh21, circleMesh22,
             circleMesh23, circleMesh24, circleMesh25, circleMesh26
-        ];
+    ];
 
         for (let i = 0; i < circleMeshes.length; i++) {
             const circleCenter = circleMeshes[i].position.clone();
@@ -1113,6 +1119,65 @@ function FirstcreateLamp() {
 } const firstlamp = FirstcreateLamp();
 
 
+function criarSemaforoHorizontal() {
+    // Criar o objeto do semáforo
+    var semaforo = new THREE.Object3D();
+  
+    // Criar a parte de cima do semáforo (luz vermelha)
+    var parteSuperiorMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    var parteSuperiorGeometria = new THREE.CircleGeometry(0.25, 32, 32);
+    var parteSuperior = new THREE.Mesh(parteSuperiorGeometria, parteSuperiorMaterial);
+    semaforo.add(parteSuperior);
+  
+    // Criar a luz vermelha
+    var luzVermelha = new THREE.PointLight(0xff0000, 1, 10);
+    luzVermelha.position.y = 0.5;
+    semaforo.add(luzVermelha);
+  
+    // Configurar a sombra da luz
+    luzVermelha.castShadow = true;
+    luzVermelha.shadow.mapSize.width = 512;
+    luzVermelha.shadow.mapSize.height = 512;
+    luzVermelha.shadow.camera.near = 0.5;
+    luzVermelha.shadow.camera.far = 500;
+  
+    // Função para alternar a cor da luz e da geometria
+    function alternarCores() {
+      var corAtual = parteSuperior.material.color.getHex();
+      if (corAtual === 0xff0000) {
+        // Se a cor atual é vermelha, alterna para preto
+        parteSuperior.material.color.setHex(0x000000); // Preto
+        luzVermelha.color.setHex(0x000000); // Preto
+      } else {
+        // Se a cor atual é preta, alterna para vermelho
+        parteSuperior.material.color.setHex(0xff0000); // Vermelho
+        luzVermelha.color.setHex(0xff0000); // Vermelho
+      }
+    }
+  
+  
+    // Função para iniciar a animação
+    function iniciarAnimacao() {
+      animacaoInterval = setInterval(function () {
+        alternarCores();
+      }, 1000); // Intervalo de 1 segundo para alternar as cores
+    }
+  
+    // Iniciar a animação
+    iniciarAnimacao();
+  
+    // Retornar o objeto do semáforo
+    return semaforo;
+  }
+  
+  // Criar três semáforos horizontais
+  var semaforo1 = criarSemaforoHorizontal();
+  var semaforo2 = criarSemaforoHorizontal();
+  var semaforo3 = criarSemaforoHorizontal();
+  
+
+
+
 function createLamp() {
     // Cria um grupo para o candeeiro
     var lampAny = new THREE.Group();
@@ -1397,6 +1462,7 @@ function lapUpdate() {
         updateCounter();
         speed += speed - 0.14;
         crossedFinishLine = true; // Atualiza a variável de controle
+
     }
 
     if (!carCrossedFinishLine) {
@@ -1458,6 +1524,17 @@ function Start() {
     //Heli
     heli.rotation.x = Math.PI / 2;
 
+
+
+    // Posicionar os semáforos
+    semaforo1.position.set(-0.3, 21, -14.1);
+    semaforo2.position.set(-0.3, 20, -14.1);
+    semaforo3.position.set(-0.3, 19, -14.1);
+    semaforo1.rotation.y = -Math.PI/2;
+    semaforo2.rotation.y = -Math.PI/2;
+    semaforo3.rotation.y = -Math.PI/2;
+
+
     hideRearView();
     cena.add(ambientLightday)
     cena.add(skybox);
@@ -1477,6 +1554,12 @@ function Start() {
     cena.add(lampAny3);
     cena.add(lampAny4);
     cena.add(firstlamp);
+    cena.add(semaforo1);
+    cena.add(semaforo2);
+    cena.add(semaforo3);
+
+
+ 
 
     car.position.set(-3, 20, -19);
     wheel.position.set(-3, -10, -19);
