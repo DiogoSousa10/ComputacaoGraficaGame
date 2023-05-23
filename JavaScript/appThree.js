@@ -691,7 +691,7 @@ function startGame() {
     speed = 0.15;
     count = 0;
     updateCounter();
-    car.position.set(-3, 20, -19);
+    car.position.set(-10, 20, -19);
     car.rotation.z = -Math.PI / 60; //TENHO MESMO QUE MELHORAR ISTO
     // outras lógicas para começar o jogo...
 }
@@ -1432,7 +1432,7 @@ function updateCounter() {
 }
 
 var count = 0;
-var flagMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, visible: false });
+var flagMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, visible: true });
 var flagGeometry = new THREE.BoxBufferGeometry(10, 1, 2);
 var lapcount = new THREE.Mesh(flagGeometry, flagMaterial);
 
@@ -1443,34 +1443,59 @@ lapcount.rotation.z = Math.PI / 2
 var crossedFinishLine = false; // Variável de controle
 var carPreviousPosition = new THREE.Vector3(); // Posição anterior do carro
 
+var checkpointMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, visible: true });
+var checkpointGeometry = new THREE.BoxBufferGeometry(10, 1, 2);
+
+var checkpoint1 = new THREE.Mesh(checkpointGeometry, checkpointMaterial);
+checkpoint1.rotation.z = Math.PI /2;
+// Posicione os checkpoints adequadamente
+checkpoint1.position.set(-65, 33.5, -19);
+
+cena.add(checkpoint1);
+var checkpoints = [checkpoint1,lapcount]; // Checkpoints na ordem correta
+
+var currentCheckpoint = 0; // Variável para controlar o checkpoint atual
+
 function lapUpdate() {
     const carPosition = new THREE.Vector3();
     car.getWorldPosition(carPosition);
 
     const carBoundingBox = new THREE.Box3().setFromObject(car);
-    const lapcountfinal = new THREE.Box3().setFromObject(lapcount);
 
-    const carCrossedFinishLine = carBoundingBox.intersectsBox(lapcountfinal);
-    const carDirection = carPosition.clone().sub(carPreviousPosition).normalize();
-    const lapcountNormal = new THREE.Vector3(0, 1, 0); // Assumindo que a linha de chegada está orientada verticalmente
+    const checkpoint = checkpoints[currentCheckpoint];
+    const checkpointBoundingBox = new THREE.Box3().setFromObject(checkpoint);
 
-    const angle = carDirection.angleTo(lapcountNormal);
-
-    // Verifica se o carro cruzou a linha de chegada e está se movendo na direção correta (ângulo próximo de zero)
-    if (carCrossedFinishLine && !crossedFinishLine) {
-        count++;
-        updateCounter();
-        speed += speed - 0.14;
-        crossedFinishLine = true; // Atualiza a variável de controle
-
+    if (carBoundingBox.intersectsBox(checkpointBoundingBox)) {
+        if (checkpoint.visible) {
+            if (currentCheckpoint === checkpoints.length - 1) {
+                // O carro cruzou o último checkpoint, indicando uma volta completa
+                count++;
+                updateCounter();
+                speed += speed - 0.14;
+                resetCheckpoints();
+            } else {
+                // Avança para o próximo checkpoint
+                checkpoint.visible = false;
+                currentCheckpoint++;
+                checkpoints[currentCheckpoint].visible = true;
+            }
+        }
     }
 
-    if (!carCrossedFinishLine) {
-        crossedFinishLine = false; // Reseta a variável de controle
-    }
-
-    carPreviousPosition.copy(carPosition); // Atualiza a posição anterior do carro
+    carPreviousPosition.copy(carPosition);
 }
+
+function resetCheckpoints() {
+    // Redefine a visibilidade de todos os checkpoints
+    for (let i = 0; i < checkpoints.length; i++) {
+        const checkpoint = checkpoints[i];
+        checkpoint.visible = (i === 0); // Define o primeiro checkpoint como visível, os demais como invisíveis
+    }
+
+    currentCheckpoint = 0; // Reinicia para o primeiro checkpoint
+}
+
+
 
 
 
@@ -1561,8 +1586,6 @@ function Start() {
 
  
 
-    car.position.set(-3, 20, -19);
-    wheel.position.set(-3, -10, -19);
 
 
     tree.position.set(20, 50, -10);
