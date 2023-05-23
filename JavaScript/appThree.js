@@ -1432,7 +1432,7 @@ function updateCounter() {
 }
 
 var count = 0;
-var flagMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, visible: true });
+var flagMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, visible: false });
 var flagGeometry = new THREE.BoxBufferGeometry(10, 1, 2);
 var lapcount = new THREE.Mesh(flagGeometry, flagMaterial);
 
@@ -1443,7 +1443,7 @@ lapcount.rotation.z = Math.PI / 2
 var crossedFinishLine = false; // Variável de controle
 var carPreviousPosition = new THREE.Vector3(); // Posição anterior do carro
 
-var checkpointMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, visible: true });
+var checkpointMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, visible: false });
 var checkpointGeometry = new THREE.BoxBufferGeometry(10, 1, 2);
 
 var checkpoint1 = new THREE.Mesh(checkpointGeometry, checkpointMaterial);
