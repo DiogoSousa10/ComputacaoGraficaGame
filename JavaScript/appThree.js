@@ -75,10 +75,15 @@ if (cs == 1) {
 
 //-------------------------------------------------
 // Set up renderer
+
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth - 15, window.innerHeight - 20);
 renderer.render(cena, camara);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
+// renderer.shadowMap.enabled = true;
+// renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 function showRearView() {
     rearViewRenderer.setSize(window.innerWidth / 2, window.innerHeight / 6); // Define o tamanho do retrovisor visível
@@ -404,18 +409,18 @@ function createTrack() {
 
         const materialtrack = new THREE.MeshPhongMaterial({ map: texturetrack });
 
-        object.traverse(function(child) {
+        object.traverse(function (child) {
             if (child instanceof THREE.Mesh) {
                 child.material = materialtrack; // Corrigido: use materialtrack em vez de material
             }
         });
 
-        
+
 
         // Adiciona o objeto carregado como filho do objeto THREE.Object3D()
         object3D.add(object);
 
-        
+
 
         // Define a posição, rotação e escala do objeto THREE.Object3D()
         object3D.position.set(0, 0, 0);
@@ -455,6 +460,18 @@ var textura = new THREE.TextureLoader().load('./Images/boxImage.jpg')
 var materialTextura = new THREE.MeshStandardMaterial({ map: textura });
 
 
+//SOMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+var audioListener = new THREE.AudioListener();
+cena.add(audioListener);
+
+var soundLoader = new THREE.AudioLoader();
+var sound = new THREE.Audio(audioListener);
+
+soundLoader.load('./Sons/buzina.mp3', function (buffer) {
+    sound.setBuffer(buffer);
+    sound.setLoop(false); // Faça com que o som não seja repetido.
+    sound.setVolume(0.5);
+});
 
 //Mecanismo atraves do teclado (mexer o objeto) ----------------------------------------------------------------------------
 document.addEventListener("keydown", onDocumentKeyDown, false);
@@ -500,6 +517,11 @@ function onDocumentKeyDown(event) {
         keys.a = true;
     } else if (keyCode == 68) {
         keys.d = true;
+    } else if (keyCode == 86 || keyCode == 118) { // 86 is 'V', 118 is 'v'
+        console.log("entrei");
+        if (!sound.isPlaying) { // Adicione esta verificação para tocar o som apenas se ele não estiver já tocando
+            sound.play();
+        }
     }
 }
 
@@ -745,7 +767,7 @@ function update() {
             circleMesh13, circleMesh14, circleMesh15, circleMesh16, circleMesh17,
             circleMesh18, circleMesh19, circleMesh20, circleMesh21, circleMesh22,
             circleMesh23, circleMesh24, circleMesh25, circleMesh26
-    ];
+        ];
 
         for (let i = 0; i < circleMeshes.length; i++) {
             const circleCenter = circleMeshes[i].position.clone();
@@ -859,9 +881,11 @@ function createTree() {
     tree.position.set(0, 0, 0);
     tree.rotation.x = Math.PI / 2;
 
+
+    tree.castShadow = true
+    tree.receiveShadow = true
     // Adiciona a árvore à cena
     cena.add(tree);
-
     return tree;
 } const tree = createTree();
 
@@ -1054,20 +1078,21 @@ function updateHeli() {
 
 function createGrass(width, height, x, y, z, texture) {
     const geometry = new THREE.PlaneGeometry(width, height, 1000, 10);
-    const material = new THREE.MeshLambertMaterial({ map: texture });
+    const material = new THREE.MeshPhongMaterial({ map: texture });
     const mesh = new THREE.Mesh(geometry, material);
-
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
     mesh.position.set(x, y, z);
-
 
     return mesh;
 }
 
 function createGrasswithOpac(width, height, x, y, z, texture) {
     const geometry = new THREE.PlaneGeometry(width, height, 1000, 10);
-    const material = new THREE.MeshLambertMaterial({ map: texture });
+    const material = new THREE.MeshPhongMaterial({ map: texture });
     const mesh = new THREE.Mesh(geometry, material);
-
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
     mesh.position.set(x, y, z);
     mesh.material.transparent = true;
     mesh.material.opacity = 0.8;
@@ -1122,59 +1147,59 @@ function FirstcreateLamp() {
 function criarSemaforoHorizontal() {
     // Criar o objeto do semáforo
     var semaforo = new THREE.Object3D();
-  
+
     // Criar a parte de cima do semáforo (luz vermelha)
     var parteSuperiorMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
     var parteSuperiorGeometria = new THREE.CircleGeometry(0.25, 32, 32);
     var parteSuperior = new THREE.Mesh(parteSuperiorGeometria, parteSuperiorMaterial);
     semaforo.add(parteSuperior);
-  
+
     // Criar a luz vermelha
     var luzVermelha = new THREE.PointLight(0xff0000, 1, 10);
     luzVermelha.position.y = 0.5;
     semaforo.add(luzVermelha);
-  
+
     // Configurar a sombra da luz
     luzVermelha.castShadow = true;
     luzVermelha.shadow.mapSize.width = 512;
     luzVermelha.shadow.mapSize.height = 512;
     luzVermelha.shadow.camera.near = 0.5;
     luzVermelha.shadow.camera.far = 500;
-  
+
     // Função para alternar a cor da luz e da geometria
     function alternarCores() {
-      var corAtual = parteSuperior.material.color.getHex();
-      if (corAtual === 0xff0000) {
-        // Se a cor atual é vermelha, alterna para preto
-        parteSuperior.material.color.setHex(0x000000); // Preto
-        luzVermelha.color.setHex(0x000000); // Preto
-      } else {
-        // Se a cor atual é preta, alterna para vermelho
-        parteSuperior.material.color.setHex(0xff0000); // Vermelho
-        luzVermelha.color.setHex(0xff0000); // Vermelho
-      }
+        var corAtual = parteSuperior.material.color.getHex();
+        if (corAtual === 0xff0000) {
+            // Se a cor atual é vermelha, alterna para preto
+            parteSuperior.material.color.setHex(0x000000); // Preto
+            luzVermelha.color.setHex(0x000000); // Preto
+        } else {
+            // Se a cor atual é preta, alterna para vermelho
+            parteSuperior.material.color.setHex(0xff0000); // Vermelho
+            luzVermelha.color.setHex(0xff0000); // Vermelho
+        }
     }
-  
-  
+
+
     // Função para iniciar a animação
     function iniciarAnimacao() {
-      animacaoInterval = setInterval(function () {
-        alternarCores();
-      }, 1000); // Intervalo de 1 segundo para alternar as cores
+        animacaoInterval = setInterval(function () {
+            alternarCores();
+        }, 1000); // Intervalo de 1 segundo para alternar as cores
     }
-  
+
     // Iniciar a animação
     iniciarAnimacao();
-  
+
     // Retornar o objeto do semáforo
     return semaforo;
-  }
-  
-  // Criar três semáforos horizontais
-  var semaforo1 = criarSemaforoHorizontal();
-  var semaforo2 = criarSemaforoHorizontal();
-  var semaforo3 = criarSemaforoHorizontal();
-  
+}
+
+// Criar três semáforos horizontais
+var semaforo1 = criarSemaforoHorizontal();
+var semaforo2 = criarSemaforoHorizontal();
+var semaforo3 = criarSemaforoHorizontal();
+
 
 
 
@@ -1301,6 +1326,7 @@ function createLightforNight() {
     var lightDay = new THREE.Mesh(geometry, material);
     lightDay.position.copy(spotlightday.position); // Posiciona a esfera na mesma posição do holofote
 
+    lightDay.castShadow = true
     cena.add(lightDay); // Adicione a esfera à cena
 
     return lightDay;
@@ -1324,7 +1350,8 @@ function createLightforDay() {
 
     var lightDay = new THREE.Mesh(geometry, material);
     lightDay.position.copy(spotlightday.position); // Posiciona a esfera na mesma posição do holofote
-
+    lightDay.castShadow = true;
+    lightDay.receiveShadow = true;
     cena.add(lightDay); // Adicione a esfera à cena
 
     return lightDay;
@@ -1447,12 +1474,12 @@ var checkpointMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, visible:
 var checkpointGeometry = new THREE.BoxBufferGeometry(10, 1, 2);
 
 var checkpoint1 = new THREE.Mesh(checkpointGeometry, checkpointMaterial);
-checkpoint1.rotation.z = Math.PI /2;
+checkpoint1.rotation.z = Math.PI / 2;
 // Posicione os checkpoints adequadamente
 checkpoint1.position.set(-65, 33.5, -19);
 
 cena.add(checkpoint1);
-var checkpoints = [checkpoint1,lapcount]; // Checkpoints na ordem correta
+var checkpoints = [checkpoint1, lapcount]; // Checkpoints na ordem correta
 
 var currentCheckpoint = 0; // Variável para controlar o checkpoint atual
 
@@ -1549,15 +1576,15 @@ function Start() {
     //Heli
     heli.rotation.x = Math.PI / 2;
 
-
+    tree.receiveShadow = true
 
     // Posicionar os semáforos
     semaforo1.position.set(-0.3, 21, -14.1);
     semaforo2.position.set(-0.3, 20, -14.1);
     semaforo3.position.set(-0.3, 19, -14.1);
-    semaforo1.rotation.y = -Math.PI/2;
-    semaforo2.rotation.y = -Math.PI/2;
-    semaforo3.rotation.y = -Math.PI/2;
+    semaforo1.rotation.y = -Math.PI / 2;
+    semaforo2.rotation.y = -Math.PI / 2;
+    semaforo3.rotation.y = -Math.PI / 2;
 
 
     hideRearView();
@@ -1584,7 +1611,7 @@ function Start() {
     cena.add(semaforo3);
 
 
- 
+
 
 
 
@@ -1604,7 +1631,7 @@ function loop() {
     lapUpdate(); // Adicione esta linha para verificar as voltas
     renderer.render(cena, camara);
     rearViewRenderer.render(cena, rearViewCamera)
-   
+
     requestAnimationFrame(loop);
 }
 
