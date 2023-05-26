@@ -47,8 +47,8 @@ rearViewRenderer.domElement.style.borderRadius = '10px'
 var camaraO = new THREE.OrthographicCamera(
     cameraWidth / -3.5, // left
     cameraWidth / 3.5, // right
-    cameraHeight / 3.5, // top
-    cameraHeight / -3.5, // bottom
+    cameraHeight / 4, // top
+    cameraHeight / -3, // bottom
     0, // near plane
     1000, // far plane
 );
@@ -154,6 +154,10 @@ function Car() {
     );
     backWheel.position.z = 6;
     backWheel.position.x = -18;
+
+    backWheel.castShadow = true;
+    backWheel.receiveShadow = true;
+
     car.add(backWheel);
 
 
@@ -163,6 +167,10 @@ function Car() {
     );
     frontWheel.position.z = 6;
     frontWheel.position.x = 18;
+
+    frontWheel.castShadow = true;
+    frontWheel.receiveShadow = true;
+
     car.add(frontWheel);
 
     // Carregar a textura da imagem das jantes
@@ -211,6 +219,10 @@ function Car() {
         new THREE.MeshLambertMaterial({ color: pickRandom(vehicleColors) })
     );
     main.position.z = 12;
+
+    main.castShadow = true;
+    main.receiveShadow = true;
+
     car.add(main);
 
     const cabin = new THREE.Mesh(
@@ -219,6 +231,10 @@ function Car() {
     );
     cabin.position.x = -6;
     cabin.position.z = 25.5;
+
+    cabin.castShadow = true;
+    cabin.receiveShadow = true;
+
     car.add(cabin);
 
     const racingline = new THREE.Mesh(
@@ -226,6 +242,8 @@ function Car() {
         new THREE.MeshLambertMaterial({ color: 0x000000 })
     );
     racingline.position.z = 12;
+
+
     car.add(racingline);
 
     const roof = new THREE.Mesh(
@@ -234,6 +252,10 @@ function Car() {
     );
     roof.position.set(-6, 0, 25);
     roof.rotation.z = -Math.PI / 2;
+
+    roof.castShadow = true;
+    roof.receiveShadow = true;
+
     car.add(roof);
 
 
@@ -411,9 +433,15 @@ function createTrack() {
 
         object.traverse(function (child) {
             if (child instanceof THREE.Mesh) {
-                child.material = materialtrack; // Corrigido: use materialtrack em vez de material
+                child.material = materialtrack;
+
+                // Habilitar as sombras
+                child.castShadow = true;
+                child.receiveShadow = true;
             }
         });
+
+
 
 
 
@@ -428,6 +456,8 @@ function createTrack() {
         object3D.scale.set(0.6, 0.6, 0.6);
         object3D.position.set(2, 0, -20);
 
+
+
         cena.add(object3D);
         // Cria a geometria do plano
         const geometry = new THREE.PlaneGeometry(100, 100);
@@ -441,6 +471,9 @@ function createTrack() {
         const mesh = new THREE.Mesh(geometry, material);
 
         mesh.scale.set(0.1, 0.099, 0.5);
+
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
 
         // Posiciona a malha no chão
         mesh.position.set(-4, 19.2, -19.75);
@@ -866,11 +899,17 @@ function createTree() {
     const trunkMaterial = new THREE.MeshLambertMaterial({ color: 0x8B4513 });
     const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
 
+
+    trunk.castShadow = true
+    trunk.receiveShadow = true
     // Cria a copa da árvore
     const leavesGeometry = new THREE.SphereGeometry(8, 8, 8);
     const leavesMaterial = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
     const leaves = new THREE.Mesh(leavesGeometry, leavesMaterial);
     leaves.position.set(0, 15, 0);
+
+    leaves.castShadow = true
+    leaves.receiveShadow = true
 
     // Cria um grupo para a árvore e adiciona o tronco e a copa como filhos
     const tree = new THREE.Group();
@@ -882,13 +921,13 @@ function createTree() {
     tree.rotation.x = Math.PI / 2;
 
 
-    tree.castShadow = true
-    tree.receiveShadow = true
     // Adiciona a árvore à cena
     cena.add(tree);
     return tree;
-} const tree = createTree();
-
+}
+const tree = createTree();
+const tree2 = createTree();
+//const tree2 = createTree();
 //Criar uma arvore (fim)---------------------------------------------------------------------------------------------
 //Criar uma arvore (fim)---------------------------------------------------------------------------------------------
 //Criar uma arvore (fim)---------------------------------------------------------------------------------------------
@@ -909,7 +948,11 @@ function addBoard() {
     mesh.rotateX(Math.PI / 2);
 
     // Posiciona a malha na beira da pista
-    mesh.position.set(80, 50, -18);
+    mesh.position.set(60, 30, -18);
+
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+
 
     // Adiciona a malha à cena
     cena.add(mesh);
@@ -933,7 +976,10 @@ function addBoard2() {
     mesh.rotateX(Math.PI / 2);
 
     // Posiciona a malha na beira da pista
-    mesh.position.set(70, 50, -18);
+    mesh.position.set(50, 30, -18);
+
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
 
     // Adiciona a malha à cena
     cena.add(mesh);
@@ -980,6 +1026,8 @@ function createHeli() {
     var body = new THREE.Mesh(bodyGeometry, bodyMaterial);
     body.position.set(0, 0, 0);
     heli.add(body);
+    body.castShadow = true
+    body.receiveShadow = true
 
     // Cria a geometria do rotor principal
     var mainRotorGeometry = new THREE.BoxGeometry(10, 0.2, 0.2);
@@ -987,7 +1035,8 @@ function createHeli() {
     var mainRotor = new THREE.Mesh(mainRotorGeometry, mainRotorMaterial);
     mainRotor.position.set(0, 1, 0);
     heli.add(mainRotor);
-
+    mainRotor.castShadow = true
+    mainRotor.receiveShadow = true
 
     // Cria a geometria da cauda do helicóptero
     var tailGeometry = new THREE.BoxGeometry(0.4, 1, 7);
@@ -995,7 +1044,8 @@ function createHeli() {
     var tail = new THREE.Mesh(tailGeometry, tailMaterial);
     tail.position.set(0, 0, -4);
     heli.add(tail);
-
+    tail.castShadow = true
+    tail.receiveShadow = true
 
     // Define a geometria
     var tailRotorGeometry = new THREE.BoxGeometry(5, 0.2, 0.2);
@@ -1005,7 +1055,8 @@ function createHeli() {
     tailRotor.position.set(0.45, 0, -6);
     tailRotor.rotation.z = Math.PI / 2;
     heli.add(tailRotor);
-
+    tailRotor.castShadow = true
+    tailRotor.receiveShadow = true
 
 
     // Cria as geometrias das janelas
@@ -1110,9 +1161,17 @@ function FirstcreateLamp() {
     var base = new THREE.Mesh(baseGeometry, baseMaterial);
     var base2 = new THREE.Mesh(baseGeometry, baseMaterial);
     base.position.y = 0.15;
+
+    base.castShadow = true;
+    base.receiveShadow = true;
+
     lamp.add(base);
     base2.position.y = 0.15;
     base2.position.z = -6;
+
+    base2.castShadow = true;
+    base2.receiveShadow = true;
+
     lamp.add(base2);
 
     // Cria o poste do candeeiro
@@ -1121,10 +1180,17 @@ function FirstcreateLamp() {
     var post = new THREE.Mesh(postGeometry, postMaterial);
     var post2 = new THREE.Mesh(postGeometry, postMaterial);
 
+    post.castShadow = true;
+    post.receiveShadow = true;
+
     post.position.y = 1;
     lamp.add(post);
     post2.position.y = 1;
     post2.position.z = -6;
+
+    post2.castShadow = true;
+    post2.receiveShadow = true;
+
     lamp.add(post2);
 
     var sideGeometry = new THREE.CylinderGeometry(0.1, 0.1, 6, 16);
@@ -1132,6 +1198,10 @@ function FirstcreateLamp() {
     sideup.position.y = 2;
     sideup.position.z = -3;
     sideup.rotation.x = Math.PI / 2;
+
+    sideup.castShadow = true;
+    sideup.receiveShadow = true;
+
     lamp.add(sideup);
 
 
@@ -1152,11 +1222,19 @@ function criarSemaforoHorizontal() {
     var parteSuperiorMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
     var parteSuperiorGeometria = new THREE.CircleGeometry(0.25, 32, 32);
     var parteSuperior = new THREE.Mesh(parteSuperiorGeometria, parteSuperiorMaterial);
+
+    parteSuperior.castShadow = true;
+    parteSuperior.receiveShadow = true;
+
     semaforo.add(parteSuperior);
 
     // Criar a luz vermelha
     var luzVermelha = new THREE.PointLight(0xff0000, 1, 10);
     luzVermelha.position.y = 0.5;
+
+    // luzVermelha.castShadow = true;
+    // luzVermelha.receiveShadow = true;
+
     semaforo.add(luzVermelha);
 
     // Configurar a sombra da luz
@@ -1212,6 +1290,11 @@ function createLamp() {
     var baseMaterial = new THREE.MeshPhongMaterial({ color: 0x333333 });
     var base = new THREE.Mesh(baseGeometry, baseMaterial);
     base.position.y = 0.15;
+
+    base.castShadow = true;
+    base.receiveShadow = true;
+
+
     lampAny.add(base);
 
     // Cria o poste do candeeiro
@@ -1219,6 +1302,10 @@ function createLamp() {
     var postMaterial = new THREE.MeshPhongMaterial({ color: 0x999999 });
     var post = new THREE.Mesh(postGeometry, postMaterial);
     post.position.y = 1;
+
+    post.castShadow = true;
+    post.receiveShadow = true;
+
     lampAny.add(post);
 
     // Cria a lâmpada do candeeiro
@@ -1226,6 +1313,10 @@ function createLamp() {
     var bulbMaterial = new THREE.MeshPhongMaterial({ color: 0xffff00 });
     var bulb = new THREE.Mesh(bulbGeometry, bulbMaterial);
     bulb.position.y = 2.5;
+
+    bulb.castShadow = true;
+    bulb.receiveShadow = true;
+
     lampAny.add(bulb);
 
 
@@ -1246,7 +1337,14 @@ function createLamp() {
 const lampAny2 = createLamp();
 const lampAny3 = createLamp();
 const lampAny4 = createLamp();
-
+const lampAny5 = createLamp();
+const lampAny6 = createLamp();
+const lampAny7 = createLamp();
+const lampAny8 = createLamp();
+const lampAny9 = createLamp();
+const lampAny10 = createLamp();
+const lampAny11 = createLamp();
+const lampAny12 = createLamp();
 
 //SKYBOX DE DIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 var texture_dir = new THREE.TextureLoader().load('./Images/SkyBox/clouds1_west.png');
@@ -1309,8 +1407,20 @@ var spotlightnight; // Holofote para a noite
 var skyboxState = 'day'; // Estado inicial do skybox (dia)
 
 function createLightforNight() {
-    spotlightday = new THREE.DirectionalLight(0xffffff, 1.5);
-    spotlightday.position.set(180, 120, 140); // Posição do holofote
+    spotlightday = new THREE.DirectionalLight(0xffffff, 0.8);
+    spotlightday.position.set(60, 60, 50); // Posição do holofote
+
+    // Habilitar as sombras na luz
+    spotlightday.castShadow = true;
+
+    // Ajustar os parâmetros da câmera de sombras
+    spotlightday.shadow.mapSize.width = 2024; // resolução da sombra
+    spotlightday.shadow.mapSize.height = 2024; // resolução da sombra
+    spotlightday.shadow.camera.left = -60;
+    spotlightday.shadow.camera.right = 60;
+    spotlightday.shadow.camera.top = 80;
+    spotlightday.shadow.camera.bottom = -60;
+    spotlightday.shadow.camera.updateProjectionMatrix();
 
     var radius = 10; // Raio da esfera
     var widthSegments = 32; // Número de segmentos horizontais. Opcional, mas quanto maior, mais "suave" a esfera
@@ -1326,16 +1436,29 @@ function createLightforNight() {
     var lightDay = new THREE.Mesh(geometry, material);
     lightDay.position.copy(spotlightday.position); // Posiciona a esfera na mesma posição do holofote
 
-    lightDay.castShadow = true
     cena.add(lightDay); // Adicione a esfera à cena
 
     return lightDay;
 }
 
 const nightLight = createLightforNight();
+
+
 function createLightforDay() {
     spotlightday = new THREE.DirectionalLight(0xffffff, 1.5);
-    spotlightday.position.set(180, 120, 140); // Posição do holofote
+    spotlightday.position.set(60, 60, 50); // Posição do holofote
+
+    // Habilitar as sombras na luz
+    spotlightday.castShadow = true;
+
+    // Ajustar os parâmetros da câmera de sombras
+    spotlightday.shadow.mapSize.width = 2024; // resolução da sombra
+    spotlightday.shadow.mapSize.height = 2024; // resolução da sombra
+    spotlightday.shadow.camera.left = -100;
+    spotlightday.shadow.camera.right = 100;
+    spotlightday.shadow.camera.top = 80;
+    spotlightday.shadow.camera.bottom = -60;
+    spotlightday.shadow.camera.updateProjectionMatrix();
 
     var radius = 10; // Raio da esfera
     var widthSegments = 32; // Número de segmentos horizontais. Opcional, mas quanto maior, mais "suave" a esfera
@@ -1350,9 +1473,12 @@ function createLightforDay() {
 
     var lightDay = new THREE.Mesh(geometry, material);
     lightDay.position.copy(spotlightday.position); // Posiciona a esfera na mesma posição do holofote
-    lightDay.castShadow = true;
-    lightDay.receiveShadow = true;
+
+    lightDay.castShadow = false;
+    lightDay.receiveShadow = false;
+
     cena.add(lightDay); // Adicione a esfera à cena
+    cena.add(spotlightday); // Adicione a luz à cena
 
     return lightDay;
 }
@@ -1382,6 +1508,14 @@ var lightNighs4 = new THREE.PointLight(0xffffff, 6, 200);
 
 var ambientLightday = new THREE.AmbientLight(0x404040, 1); // luz suave branca
 var ambientLightnight = new THREE.AmbientLight(0x404040, 0.5); // luz suave branca
+
+
+
+
+
+
+
+
 
 window.addEventListener('keydown', function (event) {
     if (event.key === 't') { // Tecla "t" para alternar os skyboxes
@@ -1525,7 +1659,75 @@ function resetCheckpoints() {
 
 
 
+//ANIMAÇÃO PARA O SOL ANDARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
 
+//ANIMAÇÃO PARA O SOL ANDARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+// Variável para controlar o estado da animação
+let isAnimating = false;
+
+// Ângulo atual do sol
+let currentAngle = 0;
+
+// Duração total da animação em milissegundos
+const duration = 10000;
+
+// Ângulo completo da rotação (360 graus em radianos)
+const fullRotation = 2 * Math.PI;
+
+// Altura do sol acima do plano
+const height = 20;
+
+// Raio da trajetória do sol
+const radiusSun = 100;
+
+// Coordenadas da posição do sol
+const positionX = 0;
+const positionY = 0;
+const positionZ = 50;
+
+function updateSunPosition() {
+    if (isAnimating) {
+        // Incrementa o ângulo atual com base no tempo decorrido
+        const elapsedTime = Date.now() - startTime;
+        const angularSpeed = fullRotation / duration; // velocidade angular (radianos por ms)
+        currentAngle += elapsedTime * angularSpeed;
+
+        // Calcula a nova posição do sol
+        const newX = Math.cos(currentAngle) * radiusSun;
+        const newY = Math.sin(currentAngle) * radiusSun;
+        const newZ = positionZ;
+
+        // Atualiza a posição do sol
+        lightDay.position.set(newX + positionX, newY + positionY, newZ);
+
+        spotlightday.position.copy(lightDay.position);
+
+
+        // Verifica se a animação foi concluída
+        if (currentAngle >= fullRotation) {
+            isAnimating = false;
+            currentAngle = 0; // Reset the angle
+        }
+
+        // Update the start time for the next frame
+        startTime = Date.now();
+    }
+}
+
+// Função de clique para iniciar a animação ao pressionar a letra X
+function handleClick(event) {
+    if (event.keyCode === 88) { // Código da tecla X
+        if (!isAnimating) {
+            isAnimating = true;
+            startTime = Date.now();
+            currentAngle = 0; // Reset the angle at the start of the animation
+        }
+    }
+}
+
+
+// Adicione um ouvinte de eventos para capturar o clique da tecla X
+window.addEventListener('keydown', handleClick);
 
 function Start() {
 
@@ -1551,11 +1753,9 @@ function Start() {
     grass3.position.x = -54; // posição do chão
     grass3.position.y = 6; // posição do chão
     grass3.position.z = -20; // posição da relva na pista
-
     gravel.position.x = -57.96; // posição do chão
     gravel.position.y = 0; // posição do chão
     gravel.position.z = -20.01; // posição da relva na pista
-
     gravel2.position.x = 51.9; // posição do chão
     gravel2.position.y = 0; // posição do chão
     gravel2.position.z = -20.05; // posição da relva na pista
@@ -1564,19 +1764,32 @@ function Start() {
     lampAny.position.x = -7;
     lampAny2.position.x = -40;
     lampAny2.position.y = 16;
-
-
     lampAny3.position.x = 35;
     lampAny3.position.y = 12;
-
     lampAny4.position.x = 62;
     lampAny4.position.y = 12.5;
-
+    lampAny5.position.x = -50;
+    lampAny5.position.y = -10;
+    lampAny6.position.x = -20;
+    lampAny6.position.y = -22;
+    lampAny7.position.x = 62;
+    lampAny7.position.y = -22;
+    lampAny8.position.x = 32;
+    lampAny8.position.y = -22;
+    lampAny9.position.x = 7;
+    lampAny9.position.y = -22;
+    lampAny10.position.x = -77;
+    lampAny10.position.y = 7;
+    lampAny11.position.x = 7;
+    lampAny11.position.y = -22;
+    lampAny12.position.x = 81;
+    lampAny12.position.y = -5;
     firstlamp.position.set(0, 11, -19.8)
+
+
     //Heli
     heli.rotation.x = Math.PI / 2;
 
-    tree.receiveShadow = true
 
     // Posicionar os semáforos
     semaforo1.position.set(-0.3, 21, -14.1);
@@ -1591,7 +1804,17 @@ function Start() {
     cena.add(ambientLightday)
     cena.add(skybox);
     cena.add(spotlightday);
+
+    // Crie um helper para a luz
+    const spotlightHelper = new THREE.SpotLightHelper(spotlightday);
+
+    // Adicione o helper à cena
+    cena.add(spotlightHelper);
+
+
+
     cena.add(tree);
+    cena.add(tree2);
     cena.add(car);
     cena.add(wheel);
     cena.add(track);
@@ -1605,6 +1828,14 @@ function Start() {
     cena.add(lampAny2);
     cena.add(lampAny3);
     cena.add(lampAny4);
+    cena.add(lampAny5);
+    cena.add(lampAny6);
+    cena.add(lampAny7);
+    cena.add(lampAny8);
+    cena.add(lampAny9);
+    cena.add(lampAny10);
+    cena.add(lampAny11);
+    cena.add(lampAny12);
     cena.add(firstlamp);
     cena.add(semaforo1);
     cena.add(semaforo2);
@@ -1613,9 +1844,8 @@ function Start() {
 
 
 
-
-
-    tree.position.set(20, 50, -10);
+    tree.position.set(-60, 10, -10);
+    tree2.position.set(20, -5, -10);
 
     startGame();
     updateCounter();
@@ -1629,6 +1859,7 @@ function loop() {
     tailRotor.rotation.x += 0.1;
     // controls.update(); Serve para a orbit para mexer com o rato na camara.
     lapUpdate(); // Adicione esta linha para verificar as voltas
+    updateSunPosition();
     renderer.render(cena, camara);
     rearViewRenderer.render(cena, rearViewCamera)
 
