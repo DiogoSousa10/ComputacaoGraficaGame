@@ -113,6 +113,17 @@ document.addEventListener("keydown", (event) => {
                 lampAny2.add(lightNighs2);
                 lampAny3.add(lightNighs3);
                 lampAny4.add(lightNighs4);
+                lampAny5.add(lightNighs5);
+                lampAny6.add(lightNighs6);
+                lampAny7.add(lightNighs7);
+                lampAny8.add(lightNighs8);
+                lampAny9.add(lightNighs9);
+                lampAny10.add(lightNighs10);
+                lampAny11.add(lightNighs11);
+                lampAny12.add(lightNighs12);
+
+
+
             }
 
         } else if (cs == 1) {
@@ -125,6 +136,14 @@ document.addEventListener("keydown", (event) => {
                 lampAny2.remove(lightNighs2);
                 lampAny3.remove(lightNighs3);
                 lampAny4.remove(lightNighs4);
+                lampAny5.remove(lightNighs5);
+                lampAny6.remove(lightNighs6);
+                lampAny7.remove(lightNighs7);
+                lampAny8.remove(lightNighs8);
+                lampAny9.remove(lightNighs9);
+                lampAny10.remove(lightNighs10);
+                lampAny11.remove(lightNighs11);
+                lampAny12.remove(lightNighs12);
             }
         }
         console.log(cs)
@@ -1492,11 +1511,29 @@ var lightday = new THREE.PointLight(0xffffff, 2, 10);
 var lightday2 = new THREE.PointLight(0xffffff, 2, 10);
 var lightday3 = new THREE.PointLight(0xffffff, 2, 10);
 var lightday4 = new THREE.PointLight(0xffffff, 2, 10);
+var lightday5 = new THREE.PointLight(0xffffff, 2, 10);
+var lightday6 = new THREE.PointLight(0xffffff, 2, 10);
+var lightday7 = new THREE.PointLight(0xffffff, 2, 10);
+var lightday8 = new THREE.PointLight(0xffffff, 2, 10);
+var lightday9 = new THREE.PointLight(0xffffff, 2, 10);
+var lightday10 = new THREE.PointLight(0xffffff, 2, 10);
+var lightday11 = new THREE.PointLight(0xffffff, 2, 10);
+var lightday12 = new THREE.PointLight(0xffffff, 2, 10);
 
 lightday.position.set(0, 1.5, 0);
 lightday2.position.set(0, 1.5, 0);
 lightday3.position.set(0, 1.5, 0);
 lightday4.position.set(0, 1.5, 0);
+lightday5.position.set(0, 1.5, 0);
+lightday6.position.set(0, 1.5, 0);
+lightday7.position.set(0, 1.5, 0);
+lightday8.position.set(0, 1.5, 0);
+lightday9.position.set(0, 1.5, 0);
+lightday10.position.set(0, 1.5, 0);
+lightday11.position.set(0, 1.5, 0);
+lightday12.position.set(0, 1.5, 0);
+
+
 
 
 // Cria a luz da lâmpada da primeira pessoa de noite
@@ -1504,6 +1541,14 @@ var lightNighs = new THREE.PointLight(0xffffff, 6, 200);
 var lightNighs2 = new THREE.PointLight(0xffffff, 6, 200);
 var lightNighs3 = new THREE.PointLight(0xffffff, 6, 200);
 var lightNighs4 = new THREE.PointLight(0xffffff, 6, 200);
+var lightNighs5 = new THREE.PointLight(0xffffff, 6, 200);
+var lightNighs6 = new THREE.PointLight(0xffffff, 6, 200);
+var lightNighs7 = new THREE.PointLight(0xffffff, 6, 200);
+var lightNighs8 = new THREE.PointLight(0xffffff, 6, 200);
+var lightNighs9 = new THREE.PointLight(0xffffff, 6, 200);
+var lightNighs10 = new THREE.PointLight(0xffffff, 6, 200);
+var lightNighs11 = new THREE.PointLight(0xffffff, 6, 200);
+var lightNighs12 = new THREE.PointLight(0xffffff, 6, 200);
 
 
 var ambientLightday = new THREE.AmbientLight(0x404040, 1); // luz suave branca
@@ -1527,10 +1572,27 @@ window.addEventListener('keydown', function (event) {
                 lightNighs2.position.set(0, 1.5, 0);
                 lightNighs3.position.set(0, 1.5, 0);
                 lightNighs4.position.set(0, 1.5, 0);
+                lightNighs5.position.set(0, 1.5, 0);
+                lightNighs6.position.set(0, 1.5, 0);
+                lightNighs7.position.set(0, 1.5, 0);
+                lightNighs8.position.set(0, 1.5, 0);
+                lightNighs9.position.set(0, 1.5, 0);
+                lightNighs10.position.set(0, 1.5, 0);
+                lightNighs11.position.set(0, 1.5, 0);
+                lightNighs12.position.set(0, 1.5, 0);
+
                 lampAny.add(lightNighs);
                 lampAny2.add(lightNighs2);
                 lampAny3.add(lightNighs3);
                 lampAny4.add(lightNighs4);
+                lampAny5.add(lightNighs5);
+                lampAny6.add(lightNighs6);
+                lampAny7.add(lightNighs7);
+                lampAny8.add(lightNighs8);
+                lampAny9.add(lightNighs9);
+                lampAny10.add(lightNighs10);
+                lampAny11.add(lightNighs11);
+                lampAny12.add(lightNighs12);
             }
             cena.remove(lightDay);  // remove a esfera do dia
             cena.add(nightLight);   // adiciona a esfera da noite
@@ -1541,6 +1603,15 @@ window.addEventListener('keydown', function (event) {
             lampAny2.add(lightday2);
             lampAny3.add(lightday3);
             lampAny4.add(lightday4);
+            lampAny5.add(lightday5);
+            lampAny6.add(lightday6);
+            lampAny7.add(lightday7);
+            lampAny8.add(lightday8);  
+            lampAny9.add(lightday9);
+            lampAny10.add(lightday10);
+            lampAny11.add(lightday11);
+            lampAny12.add(lightday12);
+
             cena.remove(spotlightday);
             cena.remove(skybox);
             cena.add(skybox2);
@@ -1552,6 +1623,14 @@ window.addEventListener('keydown', function (event) {
                 lampAny2.remove(lightNighs2);
                 lampAny3.remove(lightNighs3);
                 lampAny4.remove(lightNighs4);
+                lampAny5.remove(lightNighs5);
+                lampAny6.remove(lightNighs6);
+                lampAny7.remove(lightNighs7);
+                lampAny8.remove(lightNighs8);
+                lampAny9.remove(lightNighs9);
+                lampAny10.remove(lightNighs10);
+                lampAny11.remove(lightNighs11);
+                lampAny12.remove(lightNighs12);
             }
             cena.remove(ambientLightnight)
             cena.add(ambientLightday)
@@ -1559,6 +1638,15 @@ window.addEventListener('keydown', function (event) {
             lampAny2.remove(lightday2)
             lampAny3.remove(lightday3)
             lampAny4.remove(lightday4)
+            lampAny5.remove(lightday5);
+            lampAny6.remove(lightday6);
+            lampAny7.remove(lightday7);
+            lampAny8.remove(lightday8);
+            lampAny9.remove(lightday9);
+            lampAny10.remove(lightday10);
+            lampAny11.remove(lightday11);
+            lampAny12.remove(lightday12);
+
             cena.remove(spotlightnight);
             cena.remove(skybox2);
             cena.add(skybox);
