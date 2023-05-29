@@ -650,6 +650,193 @@ function Bancada() {
 } const rectangle = Bancada();
 
 
+function createDHLBoard()
+{
+    // Cria a geometria do placar
+    const geometry = new THREE.PlaneGeometry(4, 2);
+
+    // Carrega a textura da imagem
+    const texture = new THREE.TextureLoader().load('./Images/DHL.png');
+
+    // Cria o material com a textura da imagem
+    const material = new THREE.MeshPhongMaterial({ map: texture });
+
+    // Cria a malha com a geometria e o material
+    const mesh = new THREE.Mesh(geometry, material);
+
+    mesh.rotateX(Math.PI / 2);
+
+    // Posiciona a malha na beira da pista
+    mesh.position.set(10, 44.9, -19);
+
+
+    // Adiciona a malha à cena
+    cena.add(mesh);
+
+    return mesh;
+}const DHLboard = createDHLBoard();
+
+
+function createRolexBoard()
+{
+    // Cria a geometria do placar
+    const geometry = new THREE.PlaneGeometry(4, 2);
+
+    // Carrega a textura da imagem
+    const texture = new THREE.TextureLoader().load('./Images/Rolex.png');
+
+    // Cria o material com a textura da imagem
+    const material = new THREE.MeshPhongMaterial({ map: texture });
+
+    // Cria a malha com a geometria e o material
+    const mesh = new THREE.Mesh(geometry, material);
+
+    mesh.rotateX(Math.PI / 2);
+
+    // Posiciona a malha na beira da pista
+    mesh.position.set(5, 44.9, -19);
+
+
+    // Adiciona a malha à cena
+    cena.add(mesh);
+
+    return mesh;
+}const Rolexboard = createRolexBoard();
+
+function createAramcoBoard()
+{
+    // Cria a geometria do placar
+    const geometry = new THREE.PlaneGeometry(4, 2);
+
+    // Carrega a textura da imagem
+    const texture = new THREE.TextureLoader().load('./Images/Aramco.jpeg');
+
+    // Cria o material com a textura da imagem
+    const material = new THREE.MeshPhongMaterial({ map: texture });
+
+    // Cria a malha com a geometria e o material
+    const mesh = new THREE.Mesh(geometry, material);
+
+    mesh.rotateX(Math.PI / 2);
+
+    // Posiciona a malha na beira da pista
+    mesh.position.set(0, 44.9, -19);
+
+
+    // Adiciona a malha à cena
+    cena.add(mesh);
+
+    return mesh;
+}const aramcoBoard = createAramcoBoard();
+
+function createPirelliBoard()
+{
+    // Cria a geometria do placar
+    const geometry = new THREE.PlaneGeometry(4, 2);
+
+    // Carrega a textura da imagem
+    const texture = new THREE.TextureLoader().load('./Images/Pirelli.png');
+
+    // Cria o material com a textura da imagem
+    const material = new THREE.MeshPhongMaterial({ map: texture });
+
+    // Cria a malha com a geometria e o material
+    const mesh = new THREE.Mesh(geometry, material);
+
+    mesh.rotateX(Math.PI / 2);
+
+    // Posiciona a malha na beira da pista
+    mesh.position.set(-5, 44.9, -19);
+
+
+    // Adiciona a malha à cena
+    cena.add(mesh);
+
+    return mesh;
+}const Pirelliboard = createPirelliBoard();
+
+
+function createEmiratesBoard()
+{
+    // Cria a geometria do placar
+    const geometry = new THREE.PlaneGeometry(4, 2);
+
+    // Carrega a textura da imagem
+    const texture = new THREE.TextureLoader().load('./Images/Emirates.png');
+
+    // Cria o material com a textura da imagem
+    const material = new THREE.MeshPhongMaterial({ map: texture });
+
+    // Cria a malha com a geometria e o material
+    const mesh = new THREE.Mesh(geometry, material);
+
+    mesh.rotateX(Math.PI / 2);
+
+    // Posiciona a malha na beira da pista
+    mesh.position.set(-10, 44.9, -19);
+
+
+    // Adiciona a malha à cena
+    cena.add(mesh);
+
+    return mesh;
+}const Emiratesboard = createEmiratesBoard();
+
+
+
+function createF1Board()
+{
+    // Cria a geometria do placar
+    const geometry = new THREE.PlaneGeometry(4, 2);
+
+    // Carrega a textura da imagem
+    const texture = new THREE.TextureLoader().load('./Images/Formula1.jpg');
+
+    // Cria o material com a textura da imagem
+    const material = new THREE.MeshPhongMaterial({ map: texture });
+
+    // Cria a malha com a geometria e o material
+    const mesh = new THREE.Mesh(geometry, material);
+
+    mesh.rotateX(Math.PI / 2);
+
+    // Posiciona a malha na beira da pista
+    mesh.position.set(-15, 44.9, -19);
+
+
+    // Adiciona a malha à cena
+    cena.add(mesh);
+
+    return mesh;
+}const F1board = createF1Board();
+
+
+
+function createHeinekenoard()
+{
+    // Cria a geometria do placar
+    const geometry = new THREE.PlaneGeometry(50, 29);
+
+    // Carrega a textura da imagem
+    const texture = new THREE.TextureLoader().load('./Images/Heineken.png');
+
+    // Cria o material com a textura da imagem
+    const material = new THREE.MeshPhongMaterial({ map: texture });
+
+    // Cria a malha com a geometria e o material
+    const mesh = new THREE.Mesh(geometry, material);
+
+
+    // Posiciona a malha na beira da pista
+    mesh.position.set(0, 53, 1.5);
+
+
+    // Adiciona a malha à cena
+    cena.add(mesh);
+
+    return mesh;
+}const Heinekenboard = createHeinekenoard();
+
 
 
 
