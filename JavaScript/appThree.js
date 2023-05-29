@@ -469,6 +469,50 @@ var importer = new THREE.FBXLoader();
 //     })
 // } const ferraricar = createFerrari()
 
+
+function createTruck() {
+    importer.load('./Objetos/M1070 HET.fbx', function (object) {
+        console.log("Número de filhos: ", object.children.length);
+
+        object.remove(object.children[8]);
+        object.remove(object.children[7]);
+
+        object.traverse(function (child) {
+            if (child instanceof THREE.Mesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+
+
+        for (let i = 0; i < object.children.length; i++) {
+            console.log("Filho " + i + ": ", object.children[i].name);
+        }
+        // Cria uma instância do objeto THREE.Object3D()
+        var object3D = new THREE.Object3D();
+
+        // Adiciona o objeto carregado como filho do objeto THREE.Object3D()
+        object3D.add(object);
+
+
+
+        // Define a posição, rotação e escala do objeto THREE.Object3D()
+        object3D.position.set(0, 0, 0);
+        object3D.rotation.set(0, 0, 0);
+        object3D.scale.set(0.6, 0.6, 0.6);
+        object3D.position.set(2, 0, -10);
+        object3D.rotation.x = Math.PI / 2;
+
+
+        cena.add(object3D);
+        object3D.scale.set(0.02 , 0.02, 0.02)
+        object3D.position.set(80,30,-16.7)
+        object3D.rotation.y = Math.PI / 2;
+
+    })
+} const createtruck = createTruck()
+
+
 function createTrack() {
     importer.load('./Objetos/race-track.fbx', function (object) {
 
@@ -555,7 +599,7 @@ function Bancada() {
     const geometryup = new THREE.BoxGeometry(50, 30, 2);
 
     // Criando o material do retângulo
-    const material = new THREE.MeshPhongMaterial({ color: 0x808080  }); // Cor verde
+    const material = new THREE.MeshPhongMaterial({ color: 0x808080 }); // Cor verde
     const materialcylinder = new THREE.MeshPhongMaterial({ color: 0xFFD700 }); // Cor verde
 
     // Criando a malha do retângulo
@@ -584,7 +628,7 @@ function Bancada() {
     rectangle3.receiveShadow = true
     rectangleup.castShadow = true
     rectangleup.receiveShadow = true
-   
+
     cylinderadd.castShadow = true
     cylinderadd.receiveShadow = true
     cylinderadd2.castShadow = true
@@ -606,7 +650,7 @@ function Bancada() {
     cylinderadd10.castShadow = true
     cylinderadd10.receiveShadow = true
 
-    
+
     cena.add(rectangle);
     cena.add(rectangle2);
     cena.add(rectangle3);
@@ -622,27 +666,27 @@ function Bancada() {
     cena.add(cylinderadd10);
     cena.add(rectangleup);
 
-    rectangle.position.set(0,50, -19)
-    rectangle2.position.set(0,60, -17)
-    rectangle3.position.set(0,70, -15)
-    rectangleup.position.set(0,55, 0)
-    cylinderadd.position.set(-23,47, -17)
-    cylinderadd.rotation.x = Math.PI/2;
-    cylinderadd2.position.set(-23,56, -13)
-    cylinderadd2.rotation.x = Math.PI/2;
-    cylinderadd3.position.set(-23,68, -8)
-    cylinderadd3.rotation.x = Math.PI/2;
-    cylinderadd4.position.set(-23,51.2, -13.9)
-    cylinderadd5.position.set(-23,61.7, -10.5)
+    rectangle.position.set(0, 50, -19)
+    rectangle2.position.set(0, 60, -17)
+    rectangle3.position.set(0, 70, -15)
+    rectangleup.position.set(0, 55, 0)
+    cylinderadd.position.set(-23, 47, -17)
+    cylinderadd.rotation.x = Math.PI / 2;
+    cylinderadd2.position.set(-23, 56, -13)
+    cylinderadd2.rotation.x = Math.PI / 2;
+    cylinderadd3.position.set(-23, 68, -8)
+    cylinderadd3.rotation.x = Math.PI / 2;
+    cylinderadd4.position.set(-23, 51.2, -13.9)
+    cylinderadd5.position.set(-23, 61.7, -10.5)
 
-    cylinderadd6.position.set(23,47, -17)
-    cylinderadd6.rotation.x = Math.PI/2;
-    cylinderadd7.position.set(23,56, -13)
-    cylinderadd7.rotation.x = Math.PI/2;
-    cylinderadd8.position.set(23,68, -8)
-    cylinderadd8.rotation.x = Math.PI/2;
-    cylinderadd9.position.set(23,51.2, -13.9)
-    cylinderadd10.position.set(23,61.7, -10.5)
+    cylinderadd6.position.set(23, 47, -17)
+    cylinderadd6.rotation.x = Math.PI / 2;
+    cylinderadd7.position.set(23, 56, -13)
+    cylinderadd7.rotation.x = Math.PI / 2;
+    cylinderadd8.position.set(23, 68, -8)
+    cylinderadd8.rotation.x = Math.PI / 2;
+    cylinderadd9.position.set(23, 51.2, -13.9)
+    cylinderadd10.position.set(23, 61.7, -10.5)
 
 
 
@@ -650,8 +694,7 @@ function Bancada() {
 } const rectangle = Bancada();
 
 
-function createDHLBoard()
-{
+function createDHLBoard() {
     // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(4, 2);
 
@@ -674,11 +717,10 @@ function createDHLBoard()
     cena.add(mesh);
 
     return mesh;
-}const DHLboard = createDHLBoard();
+} const DHLboard = createDHLBoard();
 
 
-function createRolexBoard()
-{
+function createRolexBoard() {
     // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(4, 2);
 
@@ -701,10 +743,9 @@ function createRolexBoard()
     cena.add(mesh);
 
     return mesh;
-}const Rolexboard = createRolexBoard();
+} const Rolexboard = createRolexBoard();
 
-function createAramcoBoard()
-{
+function createAramcoBoard() {
     // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(4, 2);
 
@@ -727,10 +768,9 @@ function createAramcoBoard()
     cena.add(mesh);
 
     return mesh;
-}const aramcoBoard = createAramcoBoard();
+} const aramcoBoard = createAramcoBoard();
 
-function createPirelliBoard()
-{
+function createPirelliBoard() {
     // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(4, 2);
 
@@ -753,11 +793,10 @@ function createPirelliBoard()
     cena.add(mesh);
 
     return mesh;
-}const Pirelliboard = createPirelliBoard();
+} const Pirelliboard = createPirelliBoard();
 
 
-function createEmiratesBoard()
-{
+function createEmiratesBoard() {
     // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(4, 2);
 
@@ -780,12 +819,11 @@ function createEmiratesBoard()
     cena.add(mesh);
 
     return mesh;
-}const Emiratesboard = createEmiratesBoard();
+} const Emiratesboard = createEmiratesBoard();
 
 
 
-function createF1Board()
-{
+function createF1Board() {
     // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(4, 2);
 
@@ -808,12 +846,11 @@ function createF1Board()
     cena.add(mesh);
 
     return mesh;
-}const F1board = createF1Board();
+} const F1board = createF1Board();
 
 
 
-function createHeinekenoard()
-{
+function createHeinekenoard() {
     // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(50, 29);
 
@@ -835,7 +872,7 @@ function createHeinekenoard()
     cena.add(mesh);
 
     return mesh;
-}const Heinekenboard = createHeinekenoard();
+} const Heinekenboard = createHeinekenoard();
 
 
 
@@ -860,73 +897,6 @@ soundLoader.load('./Sons/buzina.mp3', function (buffer) {
     sound.setVolume(0.5);
 });
 
-
-//Mecanismo atraves do teclado (mexer o objeto) ----------------------------------------------------------------------------
-document.addEventListener("keydown", onDocumentKeyDown, false);
-function onDocumentKeyDown(event) {
-    var keyCode = event.which;
-    if (keyCode == 87) {
-        if (car) {
-            car.position.x += 0.25;
-        }
-    } else if (keyCode == 83) {
-        if (car) {
-            car.position.x -= 0.25;
-
-        }
-    } else if (keyCode == 65) {
-        if (car) {
-            car.rotation.z += 0.25;
-
-        }
-    } else if (keyCode == 68) {
-        if (car) {
-            car.rotation.z -= 0.25;
-        }
-    }
-
-}
-
-
-const keys = {
-    w: false,
-    s: false,
-    a: false,
-    d: false
-};
-
-function onDocumentKeyDown(event) {
-    var keyCode = event.which;
-    if (keyCode == 87) {
-        keys.w = true;
-    } else if (keyCode == 83) {
-        keys.s = true;
-    } else if (keyCode == 65) {
-        keys.a = true;
-    } else if (keyCode == 68) {
-        keys.d = true;
-    } else if (keyCode == 86 || keyCode == 118) { // 86 is 'V', 118 is 'v'
-        console.log("entrei");
-        if (!sound.isPlaying) { // Adicione esta verificação para tocar o som apenas se ele não estiver já tocando
-            sound.play();
-        }
-    }
-}
-
-function onDocumentKeyUp(event) {
-    var keyCode = event.which;
-    if (keyCode == 87) {
-        keys.w = false;
-    } else if (keyCode == 83) {
-        keys.s = false;
-    } else if (keyCode == 65) {
-        keys.a = false;
-    } else if (keyCode == 68) {
-        keys.d = false;
-    }
-}
-
-document.addEventListener("keyup", onDocumentKeyUp, false);
 
 //Colisao
 var wallGeometry = new THREE.BoxBufferGeometry(25, 1, 2);
@@ -1096,6 +1066,89 @@ var carDirection = new THREE.Vector3();
 
 var isGameRestarted = false;
 let speed = 0.15;
+
+
+//Mecanismo atraves do teclado (mexer o objeto) ----------------------------------------------------------------------------
+document.addEventListener("keydown", onDocumentKeyDown, false);
+function onDocumentKeyDown(event) {
+    var keyCode = event.which;
+    if (keyCode == 87) {
+        if (car) {
+            car.position.x += 0.25;
+
+        }
+    } else if (keyCode == 83) {
+        if (car) {
+            car.position.x -= 0.25;
+
+        }
+    } else if (keyCode == 65) {
+        if (car) {
+            car.rotation.z += 0.25;
+
+        }
+    } else if (keyCode == 68) {
+        if (car) {
+            car.rotation.z -= 0.25;
+        }
+    }
+
+}
+
+
+const keys = {
+    w: false,
+    s: false,
+    a: false,
+    d: false
+};
+
+// Defina uma variável para armazenar o valor original da velocidade
+var originalSpeed = speed;
+
+// Defina uma variável para controlar se a tecla de espaço está pressionada
+var isSpacePressed = false;
+
+function onDocumentKeyDown(event) {
+    var keyCode = event.which;
+    if (keyCode == 87) {
+        keys.w = true;
+    } else if (keyCode == 83) {
+        keys.s = true;
+    } else if (keyCode == 65) {
+        keys.a = true;
+    } else if (keyCode == 68) {
+        keys.d = true;
+    } else if (keyCode == 86 || keyCode == 118) { // 86 is 'V', 118 is 'v'
+        if (!sound.isPlaying) { // Adicione esta verificação para tocar o som apenas se ele não estiver já tocando
+            sound.play();
+        }
+    } else if (event.keyCode === 32) {
+        isSpacePressed = true;
+        // Diminua a velocidade quando a tecla de espaço é pressionada
+        speed = 0.1;
+    }
+}
+
+function onDocumentKeyUp(event) {
+    var keyCode = event.which;
+    if (keyCode == 87) {
+        keys.w = false;
+    } else if (keyCode == 83) {
+        keys.s = false;
+    } else if (keyCode == 65) {
+        keys.a = false;
+    } else if (keyCode == 68) {
+        keys.d = false;
+    } else if (event.keyCode === 32) {
+        isSpacePressed = false;
+        // Restaure a velocidade original quando a tecla de espaço é solta
+        speed = originalSpeed;
+    }
+}
+
+document.addEventListener("keyup", onDocumentKeyUp, false);
+
 
 function startGame() {
     speed = 0.15;
