@@ -437,6 +437,37 @@ var objetoImportado;
 //Variavel com o objeto responsavel por importar ficheiros FBX
 var importer = new THREE.FBXLoader();
 
+// function createFerrari() {
+//     importer.load('./Objetos/ferrari-f1-race-car.fbx', function (object) {
+//         console.log("Número de filhos: ", object.children.length);
+
+//         object.remove(object.children[8]);
+//         object.remove(object.children[7]);
+
+
+//         for (let i = 0; i < object.children.length; i++) {
+//             console.log("Filho " + i + ": ", object.children[i].name);
+//         }
+//         // Cria uma instância do objeto THREE.Object3D()
+//         var object3D = new THREE.Object3D();
+
+//         // Adiciona o objeto carregado como filho do objeto THREE.Object3D()
+//         object3D.add(object);
+
+
+
+//         // Define a posição, rotação e escala do objeto THREE.Object3D()
+//         object3D.position.set(0, 0, 0);
+//         object3D.rotation.set(0, 0, 0);
+//         object3D.scale.set(0.6, 0.6, 0.6);
+//         object3D.position.set(2, 0, -10);
+//         object3D.rotation.x = Math.PI / 2;
+
+
+//         cena.add(object3D);
+
+//     })
+// } const ferraricar = createFerrari()
 
 function createTrack() {
     importer.load('./Objetos/race-track.fbx', function (object) {
@@ -506,6 +537,123 @@ function createTrack() {
 } const track = createTrack()
 
 
+function Bancada() {
+
+    const radiusTop = 0.5; // Raio do topo do cilindro
+    const radiusBottom = 0.5 // Raio da base do cilindro
+    const height = 6; // Altura do cilindro
+    const height2 = 15; // Altura do cilindro~
+    const heightlaterais = 9; // Altura do cilindro
+    const heightlaterai2 = 11; // Altura do cilindro
+    const radialSegments = 32; // Número de segmentos ao redor do cilindro
+    const cylinder = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments);
+    const cylinder2 = new THREE.CylinderGeometry(radiusTop, radiusBottom, height2, radialSegments);
+    const cylinderlaterais = new THREE.CylinderGeometry(radiusTop, radiusBottom, heightlaterais, radialSegments);
+    const cylinderlaterais2 = new THREE.CylinderGeometry(radiusTop, radiusBottom, heightlaterai2, radialSegments);
+
+    const geometry = new THREE.BoxGeometry(50, 10, 2);
+    const geometryup = new THREE.BoxGeometry(50, 30, 2);
+
+    // Criando o material do retângulo
+    const material = new THREE.MeshPhongMaterial({ color: 0x808080  }); // Cor verde
+    const materialcylinder = new THREE.MeshPhongMaterial({ color: 0xFFD700 }); // Cor verde
+
+    // Criando a malha do retângulo
+    const rectangle = new THREE.Mesh(geometry, material);
+    const rectangle2 = new THREE.Mesh(geometry, material);
+    const rectangle3 = new THREE.Mesh(geometry, material);
+    const rectangleup = new THREE.Mesh(geometryup, material);
+
+    const cylinderadd = new THREE.Mesh(cylinder, materialcylinder);
+    const cylinderadd2 = new THREE.Mesh(cylinder, materialcylinder);
+    const cylinderadd3 = new THREE.Mesh(cylinder2, materialcylinder);
+    const cylinderadd4 = new THREE.Mesh(cylinderlaterais, materialcylinder);
+    const cylinderadd5 = new THREE.Mesh(cylinderlaterais2, materialcylinder);
+    const cylinderadd6 = new THREE.Mesh(cylinder, materialcylinder);
+    const cylinderadd7 = new THREE.Mesh(cylinder, materialcylinder);
+    const cylinderadd8 = new THREE.Mesh(cylinder2, materialcylinder);
+    const cylinderadd9 = new THREE.Mesh(cylinderlaterais, materialcylinder);
+    const cylinderadd10 = new THREE.Mesh(cylinderlaterais2, materialcylinder);
+    // Adicionando o retângulo à cena
+
+    rectangle.castShadow = true
+    rectangle.receiveShadow = true
+    rectangle2.castShadow = true
+    rectangle2.receiveShadow = true
+    rectangle3.castShadow = true
+    rectangle3.receiveShadow = true
+    rectangleup.castShadow = true
+    rectangleup.receiveShadow = true
+   
+    cylinderadd.castShadow = true
+    cylinderadd.receiveShadow = true
+    cylinderadd2.castShadow = true
+    cylinderadd2.receiveShadow = true
+    cylinderadd3.castShadow = true
+    cylinderadd3.receiveShadow = true
+    cylinderadd4.castShadow = true
+    cylinderadd4.receiveShadow = true
+    cylinderadd5.castShadow = true
+    cylinderadd5.receiveShadow = true
+    cylinderadd6.castShadow = true
+    cylinderadd6.receiveShadow = true
+    cylinderadd7.castShadow = true
+    cylinderadd7.receiveShadow = true
+    cylinderadd8.castShadow = true
+    cylinderadd8.receiveShadow = true
+    cylinderadd9.castShadow = true
+    cylinderadd9.receiveShadow = true
+    cylinderadd10.castShadow = true
+    cylinderadd10.receiveShadow = true
+
+    
+    cena.add(rectangle);
+    cena.add(rectangle2);
+    cena.add(rectangle3);
+    cena.add(cylinderadd);
+    cena.add(cylinderadd2);
+    cena.add(cylinderadd3);
+    cena.add(cylinderadd4);
+    cena.add(cylinderadd5);
+    cena.add(cylinderadd6);
+    cena.add(cylinderadd7);
+    cena.add(cylinderadd8);
+    cena.add(cylinderadd9);
+    cena.add(cylinderadd10);
+    cena.add(rectangleup);
+
+    rectangle.position.set(0,50, -19)
+    rectangle2.position.set(0,60, -17)
+    rectangle3.position.set(0,70, -15)
+    rectangleup.position.set(0,55, 0)
+    cylinderadd.position.set(-23,47, -17)
+    cylinderadd.rotation.x = Math.PI/2;
+    cylinderadd2.position.set(-23,56, -13)
+    cylinderadd2.rotation.x = Math.PI/2;
+    cylinderadd3.position.set(-23,68, -8)
+    cylinderadd3.rotation.x = Math.PI/2;
+    cylinderadd4.position.set(-23,51.2, -13.9)
+    cylinderadd5.position.set(-23,61.7, -10.5)
+
+    cylinderadd6.position.set(23,47, -17)
+    cylinderadd6.rotation.x = Math.PI/2;
+    cylinderadd7.position.set(23,56, -13)
+    cylinderadd7.rotation.x = Math.PI/2;
+    cylinderadd8.position.set(23,68, -8)
+    cylinderadd8.rotation.x = Math.PI/2;
+    cylinderadd9.position.set(23,51.2, -13.9)
+    cylinderadd10.position.set(23,61.7, -10.5)
+
+
+
+
+} const rectangle = Bancada();
+
+
+
+
+
+
 var geometriaCubo = new THREE.BoxGeometry(1, 1, 1);
 
 var textura = new THREE.TextureLoader().load('./Images/boxImage.jpg')
@@ -524,6 +672,7 @@ soundLoader.load('./Sons/buzina.mp3', function (buffer) {
     sound.setLoop(false); // Faça com que o som não seja repetido.
     sound.setVolume(0.5);
 });
+
 
 //Mecanismo atraves do teclado (mexer o objeto) ----------------------------------------------------------------------------
 document.addEventListener("keydown", onDocumentKeyDown, false);
@@ -1606,7 +1755,7 @@ window.addEventListener('keydown', function (event) {
             lampAny5.add(lightday5);
             lampAny6.add(lightday6);
             lampAny7.add(lightday7);
-            lampAny8.add(lightday8);  
+            lampAny8.add(lightday8);
             lampAny9.add(lightday9);
             lampAny10.add(lightday10);
             lampAny11.add(lightday11);
