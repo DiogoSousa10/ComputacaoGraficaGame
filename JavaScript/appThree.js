@@ -505,8 +505,8 @@ function createTruck() {
 
 
         cena.add(object3D);
-        object3D.scale.set(0.02 , 0.02, 0.02)
-        object3D.position.set(80,30,-16.7)
+        object3D.scale.set(0.02, 0.02, 0.02)
+        object3D.position.set(80, 30, -16.7)
         object3D.rotation.y = Math.PI / 2;
 
     })
@@ -1815,6 +1815,10 @@ var spotlightnight; // Holofote para a noite
 var skyboxState = 'day'; // Estado inicial do skybox (dia)
 
 function createLightforNight() {
+
+    spotlightnight = new THREE.DirectionalLight(0xffffff, 0.5);
+    spotlightnight.position.set(60, 60, 50); // Posição do holofote
+
     spotlightday = new THREE.DirectionalLight(0xffffff, 0.8);
     spotlightday.position.set(60, 60, 50); // Posição do holofote
 
@@ -1891,7 +1895,6 @@ function createLightforDay() {
     return lightDay;
 }
 
-
 const lightDay = createLightforDay();
 
 
@@ -1946,15 +1949,118 @@ var ambientLightnight = new THREE.AmbientLight(0x404040, 0.5); // luz suave bran
 
 
 
+window.addEventListener('keyup', function (event) {
+    if (event.key === 'p') {
+        if (cena.children.includes(ambientLightday)) {
+            cena.remove(ambientLightday);
+        } else {
+            cena.add(ambientLightday);
+        }
+    }
+});
 
+window.addEventListener('keyup', function (event) {
+    if (event.key === 'o') {
+        if (cena.children.includes(spotlightday)) {
+            cena.remove(spotlightday);
+        } else {
+            cena.add(spotlightday);
+        }
+    }
+});
 
+window.addEventListener('keyup', function (event) {
+    if (event.key === 'i') {
+        if (cena.children.includes(ambientLightnight)) {
+            cena.remove(ambientLightnight);
+        } else {
+            cena.add(ambientLightnight);
+        }
+    }
+});
 
+window.addEventListener('keyup', function (event) {
+    if (event.key === 'u') {
+        if (cena.children.includes(spotlightnight)) {
+            cena.remove(spotlightnight);
+        } else {
+            cena.add(spotlightnight);
+        }
+    }
+});
+
+window.addEventListener('keyup', function (event) {
+    if (event.key === 'y') {
+        if (skyboxState === 'day') {
+            if (camara === camaraPrimeiraPessoa) {
+                lampAny.add(lightNighs);
+                lampAny2.add(lightNighs2);
+                lampAny3.add(lightNighs3);
+                lampAny4.add(lightNighs4);
+                lampAny5.add(lightNighs5);
+                lampAny6.add(lightNighs6);
+                lampAny7.add(lightNighs7);
+                lampAny8.add(lightNighs8);
+                lampAny9.add(lightNighs9);
+                lampAny10.add(lightNighs10);
+                lampAny11.add(lightNighs11);
+                lampAny12.add(lightNighs12);
+            }
+
+            lampAny.add(lightday);
+            lampAny2.add(lightday2);
+            lampAny3.add(lightday3);
+            lampAny4.add(lightday4);
+            lampAny5.add(lightday5);
+            lampAny6.add(lightday6);
+            lampAny7.add(lightday7);
+            lampAny8.add(lightday8);
+            lampAny9.add(lightday9);
+            lampAny10.add(lightday10);
+            lampAny11.add(lightday11);
+            lampAny12.add(lightday12);
+            skyboxState = 'night';
+        } else {
+            if (camara === camaraPrimeiraPessoa) {
+                lampAny.remove(lightNighs);
+                lampAny2.remove(lightNighs2);
+                lampAny3.remove(lightNighs3);
+                lampAny4.remove(lightNighs4);
+                lampAny5.remove(lightNighs5);
+                lampAny6.remove(lightNighs6);
+                lampAny7.remove(lightNighs7);
+                lampAny8.remove(lightNighs8);
+                lampAny9.remove(lightNighs9);
+                lampAny10.remove(lightNighs10);
+                lampAny11.remove(lightNighs11);
+                lampAny12.remove(lightNighs12);
+            }
+         
+            lampAny.remove(lightday)
+            lampAny2.remove(lightday2)
+            lampAny3.remove(lightday3)
+            lampAny4.remove(lightday4)
+            lampAny5.remove(lightday5);
+            lampAny6.remove(lightday6);
+            lampAny7.remove(lightday7);
+            lampAny8.remove(lightday8);
+            lampAny9.remove(lightday9);
+            lampAny10.remove(lightday10);
+            lampAny11.remove(lightday11);
+            lampAny12.remove(lightday12);
+
+          
+            skyboxState = 'day';
+
+        }
+
+    }
+});
 
 
 window.addEventListener('keydown', function (event) {
     if (event.key === 't') { // Tecla "t" para alternar os skyboxes
         if (skyboxState === 'day') {
-
             if (camara === camaraPrimeiraPessoa) {
                 //Luzes de noite na terceira pessoa tem de ser mais fortes
                 lightNighs.position.set(0, 1.5, 0);
