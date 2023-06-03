@@ -1328,6 +1328,7 @@ function createTree() {
     // Define a posição da árvore
     tree.position.set(0, 0, 0);
     tree.rotation.x = Math.PI / 2;
+    tree.scale.set(0.5, 0.5, 0.5);
 
 
     // Adiciona a árvore à cena
@@ -1441,8 +1442,8 @@ body.receiveShadow = true
 var mainRotorGeometry = new THREE.BoxGeometry(10, 0.2, 0.2);
 var mainRotorMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 });
 var mainRotor = new THREE.Mesh(mainRotorGeometry, mainRotorMaterial);
-mainRotor.position.set(-2, 0, 0);
-mainRotor.rotation.z = Math.PI /2;
+mainRotor.position.set(-1, 0, 0);
+mainRotor.rotation.z = Math.PI / 2;
 helidada.add(mainRotor);
 mainRotor.castShadow = true
 mainRotor.receiveShadow = true
@@ -1468,19 +1469,7 @@ tailRotor.castShadow = true
 tailRotor.receiveShadow = true
 
 
-// Cria as geometrias das janelas
-var windowGeometry1 = new THREE.BoxGeometry(0.2, 1, 1);
-var windowMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, opacity: 0.5, transparent: true });
-var window1 = new THREE.Mesh(windowGeometry1, windowMaterial);
-window1.position.set(1.5, 0.5, 0);
-window1.rotation.y = Math.PI / 2
-helidada.add(window1);
 
-var windowGeometry2 = new THREE.BoxGeometry(0.2, 1, 1);
-var window2 = new THREE.Mesh(windowGeometry2, windowMaterial);
-window2.position.set(-1.5, 0.5, 0);
-window2.rotation.y = Math.PI / 2
-helidada.add(window2);
 
 helidada.matrixAutoUpdate = false;
 cena.add(helidada);
@@ -1509,18 +1498,13 @@ path.add(new YUKA.Vector3(-85, 10, -10))
 path.add(new YUKA.Vector3(-75, 30, -15))
 path.add(new YUKA.Vector3(-50, 30, 0))
 path.add(new YUKA.Vector3(-30, 20, 10))
-path.add(new YUKA.Vector3(0, 45, 15))
-
+path.add(new YUKA.Vector3(0, 50, 3))
 
 vehicle.position.copy(path.current())
-
 // Verifique se o objeto está no último ponto do caminho
 const lastWaypoint = path._waypoints[path._waypoints.length - 1];
-
 const FollowPathBehavior = new YUKA.FollowPathBehavior(path, 0.5)
 vehicle.steering.add(FollowPathBehavior);
-
-
 
 vehicle.maxSpeed = 5;
 
@@ -1558,17 +1542,11 @@ lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(position,
 
 let isRectangleVisible = true;
 
-
-
-
-
 // const lineMaterial = new THREE.LineBasicMaterial({color: 0xFFFFFF});
 // const lines = new THREE.LineLoop(lineGeometry, lineMaterial);
 // cena.add(lines);
 
 const time = new YUKA.Time();
-
-
 
 function createGrass(width, height, x, y, z, texture) {
     const geometry = new THREE.PlaneGeometry(width, height, 1000, 10);
@@ -1656,7 +1634,6 @@ function FirstcreateLamp() {
     return lamp;
 } const firstlamp = FirstcreateLamp();
 
-
 function criarSemaforoHorizontal() {
     // Criar o objeto do semáforo
     var semaforo = new THREE.Object3D();
@@ -1720,8 +1697,6 @@ function criarSemaforoHorizontal() {
 var semaforo1 = criarSemaforoHorizontal();
 var semaforo2 = criarSemaforoHorizontal();
 var semaforo3 = criarSemaforoHorizontal();
-
-
 
 
 function createLamp() {
@@ -2195,6 +2170,7 @@ window.addEventListener('keydown', function (event) {
 //COLOCAR AS VOLTAS NA PISTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 //COLOCAR AS VOLTAS NA PISTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 //COLOCAR AS VOLTAS NA PISTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+// Adicione um elemento HTML para exibir a contagem
 
 // Adicione um elemento HTML para exibir a contagem
 // Adicione um elemento HTML para exibir a contagem
@@ -2206,9 +2182,99 @@ counterElement.style.top = '10px';
 counterElement.style.left = '10px';
 document.body.appendChild(counterElement);
 
-function updateCounter() {
-    counterElement.innerHTML = 'Voltas: ' + count;
+
+function voltasem3D() {
+    // Crie um novo canvas
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    canvas.width = 100;
+    canvas.height = 100;
+    context.font = '15px Arial';
+    context.fillStyle = '#ffffff';
+
+    // Desenhe o número de voltas no novo canvas
+    context.fillText('Voltas: ' + count, 10, 50);
+
+    // Remova o canvas antigo da cena
+    var oldMesh = cena.getObjectByName('voltasMesh');
+    if (oldMesh) {
+        cena.remove(oldMesh);
+    }
+
+    // Crie uma textura a partir do novo canvas
+    var texture = new THREE.CanvasTexture(canvas);
+
+    // Crie a geometria do plano
+    var planeGeometry = new THREE.PlaneBufferGeometry(100, 70);
+
+    // Crie o material com a textura
+    var planeMaterial = new THREE.MeshPhongMaterial({ map: texture, transparent: true, opacity: 0.5 });
+
+    // Crie o objeto Mesh para o plano
+    var planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+    planeMesh.position.set(12, -10, -19.9); // Ajuste a posição conforme necessário
+    planeMesh.name = 'voltasMesh'; // Defina um nome para o objeto Mesh
+
+    // Adicione o novo plano à cena
+    cena.add(planeMesh);
 }
+
+
+function updateCounter() {
+
+    voltasem3D();
+
+    // Crie uma textura com o número de voltas em um retângulo vertical
+    var canvas = document.createElement('canvas');
+    canvas.width = 100; // Largura do retângulo
+    canvas.height = 100; // Altura do retângulo
+    var context = canvas.getContext('2d');
+    context.font = '30px Arial';
+    context.fillStyle = '#ffffff';
+
+    // Rotacione o contexto em 90 graus para criar um retângulo vertical
+    context.translate(0, canvas.height);
+    context.rotate(-Math.PI / 2);
+
+    // Desenhe o retângulo
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Defina a posição do texto no retângulo
+    context.fillStyle = '#000000';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+
+    // Desenhe o número de voltas no retângulo
+    context.fillText(count, canvas.width / 2, canvas.height / 4);
+    // Crie a textura a partir do canvas
+    var texture = new THREE.CanvasTexture(canvas);
+
+    // Crie a geometria do retângulo
+    var geometry = new THREE.BoxGeometry(5, 10); // Ajuste as dimensões conforme necessário
+
+    // Crie o material com a textura
+    var material = new THREE.MeshPhongMaterial({ map: texture, transparent: true });
+
+    // Crie o objeto Mesh para o retângulo
+    var mesh = new THREE.Mesh(geometry, material);
+
+    // Posicione o retângulo conforme necessário
+    mesh.position.set(15, 9, -18); // Ajuste a posição conforme necessário
+    mesh.rotation.x = Math.PI / 2;
+    mesh.rotation.y = Math.PI / 2;
+    mesh.rotation.z = Math.PI / 2;
+
+
+    // Adicione o retângulo à cena
+    cena.add(mesh);
+
+
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+
+
+}
+
 
 var count = 0;
 var flagMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, visible: false });
@@ -2273,8 +2339,6 @@ function resetCheckpoints() {
 
     currentCheckpoint = 0; // Reinicia para o primeiro checkpoint
 }
-
-
 
 
 //ANIMAÇÃO PARA O SOL ANDARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
@@ -2459,8 +2523,8 @@ function Start() {
 
 
 
-    tree.position.set(-60, 10, -10);
-    tree2.position.set(20, -5, -10);
+    tree.position.set(-60, 10, -15);
+    tree2.position.set(15, 0, -15);
 
     startGame();
     updateCounter();
