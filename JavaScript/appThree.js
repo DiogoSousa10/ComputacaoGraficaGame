@@ -407,6 +407,7 @@ function Car() {
     return car;
 } const car = Car();
 
+
 function Wheel() {
     const wheel = new THREE.Mesh(
         new THREE.BufferGeometry(12, 33, 12),
@@ -437,42 +438,100 @@ var objetoImportado;
 //Variavel com o objeto responsavel por importar ficheiros FBX
 var importer = new THREE.FBXLoader();
 
-// function createFerrari() {
-//     importer.load('./Objetos/ferrari-f1-race-car.fbx', function (object) {
-//         console.log("Número de filhos: ", object.children.length);
+function createFerrari() {
+    importer.load('./Objetos/ferrari-f1-race-car.fbx', function (object) {
+        console.log("Número de filhos: ", object.children.length);
 
-//         object.remove(object.children[8]);
-//         object.remove(object.children[7]);
-
-
-//         for (let i = 0; i < object.children.length; i++) {
-//             console.log("Filho " + i + ": ", object.children[i].name);
-//         }
-//         // Cria uma instância do objeto THREE.Object3D()
-//         var object3D = new THREE.Object3D();
-
-//         // Adiciona o objeto carregado como filho do objeto THREE.Object3D()
-//         object3D.add(object);
+        object.remove(object.children[8]);
+        object.remove(object.children[7]);
 
 
+        for (let i = 0; i < object.children.length; i++) {
+            console.log("Filho " + i + ": ", object.children[i].name);
+        }
+        // Cria uma instância do objeto THREE.Object3D()
+        var object3D = new THREE.Object3D();
 
-//         // Define a posição, rotação e escala do objeto THREE.Object3D()
-//         object3D.position.set(0, 0, 0);
-//         object3D.rotation.set(0, 0, 0);
-//         object3D.scale.set(0.6, 0.6, 0.6);
-//         object3D.position.set(2, 0, -10);
-//         object3D.rotation.x = Math.PI / 2;
+        // Adiciona o objeto carregado como filho do objeto THREE.Object3D()
+        object3D.add(object);
 
 
-//         cena.add(object3D);
 
-//     })
-// } const ferraricar = createFerrari()
+        // Define a posição, rotação e escala do objeto THREE.Object3D()
+        object3D.position.set(0, 0, 0);
+        object3D.rotation.set(0, 0, 0);
+        object3D.scale.set(0.6, 0.6, 0.6);
+        object3D.position.set(2, 0, -10);
+        object3D.rotation.x = Math.PI / 2;
 
+
+        cena.add(object3D);
+
+        return object
+
+    })
+} const ferraricar = createFerrari()
+
+
+//SERVE PARA METER O CARRO A DAR UMA VOLTA PARA DEMONSTRAÇÃO
+const testeGeometry = new THREE.BoxBufferGeometry(0.5, 5, 2)
+testeGeometry.rotateX(Math.PI * 0.5);
+const testeMaterial = new THREE.MeshPhongMaterial();
+const testefinal = new THREE.Mesh(testeGeometry, testeMaterial);
+testefinal.matrixAutoUpdate = false;
+cena.add(testefinal); 
+
+const vehicle = new YUKA.Vehicle()
+vehicle.setRenderComponent(testefinal, sync);
+
+function sync(entity, renderComponent) {
+    renderComponent.matrix.copy(entity.worldMatrix);
+}
+
+const path = new YUKA.Path();
+path.add(new YUKA.Vector3(-4, 18 ,-18))
+path.add(new YUKA.Vector3(70, 18 ,-18))
+ path.add(new YUKA.Vector3(88, 5 ,-18))
+ path.add(new YUKA.Vector3(88, -15 ,-18))
+ path.add(new YUKA.Vector3(70, -32 ,-18))
+ path.add(new YUKA.Vector3(-35, -32 ,-18))
+ path.add(new YUKA.Vector3(-50, -17 ,-18))
+ path.add(new YUKA.Vector3(-65, -16 ,-18))
+ path.add(new YUKA.Vector3(-80, -10 ,-18))
+ path.add(new YUKA.Vector3(-85, 10 ,-18))
+ path.add(new YUKA.Vector3(-75, 30 ,-18))
+ path.add(new YUKA.Vector3(-50, 30 ,-18))
+ path.add(new YUKA.Vector3(-30, 20 ,-18))
+
+// path.add(new YUKA.Vector3(4, 0 ,--18))
+
+vehicle.position.copy(path.current())
+
+const FollowPathBehavior = new YUKA.FollowPathBehavior(path, 0.5)
+vehicle.steering.add(FollowPathBehavior);
+
+vehicle.maxSpeed = 5;
+
+const entityManager = new YUKA.EntityManager();
+entityManager.add(vehicle);
+
+const position = [];
+for(let i = 0; i < path._waypoints.length; i++) {
+    const waypoint = path._waypoints[i];
+    position.push(waypoint.x, waypoint.y, waypoint.z);
+}
+
+const lineGeometry = new THREE.BufferGeometry();
+lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(position, 3));
+
+const lineMaterial = new THREE.LineBasicMaterial({color: 0xFFFFFF});
+const lines = new THREE.LineLoop(lineGeometry, lineMaterial);
+cena.add(lines);
+
+const time = new YUKA.Time();
 
 function createTruck() {
     importer.load('./Objetos/M1070 HET.fbx', function (object) {
-        console.log("Número de filhos: ", object.children.length);
 
         object.remove(object.children[8]);
         object.remove(object.children[7]);
@@ -485,9 +544,7 @@ function createTruck() {
         });
 
 
-        for (let i = 0; i < object.children.length; i++) {
-            console.log("Filho " + i + ": ", object.children[i].name);
-        }
+      
         // Cria uma instância do objeto THREE.Object3D()
         var object3D = new THREE.Object3D();
 
@@ -1479,23 +1536,7 @@ function createHeli() {
     window2.position.set(-1.5, 0.5, 0);
     heli.add(window2);
 
-    //     // Posiciona os objetos
-    //     body.position.set(0, 0, 0);
-    //     mainRotor.position.set(0, 1, 0);
-    //     tail.position.set(0, 0, -4);
-    //     tailRotor.position.set(0, 1, -3);
-
-
-    //     // Renderiza a cena
-    //     function animate() {
-    //         requestAnimationFrame(animate);
-
-    //         mainRotor.rotation.y += 0.1;
-    //         tailRotor.rotation.x += 0.1;
-
-    //         renderer.render(cena, camera);
-    //     }
-    //     animate();
+   
     return { heli, mainRotor, tailRotor };
 } var heliObj = createHeli();
 
@@ -2440,6 +2481,10 @@ function Start() {
 function loop() {
     mainRotor.rotation.y += 0.1;
     tailRotor.rotation.x += 0.1;
+
+    const delta = time.update().getDelta()*2;
+    entityManager.update(delta);
+
     // controls.update(); Serve para a orbit para mexer com o rato na camara.
     lapUpdate(); // Adicione esta linha para verificar as voltas
     updateSunPosition();
