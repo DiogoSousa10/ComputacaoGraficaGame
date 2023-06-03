@@ -438,97 +438,41 @@ var objetoImportado;
 //Variavel com o objeto responsavel por importar ficheiros FBX
 var importer = new THREE.FBXLoader();
 
-function createFerrari() {
-    importer.load('./Objetos/ferrari-f1-race-car.fbx', function (object) {
-        console.log("Número de filhos: ", object.children.length);
+// function createFerrari() {
+//     importer.load('./Objetos/ferrari-f1-race-car.fbx', function (object) {
+//         console.log("Número de filhos: ", object.children.length);
 
-        object.remove(object.children[8]);
-        object.remove(object.children[7]);
-
-
-        for (let i = 0; i < object.children.length; i++) {
-            console.log("Filho " + i + ": ", object.children[i].name);
-        }
-        // Cria uma instância do objeto THREE.Object3D()
-        var object3D = new THREE.Object3D();
-
-        // Adiciona o objeto carregado como filho do objeto THREE.Object3D()
-        object3D.add(object);
+//         object.remove(object.children[8]);
+//         object.remove(object.children[7]);
 
 
+//         for (let i = 0; i < object.children.length; i++) {
+//             console.log("Filho " + i + ": ", object.children[i].name);
+//         }
+//         // Cria uma instância do objeto THREE.Object3D()
+//         var object3D = new THREE.Object3D();
 
-        // Define a posição, rotação e escala do objeto THREE.Object3D()
-        object3D.position.set(0, 0, 0);
-        object3D.rotation.set(0, 0, 0);
-        object3D.scale.set(0.6, 0.6, 0.6);
-        object3D.position.set(2, 0, -10);
-        object3D.rotation.x = Math.PI / 2;
-
-
-        cena.add(object3D);
-
-        return object
-
-    })
-} const ferraricar = createFerrari()
+//         // Adiciona o objeto carregado como filho do objeto THREE.Object3D()
+//         object3D.add(object);
 
 
-//SERVE PARA METER O CARRO A DAR UMA VOLTA PARA DEMONSTRAÇÃO
-const testeGeometry = new THREE.BoxBufferGeometry(0.5, 5, 2)
-testeGeometry.rotateX(Math.PI * 0.5);
-const testeMaterial = new THREE.MeshPhongMaterial();
-const testefinal = new THREE.Mesh(testeGeometry, testeMaterial);
-testefinal.matrixAutoUpdate = false;
-cena.add(testefinal); 
 
-const vehicle = new YUKA.Vehicle()
-vehicle.setRenderComponent(testefinal, sync);
+//         // Define a posição, rotação e escala do objeto THREE.Object3D()
+//         object3D.position.set(0, 0, 0);
+//         object3D.rotation.set(0, 0, 0);
+//         object3D.scale.set(0.6, 0.6, 0.6);
+//         object3D.position.set(2, 0, -10);
+//         object3D.rotation.x = Math.PI / 2;
 
-function sync(entity, renderComponent) {
-    renderComponent.matrix.copy(entity.worldMatrix);
-}
 
-const path = new YUKA.Path();
-path.add(new YUKA.Vector3(-4, 18 ,-18))
-path.add(new YUKA.Vector3(70, 18 ,-18))
- path.add(new YUKA.Vector3(88, 5 ,-18))
- path.add(new YUKA.Vector3(88, -15 ,-18))
- path.add(new YUKA.Vector3(70, -32 ,-18))
- path.add(new YUKA.Vector3(-35, -32 ,-18))
- path.add(new YUKA.Vector3(-50, -17 ,-18))
- path.add(new YUKA.Vector3(-65, -16 ,-18))
- path.add(new YUKA.Vector3(-80, -10 ,-18))
- path.add(new YUKA.Vector3(-85, 10 ,-18))
- path.add(new YUKA.Vector3(-75, 30 ,-18))
- path.add(new YUKA.Vector3(-50, 30 ,-18))
- path.add(new YUKA.Vector3(-30, 20 ,-18))
+//         cena.add(object3D);
 
-// path.add(new YUKA.Vector3(4, 0 ,--18))
+//         return object
 
-vehicle.position.copy(path.current())
+//     })
+// } const ferraricar = createFerrari()
 
-const FollowPathBehavior = new YUKA.FollowPathBehavior(path, 0.5)
-vehicle.steering.add(FollowPathBehavior);
 
-vehicle.maxSpeed = 5;
-
-const entityManager = new YUKA.EntityManager();
-entityManager.add(vehicle);
-
-const position = [];
-for(let i = 0; i < path._waypoints.length; i++) {
-    const waypoint = path._waypoints[i];
-    position.push(waypoint.x, waypoint.y, waypoint.z);
-}
-
-const lineGeometry = new THREE.BufferGeometry();
-lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(position, 3));
-
-const lineMaterial = new THREE.LineBasicMaterial({color: 0xFFFFFF});
-const lines = new THREE.LineLoop(lineGeometry, lineMaterial);
-cena.add(lines);
-
-const time = new YUKA.Time();
 
 function createTruck() {
     importer.load('./Objetos/M1070 HET.fbx', function (object) {
@@ -544,7 +488,7 @@ function createTruck() {
         });
 
 
-      
+
         // Cria uma instância do objeto THREE.Object3D()
         var object3D = new THREE.Object3D();
 
@@ -1476,103 +1420,153 @@ function addCGBoard() {
 } const CG = addCGBoard();
 
 
-
 // //Helicóptero
 // //Helicóptero
 // //Helicóptero
-function createHeli() {
 
-    const heli = new THREE.Group();
+//SERVE PARA METER O CARRO A DAR UMA VOLTA PARA DEMONSTRAÇÃO
+const helidada = new THREE.Group();
+
+// Cria a geometria do corpo do helicóptero
+var bodyGeometry = new THREE.BoxGeometry(3, 2, 8);
+var bodyMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+var body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+body.position.set(0, 0, 0);
+body.rotation.z = Math.PI / 2
+helidada.add(body);
+body.castShadow = true
+body.receiveShadow = true
+
+// Cria a geometria do rotor principal
+var mainRotorGeometry = new THREE.BoxGeometry(10, 0.2, 0.2);
+var mainRotorMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 });
+var mainRotor = new THREE.Mesh(mainRotorGeometry, mainRotorMaterial);
+mainRotor.position.set(-2, 0, 0);
+mainRotor.rotation.z = Math.PI /2;
+helidada.add(mainRotor);
+mainRotor.castShadow = true
+mainRotor.receiveShadow = true
+
+// Cria a geometria da cauda do helicóptero
+var tailGeometry = new THREE.BoxGeometry(0.4, 1, 7);
+var tailMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+var tail = new THREE.Mesh(tailGeometry, tailMaterial);
+tail.position.set(0, 0, -4);
+helidada.add(tail);
+tail.castShadow = true
+tail.receiveShadow = true
+
+// Define a geometria
+var tailRotorGeometry = new THREE.BoxGeometry(5, 0.2, 0.2);
+// Cria a helice traseira
+var tailRotorMaterial = new THREE.MeshPhongMaterial({ color: 0x00ffff });
+var tailRotor = new THREE.Mesh(tailRotorGeometry, tailRotorMaterial);
+tailRotor.position.set(0.45, 0, -6);
+tailRotor.rotation.z = Math.PI / 2;
+helidada.add(tailRotor);
+tailRotor.castShadow = true
+tailRotor.receiveShadow = true
 
 
-    // Cria a geometria do corpo do helicóptero
-    var bodyGeometry = new THREE.BoxGeometry(3, 2, 8);
-    var bodyMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
-    var body = new THREE.Mesh(bodyGeometry, bodyMaterial);
-    body.position.set(0, 0, 0);
-    heli.add(body);
-    body.castShadow = true
-    body.receiveShadow = true
+// Cria as geometrias das janelas
+var windowGeometry1 = new THREE.BoxGeometry(0.2, 1, 1);
+var windowMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, opacity: 0.5, transparent: true });
+var window1 = new THREE.Mesh(windowGeometry1, windowMaterial);
+window1.position.set(1.5, 0.5, 0);
+window1.rotation.y = Math.PI / 2
+helidada.add(window1);
 
-    // Cria a geometria do rotor principal
-    var mainRotorGeometry = new THREE.BoxGeometry(10, 0.2, 0.2);
-    var mainRotorMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 });
-    var mainRotor = new THREE.Mesh(mainRotorGeometry, mainRotorMaterial);
-    mainRotor.position.set(0, 1, 0);
-    heli.add(mainRotor);
-    mainRotor.castShadow = true
-    mainRotor.receiveShadow = true
+var windowGeometry2 = new THREE.BoxGeometry(0.2, 1, 1);
+var window2 = new THREE.Mesh(windowGeometry2, windowMaterial);
+window2.position.set(-1.5, 0.5, 0);
+window2.rotation.y = Math.PI / 2
+helidada.add(window2);
 
-    // Cria a geometria da cauda do helicóptero
-    var tailGeometry = new THREE.BoxGeometry(0.4, 1, 7);
-    var tailMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff });
-    var tail = new THREE.Mesh(tailGeometry, tailMaterial);
-    tail.position.set(0, 0, -4);
-    heli.add(tail);
-    tail.castShadow = true
-    tail.receiveShadow = true
-
-    // Define a geometria
-    var tailRotorGeometry = new THREE.BoxGeometry(5, 0.2, 0.2);
-    // Cria a helice traseira
-    var tailRotorMaterial = new THREE.MeshPhongMaterial({ color: 0x00ffff });
-    var tailRotor = new THREE.Mesh(tailRotorGeometry, tailRotorMaterial);
-    tailRotor.position.set(0.45, 0, -6);
-    tailRotor.rotation.z = Math.PI / 2;
-    heli.add(tailRotor);
-    tailRotor.castShadow = true
-    tailRotor.receiveShadow = true
+helidada.matrixAutoUpdate = false;
+cena.add(helidada);
 
 
-    // Cria as geometrias das janelas
-    var windowGeometry1 = new THREE.BoxGeometry(0.2, 1, 1);
-    var windowMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, opacity: 0.5, transparent: true });
-    var window1 = new THREE.Mesh(windowGeometry1, windowMaterial);
-    window1.position.set(1.5, 0.5, 0);
-    heli.add(window1);
 
-    var windowGeometry2 = new THREE.BoxGeometry(0.2, 1, 1);
-    var window2 = new THREE.Mesh(windowGeometry2, windowMaterial);
-    window2.position.set(-1.5, 0.5, 0);
-    heli.add(window2);
 
-   
-    return { heli, mainRotor, tailRotor };
-} var heliObj = createHeli();
+const vehicle = new YUKA.Vehicle()
+vehicle.setRenderComponent(helidada, sync);
 
-var heli = heliObj.heli;
-var mainRotor = heliObj.mainRotor;
-var tailRotor = heliObj.tailRotor;
-
-// Configurações do movimento circular
-var radius = 35; // Raio do círculo
-var speedHeli = 0.0005; // Velocidade de rotação
-var maxRotation = Math.PI / 6; // Ângulo máximo de rotação (30 graus)
-
-function updateHeli() {
-    // Atualiza a posição do objeto no movimento circular
-    var time = Date.now() * speedHeli;
-
-    var x = Math.cos(time) * radius;
-    var y = Math.sin(time) * radius;
-
-    heli.position.set(x, y, 0);
-    // Orienta o objeto na direção do próximo ponto no movimento circular
-    var nextX = Math.cos(time + 0.01) * radius;
-    var nextY = Math.sin(time + 0.01) * radius;
-    var direction = new THREE.Vector3(nextX - x, nextY - y, 0).normalize();
-    heli.lookAt(heli.position.clone().add(direction));
-    requestAnimationFrame(updateHeli);
-    // Calcula o ângulo de rotação em torno do eixo Z
-    var rotationAngle = Math.atan2(direction.y, direction.x);
-
-    // Define a rotação do objeto em torno do eixo Z
-    heli.rotation.z = rotationAngle;
+function sync(entity, renderComponent) {
+    renderComponent.matrix.copy(entity.worldMatrix);
 }
 
-// //Helicóptero
-// //Helicóptero
-// //Helicóptero
+const path = new YUKA.Path();
+path.add(new YUKA.Vector3(-4, 18, -10))
+path.add(new YUKA.Vector3(70, 18, -10))
+path.add(new YUKA.Vector3(88, 5, -10))
+path.add(new YUKA.Vector3(88, -15, -10))
+path.add(new YUKA.Vector3(70, -32, -10))
+path.add(new YUKA.Vector3(-35, -32, -10))
+path.add(new YUKA.Vector3(-50, -17, -10))
+path.add(new YUKA.Vector3(-65, -16, -10))
+path.add(new YUKA.Vector3(-80, -10, -10))
+path.add(new YUKA.Vector3(-85, 10, -10))
+path.add(new YUKA.Vector3(-75, 30, -15))
+path.add(new YUKA.Vector3(-50, 30, 0))
+path.add(new YUKA.Vector3(-30, 20, 10))
+path.add(new YUKA.Vector3(0, 45, 15))
+
+
+vehicle.position.copy(path.current())
+
+// Verifique se o objeto está no último ponto do caminho
+const lastWaypoint = path._waypoints[path._waypoints.length - 1];
+
+const FollowPathBehavior = new YUKA.FollowPathBehavior(path, 0.5)
+vehicle.steering.add(FollowPathBehavior);
+
+
+
+vehicle.maxSpeed = 5;
+
+const entityManager = new YUKA.EntityManager();
+entityManager.add(vehicle);
+
+let initialVehiclePosition = new YUKA.Vector3();
+initialVehiclePosition.copy(vehicle.position);
+
+window.addEventListener('keyup', function (event) {
+    if (event.key === 'm') {
+        if (isRectangleVisible) {
+            cena.remove(testefinal);
+            vehicle.position.copy(path._waypoints[0]);
+            vehicle.steering.behaviors.length = 0; // Limpa todos os comportamentos
+            vehicle.steering.add(FollowPathBehavior); // Adiciona novamente o comportamento de seguir o caminho
+            isRectangleVisible = false;
+        } else {
+            cena.add(testefinal);
+            vehicle.position.copy(path._waypoints[0]);
+            vehicle.steering.behaviors.length = 0; // Limpa todos os comportamentos
+            vehicle.steering.add(FollowPathBehavior); // Adiciona novamente o comportamento de seguir o caminho
+            isRectangleVisible = true;
+        }
+    }
+});
+const position = [];
+for (let i = 0; i < path._waypoints.length; i++) {
+    const waypoint = path._waypoints[i];
+    position.push(waypoint.x, waypoint.y, waypoint.z);
+}
+
+const lineGeometry = new THREE.BufferGeometry();
+lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(position, 3));
+
+let isRectangleVisible = true;
+
+
+
+
+
+// const lineMaterial = new THREE.LineBasicMaterial({color: 0xFFFFFF});
+// const lines = new THREE.LineLoop(lineGeometry, lineMaterial);
+// cena.add(lines);
+
+const time = new YUKA.Time();
 
 
 
@@ -2076,7 +2070,7 @@ window.addEventListener('keyup', function (event) {
                 lampAny11.remove(lightNighs11);
                 lampAny12.remove(lightNighs12);
             }
-         
+
             lampAny.remove(lightday)
             lampAny2.remove(lightday2)
             lampAny3.remove(lightday3)
@@ -2090,7 +2084,7 @@ window.addEventListener('keyup', function (event) {
             lampAny11.remove(lightday11);
             lampAny12.remove(lightday12);
 
-          
+
             skyboxState = 'day';
 
         }
@@ -2411,8 +2405,6 @@ function Start() {
     firstlamp.position.set(0, 11, -19.8)
 
 
-    //Heli
-    heli.rotation.x = Math.PI / 2;
 
 
     // Posicionar os semáforos
@@ -2447,7 +2439,6 @@ function Start() {
     cena.add(grass3);
     cena.add(gravel);
     cena.add(gravel2);
-    cena.add(heli);
     cena.add(lampAny);
     cena.add(lampAny2);
     cena.add(lampAny3);
@@ -2473,16 +2464,30 @@ function Start() {
 
     startGame();
     updateCounter();
-    updateHeli();
 
     requestAnimationFrame(loop);
 }
 
 function loop() {
-    mainRotor.rotation.y += 0.1;
-    tailRotor.rotation.x += 0.1;
+    // Verifique se o objeto está no último ponto do caminho
+    const marginOfError = 0.1; // Valor de margem de erro para a comparação
 
-    const delta = time.update().getDelta()*2;
+    if (
+        Math.abs(vehicle.position.x - lastWaypoint.x) <= marginOfError &&
+        Math.abs(vehicle.position.y - lastWaypoint.y) <= marginOfError &&
+        Math.abs(vehicle.position.z - lastWaypoint.z) <= marginOfError
+    ) {
+        // Defina a velocidade de rotação das hélices como zero
+        mainRotor.rotation.x = 0;
+        tailRotor.rotation.x = 0;
+    } else {
+        // Continue atualizando a rotação das hélices normalmente
+        mainRotor.rotation.x += 0.1;
+        tailRotor.rotation.x += 0.1;
+    }
+
+
+    const delta = time.update().getDelta() * 2;
     entityManager.update(delta);
 
     // controls.update(); Serve para a orbit para mexer com o rato na camara.
