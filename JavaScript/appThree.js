@@ -11,7 +11,7 @@ const cameraWidth = 500;
 const cameraHeight = cameraWidth / aspectRatio;
 
 
-
+//Criar Primeira pessoa
 function criarCamaraPrimeiraPessoa() {
     const cam = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 15000);
     cam.position.set(-2, 0, 30); // Ajuste a posição da câmera dentro do carro
@@ -19,7 +19,7 @@ function criarCamaraPrimeiraPessoa() {
     return cam;
 }
 
-
+//Retrovisor
 function criarCamaraPrimeiraPessoaTraseira() {
     const cam = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 15000);
     cam.position.set(-2, 0, 30); // Ajuste a posição da câmera dentro do carro
@@ -28,19 +28,18 @@ function criarCamaraPrimeiraPessoaTraseira() {
     return cam;
 }
 
-// Cria um novo WebGLRenderer para o retrovisor
+//WebGLRenderer para o retrovisor
 var rearViewRenderer = new THREE.WebGLRenderer({ alpha: true });
 rearViewRenderer.setSize(window.innerWidth / 2, window.innerHeight / 6); // Defina um tamanho menor para o retrovisor
 
-// Obtém a câmera traseira existente
+//traseira existente
 var rearViewCamera = criarCamaraPrimeiraPessoaTraseira();
 
-// Anexa o elemento <canvas> do renderer à <div> correspondente ao retrovisor
+//<canvas> do renderer à <div> correspondente ao retrovisor
 var rearViewContainer = document.getElementById('rear-view');
 rearViewContainer.appendChild(rearViewRenderer.domElement);
 rearViewRenderer.domElement.style.border = '10px solid black'; // Adicione uma borda ao retrovisor
 rearViewRenderer.domElement.style.borderRadius = '10px'
-
 
 
 //Camera Ortografica
@@ -59,19 +58,7 @@ if (cs == 1) {
     camara.lookAt(0, 0, 0);
 } else if (cs == 2) {
     camara = camaraPrimeiraPessoa;
-
 }
-
-
-
-//SETTINGS DA CAMARA TRASEIRA
-
-
-
-//Setings das Camaras--------------------------------------------------------------------------------------------
-//Setings das Camaras--------------------------------------------------------------------------------------------
-//Setings das Camaras--------------------------------------------------------------------------------------------
-
 
 //-------------------------------------------------
 // Set up renderer
@@ -82,9 +69,8 @@ renderer.render(cena, camara);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
-// renderer.shadowMap.enabled = true;
-// renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
+//Funçao para mostrar o retrovisor
 function showRearView() {
     rearViewRenderer.setSize(window.innerWidth / 2, window.innerHeight / 6); // Define o tamanho do retrovisor visível
     rearViewContainer.style.display = 'block'; // Exibe o retrovisor
@@ -97,17 +83,13 @@ function hideRearView() {
 }
 
 
-
 //Clicar tecla C e mexer com a camara Ortografica ou perspetiva e Primeira Pessoa.
 document.addEventListener("keydown", (event) => {
     if (event.code === "KeyC") {
         cs = (cs + 1) % 2; // Alterna entre as câmeras
-
         if (cs == 0) {
-
             camara = camaraPrimeiraPessoa;
             showRearView();
-
             if (skyboxState === 'night') {
                 lampAny.add(lightNighs);
                 lampAny2.add(lightNighs2);
@@ -121,11 +103,7 @@ document.addEventListener("keydown", (event) => {
                 lampAny10.add(lightNighs10);
                 lampAny11.add(lightNighs11);
                 lampAny12.add(lightNighs12);
-
-
-
             }
-
         } else if (cs == 1) {
             hideRearView();
             camara = camaraO;
@@ -146,11 +124,8 @@ document.addEventListener("keydown", (event) => {
                 lampAny12.remove(lightNighs12);
             }
         }
-        console.log(cs)
     }
 });
-
-
 
 
 //CARROOOOOOOOOOOOOOOOOOOOO
@@ -161,7 +136,6 @@ function pickRandom(list) {
 }
 
 const vehicleColors = [0xa52523, 0xbdb638, 0x78b14b];
-
 
 function Car() {
     const car = new THREE.Group();
@@ -407,7 +381,6 @@ function Car() {
     return car;
 } const car = Car();
 
-
 function Wheel() {
     const wheel = new THREE.Mesh(
         new THREE.BufferGeometry(12, 33, 12),
@@ -424,10 +397,6 @@ function Wheel() {
 
 
 
-//----------------------------------------------------------
-
-
-
 renderer.setClearColor(0xaaaaaa);
 
 document.body.appendChild(renderer.domElement);
@@ -437,42 +406,6 @@ var objetoImportado;
 
 //Variavel com o objeto responsavel por importar ficheiros FBX
 var importer = new THREE.FBXLoader();
-
-// function createFerrari() {
-//     importer.load('./Objetos/ferrari-f1-race-car.fbx', function (object) {
-//         console.log("Número de filhos: ", object.children.length);
-
-//         object.remove(object.children[8]);
-//         object.remove(object.children[7]);
-
-
-//         for (let i = 0; i < object.children.length; i++) {
-//             console.log("Filho " + i + ": ", object.children[i].name);
-//         }
-//         // Cria uma instância do objeto THREE.Object3D()
-//         var object3D = new THREE.Object3D();
-
-//         // Adiciona o objeto carregado como filho do objeto THREE.Object3D()
-//         object3D.add(object);
-
-
-
-//         // Define a posição, rotação e escala do objeto THREE.Object3D()
-//         object3D.position.set(0, 0, 0);
-//         object3D.rotation.set(0, 0, 0);
-//         object3D.scale.set(0.6, 0.6, 0.6);
-//         object3D.position.set(2, 0, -10);
-//         object3D.rotation.x = Math.PI / 2;
-
-
-//         cena.add(object3D);
-
-//         return object
-
-//     })
-// } const ferraricar = createFerrari()
-
-
 
 function createTruck() {
     importer.load('./Objetos/M1070 HET.fbx', function (object) {
@@ -487,14 +420,11 @@ function createTruck() {
             }
         });
 
-
-
         // Cria uma instância do objeto THREE.Object3D()
         var object3D = new THREE.Object3D();
 
         // Adiciona o objeto carregado como filho do objeto THREE.Object3D()
         object3D.add(object);
-
 
 
         // Define a posição, rotação e escala do objeto THREE.Object3D()
@@ -503,7 +433,6 @@ function createTruck() {
         object3D.scale.set(0.6, 0.6, 0.6);
         object3D.position.set(2, 0, -10);
         object3D.rotation.x = Math.PI / 2;
-
 
         cena.add(object3D);
         object3D.scale.set(0.02, 0.02, 0.02)
@@ -529,34 +458,22 @@ function createTrack() {
         object.traverse(function (child) {
             if (child instanceof THREE.Mesh) {
                 child.material = materialtrack;
-
-                // Habilitar as sombras
                 child.castShadow = true;
                 child.receiveShadow = true;
             }
         });
 
-
-
-
-
-        // Adiciona o objeto carregado como filho do objeto THREE.Object3D()
         object3D.add(object);
 
-
-
-        // Define a posição, rotação e escala do objeto THREE.Object3D()
         object3D.position.set(0, 0, 0);
         object3D.rotation.set(0, 0, 0);
         object3D.scale.set(0.6, 0.6, 0.6);
         object3D.position.set(2, 0, -20);
 
-
-
         cena.add(object3D);
+
         // Cria a geometria do plano
         const geometry = new THREE.PlaneGeometry(100, 100);
-
 
         // Cria o material com a textura da bandeira axadrezada
         const texture = new THREE.TextureLoader().load('./Images/Bandeira.png');
@@ -599,11 +516,9 @@ function Bancada() {
     const geometry = new THREE.BoxGeometry(50, 10, 2);
     const geometryup = new THREE.BoxGeometry(50, 30, 2);
 
-    // Criando o material do retângulo
     const material = new THREE.MeshPhongMaterial({ color: 0x808080 }); // Cor verde
     const materialcylinder = new THREE.MeshPhongMaterial({ color: 0xFFD700 }); // Cor verde
 
-    // Criando a malha do retângulo
     const rectangle = new THREE.Mesh(geometry, material);
     const rectangle2 = new THREE.Mesh(geometry, material);
     const rectangle3 = new THREE.Mesh(geometry, material);
@@ -619,7 +534,6 @@ function Bancada() {
     const cylinderadd8 = new THREE.Mesh(cylinder2, materialcylinder);
     const cylinderadd9 = new THREE.Mesh(cylinderlaterais, materialcylinder);
     const cylinderadd10 = new THREE.Mesh(cylinderlaterais2, materialcylinder);
-    // Adicionando o retângulo à cena
 
     rectangle.castShadow = true
     rectangle.receiveShadow = true
@@ -696,25 +610,19 @@ function Bancada() {
 
 
 function createDHLBoard() {
-    // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(4, 2);
 
-    // Carrega a textura da imagem
     const texture = new THREE.TextureLoader().load('./Images/DHL.png');
 
-    // Cria o material com a textura da imagem
     const material = new THREE.MeshPhongMaterial({ map: texture });
 
-    // Cria a malha com a geometria e o material
     const mesh = new THREE.Mesh(geometry, material);
 
     mesh.rotateX(Math.PI / 2);
 
-    // Posiciona a malha na beira da pista
     mesh.position.set(10, 44.9, -19);
 
 
-    // Adiciona a malha à cena
     cena.add(mesh);
 
     return mesh;
@@ -722,21 +630,16 @@ function createDHLBoard() {
 
 
 function createRolexBoard() {
-    // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(4, 2);
 
-    // Carrega a textura da imagem
     const texture = new THREE.TextureLoader().load('./Images/Rolex.png');
 
-    // Cria o material com a textura da imagem
     const material = new THREE.MeshPhongMaterial({ map: texture });
 
-    // Cria a malha com a geometria e o material
     const mesh = new THREE.Mesh(geometry, material);
 
     mesh.rotateX(Math.PI / 2);
 
-    // Posiciona a malha na beira da pista
     mesh.position.set(5, 44.9, -19);
 
 
@@ -747,50 +650,27 @@ function createRolexBoard() {
 } const Rolexboard = createRolexBoard();
 
 function createAramcoBoard() {
-    // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(4, 2);
-
-    // Carrega a textura da imagem
     const texture = new THREE.TextureLoader().load('./Images/Aramco.jpeg');
-
-    // Cria o material com a textura da imagem
     const material = new THREE.MeshPhongMaterial({ map: texture });
-
-    // Cria a malha com a geometria e o material
     const mesh = new THREE.Mesh(geometry, material);
-
     mesh.rotateX(Math.PI / 2);
 
-    // Posiciona a malha na beira da pista
     mesh.position.set(0, 44.9, -19);
 
-
-    // Adiciona a malha à cena
     cena.add(mesh);
 
     return mesh;
 } const aramcoBoard = createAramcoBoard();
 
 function createPirelliBoard() {
-    // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(4, 2);
-
-    // Carrega a textura da imagem
     const texture = new THREE.TextureLoader().load('./Images/Pirelli.png');
-
-    // Cria o material com a textura da imagem
     const material = new THREE.MeshPhongMaterial({ map: texture });
-
-    // Cria a malha com a geometria e o material
     const mesh = new THREE.Mesh(geometry, material);
-
     mesh.rotateX(Math.PI / 2);
-
-    // Posiciona a malha na beira da pista
     mesh.position.set(-5, 44.9, -19);
 
-
-    // Adiciona a malha à cena
     cena.add(mesh);
 
     return mesh;
@@ -798,91 +678,44 @@ function createPirelliBoard() {
 
 
 function createEmiratesBoard() {
-    // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(4, 2);
-
-    // Carrega a textura da imagem
     const texture = new THREE.TextureLoader().load('./Images/Emirates.png');
-
-    // Cria o material com a textura da imagem
     const material = new THREE.MeshPhongMaterial({ map: texture });
-
-    // Cria a malha com a geometria e o material
     const mesh = new THREE.Mesh(geometry, material);
-
     mesh.rotateX(Math.PI / 2);
-
-    // Posiciona a malha na beira da pista
     mesh.position.set(-10, 44.9, -19);
 
-
-    // Adiciona a malha à cena
     cena.add(mesh);
 
     return mesh;
 } const Emiratesboard = createEmiratesBoard();
 
 
-
 function createF1Board() {
-    // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(4, 2);
-
-    // Carrega a textura da imagem
     const texture = new THREE.TextureLoader().load('./Images/Formula1.jpg');
-
-    // Cria o material com a textura da imagem
     const material = new THREE.MeshPhongMaterial({ map: texture });
-
-    // Cria a malha com a geometria e o material
     const mesh = new THREE.Mesh(geometry, material);
-
     mesh.rotateX(Math.PI / 2);
-
-    // Posiciona a malha na beira da pista
     mesh.position.set(-15, 44.9, -19);
 
-
-    // Adiciona a malha à cena
     cena.add(mesh);
 
     return mesh;
 } const F1board = createF1Board();
 
 
-
 function createHeinekenoard() {
-    // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(50, 29);
-
-    // Carrega a textura da imagem
     const texture = new THREE.TextureLoader().load('./Images/Heineken.png');
-
-    // Cria o material com a textura da imagem
     const material = new THREE.MeshPhongMaterial({ map: texture });
-
-    // Cria a malha com a geometria e o material
     const mesh = new THREE.Mesh(geometry, material);
-
-
-    // Posiciona a malha na beira da pista
     mesh.position.set(0, 53, 1.5);
 
-
-    // Adiciona a malha à cena
     cena.add(mesh);
 
     return mesh;
 } const Heinekenboard = createHeinekenoard();
-
-
-
-
-
-var geometriaCubo = new THREE.BoxGeometry(1, 1, 1);
-
-var textura = new THREE.TextureLoader().load('./Images/boxImage.jpg')
-var materialTextura = new THREE.MeshStandardMaterial({ map: textura });
 
 
 //SOMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
@@ -901,9 +734,6 @@ soundLoader.load('./Sons/buzina.mp3', function (buffer) {
 
 //Colisao
 var wallGeometry = new THREE.BoxBufferGeometry(25, 1, 2);
-
-
-
 var wallMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, visible: false });
 var wall5 = new THREE.Mesh(wallGeometry, wallMaterial);
 var wall6 = new THREE.Mesh(wallGeometry, wallMaterial);
@@ -920,14 +750,9 @@ cena.add(wall5);
 cena.add(wall6);
 cena.add(wall7);
 cena.add(wall8);
-// cena.add(wall9);
 cena.add(wall10);
-// cena.add(wall11)
 cena.add(wall12);
 cena.add(wall13);
-
-
-
 
 wall5.scale.set(3.5, 39, 0)
 wall5.position.set(23, -5.5, -19)
@@ -941,7 +766,6 @@ wall12.scale.set(4.3, 39, 0)
 wall12.position.set(27, 44, -19)
 wall13.scale.set(5, 39, 0)
 wall13.position.set(17, -55, -19)
-
 
 const raio = 19; // Raio do círculo
 const segmentos = 32; // Número de segmentos do círculo
@@ -1064,12 +888,11 @@ circleMesh26.scale.set(1, 1, 1);
 var isGamePaused = false;
 var previousCarPosition = new THREE.Vector3();
 var carDirection = new THREE.Vector3();
-
 var isGameRestarted = false;
 let speed = 0.15;
 
 
-//Mecanismo atraves do teclado (mexer o objeto) ----------------------------------------------------------------------------
+//Mecanismo mexer o carro ----------------------------------------------------------------------------
 document.addEventListener("keydown", onDocumentKeyDown, false);
 function onDocumentKeyDown(event) {
     var keyCode = event.which;
@@ -1104,10 +927,10 @@ const keys = {
     d: false
 };
 
-// Defina uma variável para armazenar o valor original da velocidade
+// Variável para armazenar o valor original da velocidade
 var originalSpeed = speed;
 
-// Defina uma variável para controlar se a tecla de espaço está pressionada
+// Variável para controlar se a tecla de espaço está pressionada
 var isSpacePressed = false;
 
 function onDocumentKeyDown(event) {
@@ -1120,8 +943,8 @@ function onDocumentKeyDown(event) {
         keys.a = true;
     } else if (keyCode == 68) {
         keys.d = true;
-    } else if (keyCode == 86 || keyCode == 118) { // 86 is 'V', 118 is 'v'
-        if (!sound.isPlaying) { // Adicione esta verificação para tocar o som apenas se ele não estiver já tocando
+    } else if (keyCode == 86 || keyCode == 118) {
+        if (!sound.isPlaying) {
             sound.play();
         }
     } else if (event.keyCode === 32) {
@@ -1157,7 +980,6 @@ function startGame() {
     updateCounter();
     car.position.set(-10, 20, -19);
     car.rotation.z = -Math.PI / 60; //TENHO MESMO QUE MELHORAR ISTO
-    // outras lógicas para começar o jogo...
 }
 
 function resetGame() {
@@ -1166,26 +988,25 @@ function resetGame() {
     document.getElementById('new-game').style.display = 'block';
 }
 
-
 var gameContainer = document.getElementById('game-container');
 var restartMessage = document.getElementById('restart-message');
 
 function update() {
 
-
     function checkCollision() {
         if (!car) {
-            console.log("Erro: Carro não está definido");
             return false;
         }
 
-        // Obter a posição global do carro
+        // Posição global do carro
         const carPosition = new THREE.Vector3();
         car.getWorldPosition(carPosition);
 
-        // Obter a caixa delimitadora do carro
+        // Caixa delimitadora do carro
         const carBoundingBox = new THREE.Box3().setFromObject(car);
-        // const wallBoundingBox = new THREE.Box3().setFromObject(wall);
+
+
+        // Caixa delimitadora para as pareces
         const wallInside = new THREE.Box3().setFromObject(wall5);
         const wallInside2 = new THREE.Box3().setFromObject(wall6);
         const wallInside3 = new THREE.Box3().setFromObject(wall7);
@@ -1194,13 +1015,9 @@ function update() {
         const wallInside7 = new THREE.Box3().setFromObject(wall12);
         const wallInside8 = new THREE.Box3().setFromObject(wall13);
 
-        // Obter as caixas delimitadoras das paredes
         const wallBoundingBoxes = [
-            // wallBoundingBox,
-
             wallInside, wallInside2, wallInside3, wallInside4,
             wallInside6, wallInside7, wallInside8
-
         ];
 
         const circleMeshes = [circleMesh, circleMesh2, circleMesh3, circleMesh4, circleMesh5,
@@ -1211,16 +1028,15 @@ function update() {
             circleMesh23, circleMesh24, circleMesh25, circleMesh26
         ];
 
+        // Verificar colisão com todas as paredes das circunferencias
         for (let i = 0; i < circleMeshes.length; i++) {
             const circleCenter = circleMeshes[i].position.clone();
             const carDistanceToCircle = carPosition.distanceTo(circleCenter);
             const circleRadius = raio * Math.max(circleMeshes[i].scale.x, circleMeshes[i].scale.y, circleMeshes[i].scale.z);
-
             if (carDistanceToCircle < circleRadius) {
                 return true;
             }
         }
-
 
         // Verificar colisão com todas as paredes
         for (let i = 0; i < wallBoundingBoxes.length; i++) {
@@ -1229,10 +1045,8 @@ function update() {
             }
         }
 
-
         return false;
     }
-
 
     if (checkCollision()) {
         if (!isGameRestarted) {
@@ -1245,45 +1059,31 @@ function update() {
             isGameRestarted = false;
             restartMessage.style.display = 'none';
         }
-        if (keys.w) {
-            car.position.x += Math.cos(car.rotation.z) * speed;
-            car.position.y += Math.sin(car.rotation.z) * speed;
+        if (car) {
+            if (keys.w) {
+                car.position.x += Math.cos(car.rotation.z) * speed;
+                car.position.y += Math.sin(car.rotation.z) * speed;
+            }
+            if (keys.s) {
+                car.position.x -= Math.cos(car.rotation.z) * speed;
+                car.position.y -= Math.sin(car.rotation.z) * speed;
+            }
+            if (speed > 0) { 
+                if (keys.a) {
+                    car.rotation.z += 0.03;
+                }
+                if (keys.d) {
+                    car.rotation.z -= 0.03;
+                }
+            }
         }
-        if (keys.s) {
-            car.position.x -= Math.cos(car.rotation.z) * speed;
-            car.position.y -= Math.sin(car.rotation.z) * speed;
-        }
-        isGameRestarted = false;
-
     }
-
     document.getElementById('new-game').addEventListener('click', startGame);
-
-
-    if (car) {
-        if (keys.w) {
-            car.position.x += Math.cos(car.rotation.z) * speed;
-            car.position.y += Math.sin(car.rotation.z) * speed;
-        }
-        if (keys.s) {
-            car.position.x -= Math.cos(car.rotation.z) * speed;
-            car.position.y -= Math.sin(car.rotation.z) * speed;
-        }
-        if (speed > 0) { // Adicione essa condição
-            if (keys.a) {
-                car.rotation.z += 0.03;
-            }
-            if (keys.d) {
-                car.rotation.z -= 0.03;
-            }
-        }
-    }
 
     requestAnimationFrame(update);
 }
 
 update();
-
 
 
 //Criar uma arvore---------------------------------------------------------------------------------------------
@@ -1301,133 +1101,87 @@ const treeCrownMaterial = new THREE.MeshLambertMaterial({
     color: treeCrownColor
 });
 
-
 function createTree() {
     // Cria o tronco da árvore
     const trunkGeometry = new THREE.CylinderGeometry(2, 2, 20, 8);
     const trunkMaterial = new THREE.MeshLambertMaterial({ color: 0x8B4513 });
     const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
-
-
     trunk.castShadow = true
     trunk.receiveShadow = true
-    // Cria a copa da árvore
+
+    // Cria a parte de cima da árvore
     const leavesGeometry = new THREE.SphereGeometry(8, 8, 8);
     const leavesMaterial = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
     const leaves = new THREE.Mesh(leavesGeometry, leavesMaterial);
     leaves.position.set(0, 15, 0);
-
     leaves.castShadow = true
     leaves.receiveShadow = true
 
-    // Cria um grupo para a árvore e adiciona o tronco e a copa como filhos
+    // Cria um grupo para a árvore e adiciona o tronco e a parte de cima
     const tree = new THREE.Group();
     tree.add(trunk);
     tree.add(leaves);
-
-    // Define a posição da árvore
     tree.position.set(0, 0, 0);
     tree.rotation.x = Math.PI / 2;
     tree.scale.set(0.5, 0.5, 0.5);
 
-
-    // Adiciona a árvore à cena
     cena.add(tree);
     return tree;
 }
 const tree = createTree();
 const tree2 = createTree();
-//const tree2 = createTree();
 //Criar uma arvore (fim)---------------------------------------------------------------------------------------------
 //Criar uma arvore (fim)---------------------------------------------------------------------------------------------
 //Criar uma arvore (fim)---------------------------------------------------------------------------------------------
 
 function addBoard() {
-    // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(10, 5);
-
-    // Carrega a textura da imagem
     const texture = new THREE.TextureLoader().load('./Images/UTAD.jpg');
-
-    // Cria o material com a textura da imagem
     const material = new THREE.MeshPhongMaterial({ map: texture });
-
-    // Cria a malha com a geometria e o material
     const mesh = new THREE.Mesh(geometry, material);
-
     mesh.rotateX(Math.PI / 2);
-
-    // Posiciona a malha na beira da pista
     mesh.position.set(60, 30, -18);
-
     mesh.castShadow = true;
     mesh.receiveShadow = true;
 
-
-    // Adiciona a malha à cena
     cena.add(mesh);
 
     return mesh;
 } const board = addBoard();
 
 function addBoard2() {
-    // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(10, 5);
-
-    // Carrega a textura da imagem
     const texture = new THREE.TextureLoader().load('./Images/MASSIVE.png');
-
-    // Cria o material com a textura da imagem
     const material = new THREE.MeshPhongMaterial({ map: texture });
-
-    // Cria a malha com a geometria e o material
     const mesh = new THREE.Mesh(geometry, material);
-
     mesh.rotateX(Math.PI / 2);
-
-    // Posiciona a malha na beira da pista
     mesh.position.set(50, 30, -18);
 
     mesh.castShadow = true;
     mesh.receiveShadow = true;
 
-    // Adiciona a malha à cena
     cena.add(mesh);
 
     return mesh;
 } const board2 = addBoard2();
 
-
 function addCGBoard() {
-    // Cria a geometria do placar
     const geometry = new THREE.PlaneGeometry(70, 35);
-
-    // Carrega a textura da imagem
     const texture = new THREE.TextureLoader().load('./Images/CG.png');
-
-    // Cria o material com a textura da imagem
     const material = new THREE.MeshPhongMaterial({ map: texture });
-
-    // Cria a malha com a geometria e o material
     const mesh = new THREE.Mesh(geometry, material);
-
-    // Posiciona a malha na beira da pista
     mesh.position.set(-74, -50, -20);
-
-    // Adiciona a malha à cena
+    
     cena.add(mesh);
 
     return mesh;
 } const CG = addCGBoard();
 
 
-// //Helicóptero
-// //Helicóptero
-// //Helicóptero
-
-//SERVE PARA METER O CARRO A DAR UMA VOLTA PARA DEMONSTRAÇÃO
+//Helicóptero
+//Helicóptero
+//Helicóptero
 const helidada = new THREE.Group();
-
 // Cria a geometria do corpo do helicóptero
 var bodyGeometry = new THREE.BoxGeometry(3, 2, 8);
 var bodyMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
@@ -1468,15 +1222,10 @@ helidada.add(tailRotor);
 tailRotor.castShadow = true
 tailRotor.receiveShadow = true
 
-
-
-
 helidada.matrixAutoUpdate = false;
 cena.add(helidada);
 
-
-
-
+//Movimento do heli.
 const vehicle = new YUKA.Vehicle()
 vehicle.setRenderComponent(helidada, sync);
 
@@ -1501,6 +1250,7 @@ path.add(new YUKA.Vector3(-30, 20, 10))
 path.add(new YUKA.Vector3(0, 50, 3))
 
 vehicle.position.copy(path.current())
+
 // Verifique se o objeto está no último ponto do caminho
 const lastWaypoint = path._waypoints[path._waypoints.length - 1];
 const FollowPathBehavior = new YUKA.FollowPathBehavior(path, 0.5)
@@ -1514,23 +1264,6 @@ entityManager.add(vehicle);
 let initialVehiclePosition = new YUKA.Vector3();
 initialVehiclePosition.copy(vehicle.position);
 
-window.addEventListener('keyup', function (event) {
-    if (event.key === 'm') {
-        if (isRectangleVisible) {
-            cena.remove(testefinal);
-            vehicle.position.copy(path._waypoints[0]);
-            vehicle.steering.behaviors.length = 0; // Limpa todos os comportamentos
-            vehicle.steering.add(FollowPathBehavior); // Adiciona novamente o comportamento de seguir o caminho
-            isRectangleVisible = false;
-        } else {
-            cena.add(testefinal);
-            vehicle.position.copy(path._waypoints[0]);
-            vehicle.steering.behaviors.length = 0; // Limpa todos os comportamentos
-            vehicle.steering.add(FollowPathBehavior); // Adiciona novamente o comportamento de seguir o caminho
-            isRectangleVisible = true;
-        }
-    }
-});
 const position = [];
 for (let i = 0; i < path._waypoints.length; i++) {
     const waypoint = path._waypoints[i];
@@ -1573,10 +1306,8 @@ function createGrasswithOpac(width, height, x, y, z, texture) {
 }
 
 function FirstcreateLamp() {
-    // Cria um grupo para o candeeiro
     var lamp = new THREE.Group();
 
-    // Cria a base do candeeiro
     var baseGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.5, 7);
     var baseMaterial = new THREE.MeshPhongMaterial({ color: 0x333333 });
     var base = new THREE.Mesh(baseGeometry, baseMaterial);
@@ -1595,7 +1326,6 @@ function FirstcreateLamp() {
 
     lamp.add(base2);
 
-    // Cria o poste do candeeiro
     var postGeometry = new THREE.CylinderGeometry(0.1, 0.1, 2, 16);
     var postMaterial = new THREE.MeshPhongMaterial({ color: 0x999999 });
     var post = new THREE.Mesh(postGeometry, postMaterial);
@@ -1625,7 +1355,6 @@ function FirstcreateLamp() {
 
     lamp.add(sideup);
 
-
     lamp.rotation.x = Math.PI / 2;
     lamp.position.z = -20;
     lamp.scale.set(3, 3, 3);
@@ -1645,15 +1374,10 @@ function criarSemaforoHorizontal() {
 
     parteSuperior.castShadow = true;
     parteSuperior.receiveShadow = true;
-
     semaforo.add(parteSuperior);
-
     // Criar a luz vermelha
     var luzVermelha = new THREE.PointLight(0xff0000, 1, 10);
     luzVermelha.position.y = 0.5;
-
-    // luzVermelha.castShadow = true;
-    // luzVermelha.receiveShadow = true;
 
     semaforo.add(luzVermelha);
 
@@ -1677,7 +1401,6 @@ function criarSemaforoHorizontal() {
             luzVermelha.color.setHex(0xff0000); // Vermelho
         }
     }
-
 
     // Função para iniciar a animação
     function iniciarAnimacao() {
@@ -1712,7 +1435,6 @@ function createLamp() {
     base.castShadow = true;
     base.receiveShadow = true;
 
-
     lampAny.add(base);
 
     // Cria o poste do candeeiro
@@ -1737,18 +1459,9 @@ function createLamp() {
 
     lampAny.add(bulb);
 
-
     lampAny.rotation.x = Math.PI / 2;
     lampAny.position.z = -20;
     lampAny.scale.set(3, 3, 3);
-
-    // var coneGeometry = new THREE.ConeGeometry(1, 2, 16);
-    // var coneMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00, transparent: true, opacity: 0.3 });
-    // var cone = new THREE.Mesh(coneGeometry, coneMaterial);
-    // cone.position.copy(light.position);
-    // cone.rotation.copy(light.rotation);
-    // lamp.add(cone);
-
 
     return lampAny;
 } const lampAny = createLamp();
@@ -1818,12 +1531,12 @@ var skybox2 = new THREE.Mesh(skyboxGeo2, materialArray2);
 
 skybox2.rotation.x = Math.PI / 2; // Rotaciona 90 graus em torno do eixo y
 
-var skyboxState = 'day';
-
 var spotlightday; // Holofote para o dia
 var spotlightnight; // Holofote para a noite
 var skyboxState = 'day'; // Estado inicial do skybox (dia)
 
+
+//LUA MAIS DIRECTIONALLIGHT
 function createLightforNight() {
 
     spotlightnight = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -1861,11 +1574,9 @@ function createLightforNight() {
     cena.add(lightDay); // Adicione a esfera à cena
 
     return lightDay;
-}
+} const nightLight = createLightforNight();
 
-const nightLight = createLightforNight();
-
-
+//SOL MAIS DIRECTIONALLIGHT
 function createLightforDay() {
     spotlightday = new THREE.DirectionalLight(0xffffff, 1.5);
     spotlightday.position.set(60, 60, 50); // Posição do holofote
@@ -1903,12 +1614,9 @@ function createLightforDay() {
     cena.add(spotlightday); // Adicione a luz à cena
 
     return lightDay;
-}
+} const lightDay = createLightforDay();
 
-const lightDay = createLightforDay();
-
-
-// Cria a luz da lâmpada de noite da camara de cima
+// Cria a luz da lâmpada de NOITE da CAMARA DE CIMA
 var lightday = new THREE.PointLight(0xffffff, 2, 10);
 var lightday2 = new THREE.PointLight(0xffffff, 2, 10);
 var lightday3 = new THREE.PointLight(0xffffff, 2, 10);
@@ -1936,9 +1644,7 @@ lightday11.position.set(0, 1.5, 0);
 lightday12.position.set(0, 1.5, 0);
 
 
-
-
-// Cria a luz da lâmpada da primeira pessoa de noite
+// Cria a luz da lâmpada da PRIMEIRA PESSOA
 var lightNighs = new THREE.PointLight(0xffffff, 6, 200);
 var lightNighs2 = new THREE.PointLight(0xffffff, 6, 200);
 var lightNighs3 = new THREE.PointLight(0xffffff, 6, 200);
@@ -1955,8 +1661,6 @@ var lightNighs12 = new THREE.PointLight(0xffffff, 6, 200);
 
 var ambientLightday = new THREE.AmbientLight(0x404040, 1); // luz suave branca
 var ambientLightnight = new THREE.AmbientLight(0x404040, 0.5); // luz suave branca
-
-
 
 
 window.addEventListener('keyup', function (event) {
@@ -2067,7 +1771,6 @@ window.addEventListener('keyup', function (event) {
     }
 });
 
-
 window.addEventListener('keydown', function (event) {
     if (event.key === 't') { // Tecla "t" para alternar os skyboxes
         if (skyboxState === 'day') {
@@ -2104,6 +1807,7 @@ window.addEventListener('keydown', function (event) {
             cena.remove(ambientLightday)
             cena.add(ambientLightnight)
 
+            //Diz lightday, mas lightday é para camara de cima.... 
             lampAny.add(lightday);
             lampAny2.add(lightday2);
             lampAny3.add(lightday3);
@@ -2159,7 +1863,6 @@ window.addEventListener('keydown', function (event) {
             cena.remove(nightLight);  // remove a esfera da noite
             cena.add(lightDay);   // adiciona a esfera do dia
             skyboxState = 'day';
-
         }
     }
 });
@@ -2168,21 +1871,8 @@ window.addEventListener('keydown', function (event) {
 //COLOCAR AS VOLTAS NA PISTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 //COLOCAR AS VOLTAS NA PISTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 //COLOCAR AS VOLTAS NA PISTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-//COLOCAR AS VOLTAS NA PISTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-//COLOCAR AS VOLTAS NA PISTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-// Adicione um elemento HTML para exibir a contagem
 
-// Adicione um elemento HTML para exibir a contagem
-// Adicione um elemento HTML para exibir a contagem
-var counterElement = document.createElement('div');
-counterElement.style.position = 'absolute';
-counterElement.style.color = 'white'
-counterElement.style.fontSize = '50px';
-counterElement.style.top = '10px';
-counterElement.style.left = '10px';
-document.body.appendChild(counterElement);
-
-
+//ESCRITA DAS VOLTAS NA REVA
 function voltasem3D() {
     // Crie um novo canvas
     var canvas = document.createElement('canvas');
@@ -2192,7 +1882,7 @@ function voltasem3D() {
     context.font = '15px Arial';
     context.fillStyle = '#ffffff';
 
-    // Desenhe o número de voltas no novo canvas
+    //Número de voltas no novo canvas
     context.fillText('Voltas: ' + count, 10, 50);
 
     // Remova o canvas antigo da cena
@@ -2201,81 +1891,67 @@ function voltasem3D() {
         cena.remove(oldMesh);
     }
 
-    // Crie uma textura a partir do novo canvas
     var texture = new THREE.CanvasTexture(canvas);
-
-    // Crie a geometria do plano
     var planeGeometry = new THREE.PlaneBufferGeometry(100, 70);
-
-    // Crie o material com a textura
     var planeMaterial = new THREE.MeshPhongMaterial({ map: texture, transparent: true, opacity: 0.5 });
 
-    // Crie o objeto Mesh para o plano
     var planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
     planeMesh.position.set(12, -10, -19.9); // Ajuste a posição conforme necessário
     planeMesh.name = 'voltasMesh'; // Defina um nome para o objeto Mesh
 
-    // Adicione o novo plano à cena
     cena.add(planeMesh);
 }
 
+function voltasem3dPlacar() {
+     var canvas = document.createElement('canvas');
+     canvas.width = 100; // Largura do retângulo
+     canvas.height = 100; // Altura do retângulo
+     var context = canvas.getContext('2d');
+     context.font = '30px Arial';
+     context.fillStyle = '#ffffff';
+ 
+     context.translate(0, canvas.height);
+     context.rotate(-Math.PI / 2);
+ 
+     // Desenhe o retângulo
+     context.fillRect(0, 0, canvas.width, canvas.height);
+ 
+     context.fillStyle = '#000000';
+     context.textAlign = 'center';
+     context.textBaseline = 'middle';
+ 
+     //Número de voltas no retângulo
+     context.fillText(count, canvas.width / 2, canvas.height / 4);
+     //Textura a partir do canvas
+     var texture = new THREE.CanvasTexture(canvas);
+ 
+     //Geometria do retângulo
+     var geometry = new THREE.BoxGeometry(5, 10); // Ajuste as dimensões conforme necessário
+ 
+     //Material com a textura
+     var material = new THREE.MeshPhongMaterial({ map: texture, transparent: true });
+ 
+     //Objeto Mesh para o retângulo
+     var mesh = new THREE.Mesh(geometry, material);
+ 
+     mesh.position.set(15, 9, -18);
+     mesh.rotation.x = Math.PI / 2;
+     mesh.rotation.y = Math.PI / 2;
+     mesh.rotation.z = Math.PI / 2;
+ 
+     cena.add(mesh);
+ 
+     mesh.castShadow = true;
+     mesh.receiveShadow = true;
+}
 
 function updateCounter() {
-
     voltasem3D();
-
-    // Crie uma textura com o número de voltas em um retângulo vertical
-    var canvas = document.createElement('canvas');
-    canvas.width = 100; // Largura do retângulo
-    canvas.height = 100; // Altura do retângulo
-    var context = canvas.getContext('2d');
-    context.font = '30px Arial';
-    context.fillStyle = '#ffffff';
-
-    // Rotacione o contexto em 90 graus para criar um retângulo vertical
-    context.translate(0, canvas.height);
-    context.rotate(-Math.PI / 2);
-
-    // Desenhe o retângulo
-    context.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Defina a posição do texto no retângulo
-    context.fillStyle = '#000000';
-    context.textAlign = 'center';
-    context.textBaseline = 'middle';
-
-    // Desenhe o número de voltas no retângulo
-    context.fillText(count, canvas.width / 2, canvas.height / 4);
-    // Crie a textura a partir do canvas
-    var texture = new THREE.CanvasTexture(canvas);
-
-    // Crie a geometria do retângulo
-    var geometry = new THREE.BoxGeometry(5, 10); // Ajuste as dimensões conforme necessário
-
-    // Crie o material com a textura
-    var material = new THREE.MeshPhongMaterial({ map: texture, transparent: true });
-
-    // Crie o objeto Mesh para o retângulo
-    var mesh = new THREE.Mesh(geometry, material);
-
-    // Posicione o retângulo conforme necessário
-    mesh.position.set(15, 9, -18); // Ajuste a posição conforme necessário
-    mesh.rotation.x = Math.PI / 2;
-    mesh.rotation.y = Math.PI / 2;
-    mesh.rotation.z = Math.PI / 2;
-
-
-    // Adicione o retângulo à cena
-    cena.add(mesh);
-
-
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-
-
+    voltasem3dPlacar();
 }
 
 
+//FAÇO AQUI OS CHECKPOINTS...
 var count = 0;
 var flagMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, visible: false });
 var flagGeometry = new THREE.BoxBufferGeometry(10, 1, 2);
@@ -2293,10 +1969,10 @@ var checkpointGeometry = new THREE.BoxBufferGeometry(10, 1, 2);
 
 var checkpoint1 = new THREE.Mesh(checkpointGeometry, checkpointMaterial);
 checkpoint1.rotation.z = Math.PI / 2;
-// Posicione os checkpoints adequadamente
 checkpoint1.position.set(-65, 33.5, -19);
-
 cena.add(checkpoint1);
+
+
 var checkpoints = [checkpoint1, lapcount]; // Checkpoints na ordem correta
 
 var currentCheckpoint = 0; // Variável para controlar o checkpoint atual
@@ -2331,37 +2007,25 @@ function lapUpdate() {
 }
 
 function resetCheckpoints() {
-    // Redefine a visibilidade de todos os checkpoints
     for (let i = 0; i < checkpoints.length; i++) {
         const checkpoint = checkpoints[i];
         checkpoint.visible = (i === 0); // Define o primeiro checkpoint como visível, os demais como invisíveis
     }
-
     currentCheckpoint = 0; // Reinicia para o primeiro checkpoint
 }
 
-
 //ANIMAÇÃO PARA O SOL ANDARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
-
 //ANIMAÇÃO PARA O SOL ANDARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
-// Variável para controlar o estado da animação
 let isAnimating = false;
-
 // Ângulo atual do sol
 let currentAngle = 0;
-
-// Duração total da animação em milissegundos
 const duration = 10000;
-
-// Ângulo completo da rotação (360 graus em radianos)
 const fullRotation = 2 * Math.PI;
 
 // Altura do sol acima do plano
 const height = 20;
-
 // Raio da trajetória do sol
 const radiusSun = 100;
-
 // Coordenadas da posição do sol
 const positionX = 0;
 const positionY = 0;
@@ -2382,8 +2046,7 @@ function updateSunPosition() {
         // Atualiza a posição do sol
         lightDay.position.set(newX + positionX, newY + positionY, newZ);
 
-        spotlightday.position.copy(lightDay.position);
-
+        spotlightday.position.copy(lightDay.position); //Basta tirar isto para parar de respeitar seguir o sol - IMPORTANTE
 
         // Verifica se a animação foi concluída
         if (currentAngle >= fullRotation) {
@@ -2406,17 +2069,17 @@ function handleClick(event) {
         }
     }
 }
-
-
 // Adicione um ouvinte de eventos para capturar o clique da tecla X
 window.addEventListener('keydown', handleClick);
+
+
+
+
 
 function Start() {
 
     const grassTexture = new THREE.TextureLoader().load('./Images/grass2.0.png');
-
     const gravelTexture = new THREE.TextureLoader().load('./Images/gravel2.png');
-
 
     const grass = createGrass(130, 42, 40, -10, -20, grassTexture);
     const grass2 = createGrass(30, 42, 40, -10, -20, grassTexture);
@@ -2466,10 +2129,7 @@ function Start() {
     lampAny11.position.y = -22;
     lampAny12.position.x = 81;
     lampAny12.position.y = -5;
-    firstlamp.position.set(0, 11, -19.8)
-
-
-
+    firstlamp.position.set(0, 11, -19.8);
 
     // Posicionar os semáforos
     semaforo1.position.set(-0.3, 21, -14.1);
@@ -2479,18 +2139,10 @@ function Start() {
     semaforo2.rotation.y = -Math.PI / 2;
     semaforo3.rotation.y = -Math.PI / 2;
 
-
     hideRearView();
     cena.add(ambientLightday)
     cena.add(skybox);
     cena.add(spotlightday);
-
-    // Crie um helper para a luz
-    const spotlightHelper = new THREE.SpotLightHelper(spotlightday);
-
-    // Adicione o helper à cena
-    cena.add(spotlightHelper);
-
 
 
     cena.add(tree);
@@ -2521,8 +2173,6 @@ function Start() {
     cena.add(semaforo3);
 
 
-
-
     tree.position.set(-60, 10, -15);
     tree2.position.set(15, 0, -15);
 
@@ -2533,7 +2183,6 @@ function Start() {
 }
 
 function loop() {
-    // Verifique se o objeto está no último ponto do caminho
     const marginOfError = 0.1; // Valor de margem de erro para a comparação
 
     if (
@@ -2550,11 +2199,9 @@ function loop() {
         tailRotor.rotation.x += 0.1;
     }
 
-
-    const delta = time.update().getDelta() * 2;
+    const delta = time.update().getDelta() * 4;
     entityManager.update(delta);
 
-    // controls.update(); Serve para a orbit para mexer com o rato na camara.
     lapUpdate(); // Adicione esta linha para verificar as voltas
     updateSunPosition();
     renderer.render(cena, camara);
